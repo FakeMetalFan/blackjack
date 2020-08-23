@@ -1,17 +1,17 @@
-import { Rank } from './rank';
+import { rank } from './rank';
 
 export const ranks = [
-  Rank.Ace,
-  Rank.Two,
-  Rank.Three,
-  Rank.Four,
-  Rank.Five,
-  Rank.Six,
-  Rank.Seven,
-  Rank.Eight,
-  Rank.Nine,
-  Rank.Ten,
-  Rank.Jack,
-  Rank.Queen,
-  Rank.King,
+  rank.Ace,
+  rank.Two,
+  rank.Three,
+  rank.Four,
+  rank.Five,
+  rank.Six,
+  rank.Seven,
+  rank.Eight,
+  rank.Nine,
+  rank.Ten,
+  rank.Jack,
+  rank.Queen,
+  rank.King,
 ];

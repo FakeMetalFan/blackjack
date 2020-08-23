@@ -4,7 +4,6 @@ export class Card {
   elem = document.createElement('div');
 
   rank;
-  suit;
 
   _backClassName = `card back`;
   _faceClassName;
@@ -14,7 +13,6 @@ export class Card {
     suit
   ) {
     this.rank = rank;
-    this.suit = suit;
 
     this._faceClassName = `card ${rank}-of-${suit}`;
     this._className = this._faceClassName;
@@ -44,10 +42,6 @@ export class Card {
 
   getWidth() {
     return getWidth(this.elem);
-  }
-
-  get foreground() {
-    return this.elem.style.zIndex;
   }
 
   set foreground(z) {

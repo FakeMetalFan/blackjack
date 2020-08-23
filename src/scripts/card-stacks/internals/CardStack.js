@@ -2,6 +2,7 @@ import { rankValueFnMap } from '../../consts';
 
 export class CardStack {
   cards = [];
+
   _elem;
 
   constructor(
