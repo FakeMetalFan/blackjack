@@ -4,5 +4,3 @@ export const Suit = {
   Hearts: 'hearts',
   Diamonds: 'diamonds',
 };
-
-export const suits = [Suit.Clubs, Suit.Spades, Suit.Hearts, Suit.Diamonds];

@@ -1,6 +1,5 @@
-import { HandCardStack } from './CardStack';
-
-export const topScore = 21;
+import { HandCardStack } from '../../card-stacks';
+import { topScore } from '../../consts';
 
 export class Hand {
   cardStack;

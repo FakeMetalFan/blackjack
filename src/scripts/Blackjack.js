@@ -1,12 +1,9 @@
-import { Deck } from './Deck';
-import { suits } from './suits';
-import { ranks } from './ranks';
-import { Dealer } from './Dealer';
-import { Player } from './Player';
-import { Buttons } from './Buttons';
+import { Deck } from './deck/Deck';
+import { suits, ranks, topScore } from './consts';
+import { Buttons } from './buttons/Buttons';
 import { getAnimation, getAnimationStep } from './utils';
 import { Popup, popupMessage } from './Popup';
-import { topScore } from './Hand';
+import { Dealer, Player } from './hands';
 
 export class Blackjack {
   _dealer = new Dealer();
