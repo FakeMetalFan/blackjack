@@ -1,8 +1,8 @@
 import { Deck } from './deck/Deck';
-import { suits, ranks, topScore } from './consts';
+import { suits, ranks, topScore, popupMessage } from './consts';
 import { Buttons } from './buttons/Buttons';
 import { getAnimation, getAnimationStep } from './utils';
-import { Popup, popupMessage } from './Popup';
+import { Popup } from './Popup';
 import { Dealer, Player } from './hands';
 
 export class Blackjack {
