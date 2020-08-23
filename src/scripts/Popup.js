@@ -1,31 +1,35 @@
 import { getAnimation, getAnimationStep } from './utils';
 
 export class Popup {
-  elem = document.getElementById('popup');
+  _elem = document.getElementById('popup');
 
   show(message) {
-    this.elem.innerText = message;
+    this._elem.innerText = message;
 
     getAnimation({
       duration: 200,
-      onProgress: dt => this._setOpacity(getAnimationStep(0, 1, dt)),
-      onComplete: () => this._setOpacity(''),
+      onProgress: dt => this._opacity = getAnimationStep(0, 1, dt),
+      onComplete: () => this._opacity = '',
     });
   }
 
   hide() {
     this._isVisible && getAnimation({
       duration: 300,
-      onProgress: dt => this._setOpacity(getAnimationStep(1, 0, dt)),
-      onComplete: () => this._setOpacity(0),
+      onProgress: dt => this._opacity = getAnimationStep(1, 0, dt),
+      onComplete: () => this._opacity = 0,
     });
   }
 
-  _setOpacity(opacity) {
-    this.elem.style.opacity = opacity;
+  get _style() {
+    return this._elem.style;
+  }
+
+  set _opacity(val) {
+    this._style.opacity = val;
   }
 
   get _isVisible() {
-    return this.elem.style.opacity !== '0';
+    return this._style.opacity !== '0';
   }
 }

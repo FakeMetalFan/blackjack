@@ -17,11 +17,7 @@ export class Card {
     this._faceClassName = `card ${rank}-of-${suit}`;
     this._className = this._faceClassName;
 
-    this.setOpacity(0);
-  }
-
-  setOpacity(opacity) {
-    this._style.opacity = opacity;
+    this.opacity = 0;
   }
 
   show() {
@@ -45,7 +41,11 @@ export class Card {
   }
 
   set foreground(z) {
-    this.elem.style.zIndex = z;
+    this._style.zIndex = z;
+  }
+
+  set opacity(val) {
+    this._style.opacity = val;
   }
 
   get _style() {
