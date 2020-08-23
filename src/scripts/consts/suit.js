@@ -1,4 +1,4 @@
-export const Suit = {
+export const suit = {
   Clubs: 'clubs',
   Spades: 'spades',
   Hearts: 'hearts',

@@ -1,3 +1,3 @@
-import { Suit } from './suit';
+import { suit } from './suit';
 
-export const suits = [Suit.Clubs, Suit.Spades, Suit.Hearts, Suit.Diamonds];
+export const suits = [suit.Clubs, suit.Spades, suit.Hearts, suit.Diamonds];

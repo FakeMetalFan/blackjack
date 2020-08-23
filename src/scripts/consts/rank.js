@@ -1,4 +1,4 @@
-export const Rank = {
+export const rank = {
   Ace: 'ace',
   Two: 'two',
   Three: 'three',
