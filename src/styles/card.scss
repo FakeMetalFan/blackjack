@@ -1,0 +1,53 @@
+@function getBackgroundImageUrl($rank, $suit) {
+  @return '../img/' + $rank + '-of-' + $suit + '.png';
+}
+
+@mixin cardFace($rank) {
+
+  .#{ $rank } {
+
+    &-of-clubs {
+      background-image: url(getBackgroundImageUrl($rank, 'clubs'));
+    }
+
+    &-of-spades {
+      background-image: url(getBackgroundImageUrl($rank, 'spades'));
+    }
+
+    &-of-hearts {
+      background-image: url(getBackgroundImageUrl($rank, 'hearts'));
+    }
+
+    &-of-diamonds {
+      background-image: url(getBackgroundImageUrl($rank, 'diamonds'));
+    }
+  }
+}
+
+.card {
+  position: absolute;
+  left: -1.9375em;
+  top: -2.75em;
+  width: 3.875em;
+  height: 5.5em;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  &.back {
+    background-image: url(../img/card-back.png);
+  }
+}
+
+@include cardFace('ace');
+@include cardFace('two');
+@include cardFace('three');
+@include cardFace('four');
+@include cardFace('five');
+@include cardFace('six');
+@include cardFace('seven');
+@include cardFace('eight');
+@include cardFace('nine');
+@include cardFace('ten');
+@include cardFace('jack');
+@include cardFace('queen');
+@include cardFace('king');

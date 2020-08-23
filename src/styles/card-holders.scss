@@ -1,0 +1,19 @@
+#dealer {
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  z-index: 1;
+}
+
+#deck {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+#player {
+  position: fixed;
+  left: 50%;
+  bottom: 36.2%;
+  z-index: 0;
+}

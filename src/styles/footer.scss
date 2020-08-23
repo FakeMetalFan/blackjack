@@ -1,0 +1,15 @@
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: .25em 0;
+  background-color: #334d41;
+  font-size: 80%;
+  color: white;
+  text-align: center;
+
+  a {
+    display: inline-block;
+  }
+}

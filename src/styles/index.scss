@@ -1,0 +1,26 @@
+@import 'buttons';
+@import 'card';
+@import 'card-holders';
+@import 'footer';
+@import 'header';
+@import 'popup';
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  height: 100vh;
+  background-color: #45a173;
+  font-family: Comic Sans MS, cursive, sans-serif;
+
+  @media (min-width: 640px) {
+    font-size: 125%;
+  }
+}
+
+a {
+  color: inherit;
+  cursor: pointer;
+}
