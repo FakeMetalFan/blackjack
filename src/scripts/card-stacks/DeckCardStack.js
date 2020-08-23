@@ -1,0 +1,26 @@
+import { CardStack } from './internals/CardStack';
+
+export class DeckCardStack extends CardStack {
+  shuffle() {
+    for (let i = this.count - 1; i; i--) {
+      const j = Math.random() * i | 0;
+
+      [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+    }
+  }
+
+  toForeground() {
+    this._elem.style.zIndex = '1';
+  }
+
+  toBackground() {
+    this._elem.style.zIndex = '-1';
+  }
+
+  getTopPosition() {
+    const { x, y } = this.rect;
+    const { x: dx, y: dy } = this.top.getPosition();
+
+    return { x: x + dx, y: y + dy };
+  }
+}

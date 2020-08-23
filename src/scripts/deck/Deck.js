@@ -1,6 +1,6 @@
-import { Card } from './Card';
-import { getAnimation, getAnimationStep, getFontSize } from './utils';
-import { DeckCardStack } from './CardStack';
+import { Card } from './internals/Card';
+import { getAnimation, getAnimationStep, getFontSize } from '../utils';
+import { DeckCardStack } from '../card-stacks';
 
 export class Deck {
   cardStack = new DeckCardStack(document.getElementById('deck'));

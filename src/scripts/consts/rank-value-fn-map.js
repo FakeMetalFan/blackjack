@@ -1,34 +1,4 @@
-export const Rank = {
-  Ace: 'ace',
-  Two: 'two',
-  Three: 'three',
-  Four: 'four',
-  Five: 'five',
-  Six: 'six',
-  Seven: 'seven',
-  Eight: 'eight',
-  Nine: 'nine',
-  Ten: 'ten',
-  Jack: 'jack',
-  Queen: 'queen',
-  King: 'king',
-};
-
-export const ranks = [
-  Rank.Ace,
-  Rank.Two,
-  Rank.Three,
-  Rank.Four,
-  Rank.Five,
-  Rank.Six,
-  Rank.Seven,
-  Rank.Eight,
-  Rank.Nine,
-  Rank.Ten,
-  Rank.Jack,
-  Rank.Queen,
-  Rank.King,
-];
+import { Rank } from './rank';
 
 export const rankValueFnMap = new Map()
   .set(Rank.Ace, (score, index) => score < 11 && index < 2 ? 11 : 1)

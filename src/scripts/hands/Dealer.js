@@ -1,4 +1,4 @@
-import { Hand } from './Hand';
+import { Hand } from './internals/Hand';
 
 const MAX_SCORE = 17;
 
