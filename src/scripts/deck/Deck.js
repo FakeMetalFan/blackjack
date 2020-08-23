@@ -60,10 +60,10 @@ export class Deck {
         getAnimation({
           duration,
           delay,
-          onProgress: dt => card.setOpacity(getAnimationStep(0, 1, dt)),
+          onProgress: dt => card.opacity = getAnimationStep(0, 1, dt),
           onComplete: () => {
             card.hide();
-            card.setOpacity('');
+            card.opacity = '';
           },
         })
       );
@@ -78,8 +78,7 @@ export class Deck {
       const delay = index * 2;
 
       const { x, y } = card.getPosition();
-      const randomOffset = (Math.round(Math.random()) ? 1 : -1)
-        * (Math.random() * 40 + 20) * getFontSize() / 16;
+      const randomOffset = (Math.round(Math.random()) * 2 - 1) * (Math.random() * 40 + 20) * getFontSize() / 16;
       const offset = -index / 4;
 
       acc.push(
