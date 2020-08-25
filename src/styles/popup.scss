@@ -1,15 +1,16 @@
-$width: 250px;
+@import 'variables';
+
 $height: 35px;
 
 #popup {
-  width: $width;
+  width: $buttons-width;
   height: 35px;
   background: white;
   border-radius: 10px;
   box-shadow: 0 2px 5px 0 rgba(black, .3);
   position: fixed;
-  left: calc(50% - #{$width / 2});
-  top: 14.5%;
+  left: calc(50% - #{$buttons-width / 2});
+  top: 15%;
   font-size: 85%;
   text-align: center;
   line-height: $height;

@@ -1,5 +1,3 @@
-import { rankValueFnMap } from '../../consts';
-
 export class CardStack {
   cards = [];
 
@@ -18,10 +16,6 @@ export class CardStack {
 
   pop() {
     return this.cards.pop();
-  }
-
-  getValue() {
-    return this.cards.reduce((acc, { rank }, index) => acc += rankValueFnMap.get(rank)(acc, index), 0);
   }
 
   get count() {

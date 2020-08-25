@@ -1,2 +1,2 @@
 export * from './Dealer';
-export * from './Player';
+export * from './Hand';

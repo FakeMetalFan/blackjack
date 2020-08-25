@@ -1,10 +1,12 @@
+@import 'variables';
+
 header {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   padding: .25em 0;
-  background-color: #334d41;
+  background-color: $header-background-color;
   font-size: 110%;
   color: white;
   text-align: center;

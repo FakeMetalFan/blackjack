@@ -1,1 +1,1 @@
-export const getWidth = elem => parseFloat(getComputedStyle(elem).width);
+export const getWidth = elem => parseFloat(getComputedStyle(elem).getPropertyValue('width'));

@@ -1,10 +1,14 @@
-$buttons-half-width: 128.345px;
+@import 'variables';
+
 $box-shadow-color: #333;
 
-.buttons {
+#buttons {
   position: fixed;
-  left: calc(50% - #{$buttons-half-width});
+  left: calc(50% - #{$buttons-width / 2});
   bottom: 25%;
+  width: $buttons-width;
+  display: flex;
+  justify-content: space-between;
 }
 
 button {

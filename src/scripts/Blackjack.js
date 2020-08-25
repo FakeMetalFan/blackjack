@@ -1,36 +1,43 @@
 import { Deck } from './deck/Deck';
-import { suits, ranks, topScore, popupMessage } from './consts';
+import { suits, ranks, popupMessage } from './consts';
 import { Buttons } from './buttons/Buttons';
 import { getAnimation, getAnimationStep } from './utils';
 import { Popup } from './Popup';
-import { Dealer, Player } from './hands';
+import { Dealer, Hand } from './hands';
 
 export class Blackjack {
-  _dealer = new Dealer();
-  _deck = new Deck(suits, ranks);
-  _player = new Player();
-  _buttons = new Buttons();
-  _popup = new Popup();
+  _dealer;
+  _deck;
+  _player;
+  _popup;
+  _buttons;
 
-  constructor() {
-    this._init();
+  constructor(
+    dealerElem,
+    deckElem,
+    playerElem,
+    popupElem,
+    buttonsElem,
+  ) {
+    this._init(dealerElem, deckElem, playerElem, popupElem, buttonsElem);
   }
 
-  async _init() {
-    this._attachHandlers();
+  async _init(dealerElem, deckElem, playerElem, popupElem, buttonsElem) {
+    this._dealer = new Dealer(dealerElem);
+    this._deck = new Deck(deckElem, suits, ranks);
+    this._player = new Hand(playerElem);
+    this._popup = new Popup(popupElem);
 
     await this._deck.intro();
 
+    this._buttons = new Buttons(buttonsElem);
+
+    this._buttons.deal.attachHandler(() => this._deal());
+    this._buttons.reset.attachHandler(() => this._reset());
+    this._buttons.hit.attachHandler(() => this._hit());
+    this._buttons.stand.attachHandler(() => this._stand());
+
     this._buttons.deal.enable();
-  }
-
-  _attachHandlers() {
-    const { deal, reset, hit, stand } = this._buttons;
-
-    deal.attachHandler(() => this._deal());
-    reset.attachHandler(() => this._reset());
-    hit.attachHandler(() => this._hit());
-    stand.attachHandler(() => this._stand());
   }
 
   async _deal() {
@@ -46,7 +53,18 @@ export class Blackjack {
     await this._drawCardFromDeck(this._dealer);
     await this._drawCardFromDeck(this._dealer, false);
 
-    this._handleBlackjack();
+    this._buttons.reset.enable();
+
+    const isPlayerBlackjacked = this._player.isBlackjacked();
+    const isDealerBlackjacked = this._dealer.isBlackjacked();
+
+    if (isPlayerBlackjacked && isDealerBlackjacked) this._popup.show(popupMessage.Push);
+    else if (isPlayerBlackjacked) this._popup.show(popupMessage.PlayerBlackjack);
+    else if (isDealerBlackjacked) this._popup.show(popupMessage.DealerBlackjack);
+
+    if (isPlayerBlackjacked || isDealerBlackjacked) return this._dealer.revealSecondCard();
+
+    this._buttons.allowHitOrStand();
   }
 
   async _reset() {
@@ -56,8 +74,8 @@ export class Blackjack {
 
     await Promise.all(this._getResetAnimations());
 
-    this._dealer.cardStack.reset();
-    this._player.cardStack.reset();
+    this._dealer.cardStack.empty();
+    this._player.cardStack.empty();
 
     await this._deck.shuffle();
     await this._deck.shuffle();
@@ -77,11 +95,10 @@ export class Blackjack {
       return this._buttons.reset.enable();
     }
 
-    if (this._player.isCardsLimitReached) {
-      return await this._stand();
-    }
+    if (this._player.isCardsLimitReached) return await this._stand();
 
-    this._continue();
+    this._buttons.reset.enable();
+    this._buttons.allowHitOrStand();
   }
 
   async _stand() {
@@ -90,29 +107,22 @@ export class Blackjack {
 
     await this._supplyDealerWithCards();
 
-    const playerScore = this._player.cardStack.getValue();
-    const dealerScore = this._dealer.cardStack.getValue();
+    const playerScore = this._player.getValue();
+    const dealerScore = this._dealer.getValue();
 
     let message = popupMessage.PlayerLost;
 
-    if (dealerScore > topScore || playerScore > dealerScore) {
-      message = popupMessage.PlayerWon;
-    } else if (playerScore === dealerScore) {
-      message = popupMessage.Push;
-    }
+    if (this._dealer.isBusted() || playerScore > dealerScore) message = popupMessage.PlayerWon;
+    else if (playerScore === dealerScore) message = popupMessage.Push;
 
     this._popup.show(message);
     this._buttons.reset.enable();
   }
 
-  async _drawCardFromDeck(hand, shouldShowFace = true) {
+  async _drawCardFromDeck({ cardStack }, shouldShowFace = true) {
     const card = this._deck.cardStack.pop();
 
-    if (!card) {
-      return;
-    }
-
-    const { x: dx, y } = hand.cardStack.getTopPosition(card.getWidth());
+    const { x: dx, y } = cardStack.getTopPosition(card.getWidth());
 
     await this._moveCard({
       card,
@@ -122,7 +132,7 @@ export class Blackjack {
         card.setPosition(dx, 0);
         shouldShowFace && card.show();
 
-        hand.cardStack.push(card);
+        cardStack.push(card);
       },
     });
   }
@@ -133,41 +143,8 @@ export class Blackjack {
     await getAnimation({
       onComplete,
       duration: 300,
-      onProgress: dt => card.setPosition(
-        getAnimationStep(x, dx, dt),
-        getAnimationStep(y, dy, dt)
-      ),
+      onProgress: dt => card.setPosition(getAnimationStep(x, dx, dt), getAnimationStep(y, dy, dt)),
     });
-  }
-
-  _handleBlackjack() {
-    const isPlayerBlackjacked = this._player.isBlackjacked();
-    const isDealerBlackjacked = this._dealer.isBlackjacked();
-
-    if (isPlayerBlackjacked && isDealerBlackjacked) {
-      this._popup.show(popupMessage.Push);
-    }
-    if (isPlayerBlackjacked) {
-      this._popup.show(popupMessage.PlayerBlackjack);
-    }
-    if (isDealerBlackjacked) {
-      this._popup.show(popupMessage.DealerBlackjack);
-    }
-
-    this._buttons.reset.enable();
-
-    if (isPlayerBlackjacked || isDealerBlackjacked) {
-      return this._dealer.revealSecondCard();
-    }
-
-    this._continue();
-  }
-
-  _continue() {
-    const { hit, stand } = this._buttons;
-
-    hit.enable();
-    stand.enable();
   }
 
   _getResetAnimations() {
@@ -179,7 +156,7 @@ export class Blackjack {
     ];
   }
 
-  async _moveCardToDeck(card, hand, index) {
+  async _moveCardToDeck(card, { cardStack: { rect } }, index) {
     card.hide();
 
     const z = this._deck.cardStack.count + index;
@@ -187,16 +164,16 @@ export class Blackjack {
     card.foreground = z;
 
     const { x, y } = this._deck.cardStack.getTopPosition();
-    const offset = (index + 1) / 4;
+    const offset = index / 4;
 
     await this._moveCard({
       card,
-      dx: x - hand.cardStack.rect.x - offset,
-      dy: y - hand.cardStack.rect.y - offset,
+      dx: x - rect.x - offset,
+      dy: y - rect.y - offset,
       onComplete: () => {
-        const offsetAhead = -z / 4;
+        const insertionOffset = -z / 4;
 
-        card.setPosition(offsetAhead, offsetAhead);
+        card.setPosition(insertionOffset, insertionOffset);
 
         this._deck.cardStack.push(card);
       },

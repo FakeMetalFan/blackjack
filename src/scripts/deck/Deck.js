@@ -2,14 +2,17 @@ import { Card } from './internals/Card';
 import { getAnimation, getAnimationStep, getFontSize } from '../utils';
 import { DeckCardStack } from '../card-stacks';
 
+const INTRO_OFFSET = -250;
+
 export class Deck {
-  cardStack = new DeckCardStack(document.getElementById('deck'));
+  cardStack;
 
   constructor(
+    elem,
     suits,
     ranks,
   ) {
-    this._init(suits, ranks);
+    this._init(elem, suits, ranks);
   }
 
   async intro() {
@@ -22,7 +25,9 @@ export class Deck {
     await Promise.all(this._getShuffleAnimations());
   }
 
-  _init(suits, ranks) {
+  _init(elem, suits, ranks) {
+    this.cardStack = new DeckCardStack(elem);
+
     suits.forEach(suit =>
       ranks.forEach(rank => {
         const card = new Card(rank, suit);
@@ -30,10 +35,8 @@ export class Deck {
         const { count: z } = this.cardStack;
         const offset = -z / 4;
 
-        const introAnimationOffset = -200;
-
         card.foreground = z;
-        card.setPosition(offset, introAnimationOffset - offset);
+        card.setPosition(offset, INTRO_OFFSET + offset);
 
         this.cardStack.push(card);
       })
@@ -42,7 +45,7 @@ export class Deck {
 
   _getIntroAnimations() {
     return this.cardStack.cards.reduce((acc, card, index) => {
-      const duration = 400;
+      const duration = 600;
       const delay = 500 + index * 10;
 
       const { x, y } = card.getPosition();
@@ -52,10 +55,7 @@ export class Deck {
         getAnimation({
           duration,
           delay,
-          onProgress: dt => card.setPosition(
-            getAnimationStep(x, offset, dt),
-            getAnimationStep(y, offset, dt)
-          ),
+          onProgress: dt => card.setPosition(getAnimationStep(x, offset, dt), getAnimationStep(y, offset, dt)),
         }),
         getAnimation({
           duration,
@@ -85,10 +85,7 @@ export class Deck {
         getAnimation({
           duration,
           delay,
-          onProgress: dt => card.setPosition(
-            getAnimationStep(x, randomOffset, dt),
-            getAnimationStep(y, offset, dt)
-          ),
+          onProgress: dt => card.setPosition(getAnimationStep(x, randomOffset, dt), getAnimationStep(y, offset, dt)),
         }),
         getAnimation({
           duration,
