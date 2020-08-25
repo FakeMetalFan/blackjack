@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development --open",
     "test": "jest",
-    "code-coverage": "jest --coverage"
+    "code-coverage": "jest --coverage",
+    "serve-bundle": "npm run build && http-server dist"
   },
   "author": "FakeMetalFan",
   "license": "ISC",
@@ -22,7 +23,9 @@
     "babel-loader": "^8.1.0",
     "css-loader": "^4.2.1",
     "file-loader": "^6.0.0",
+    "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "http-server": "^0.12.3",
     "jest": "^26.4.2",
     "mini-css-extract-plugin": "^0.10.0",
     "node-sass": "^4.14.1",

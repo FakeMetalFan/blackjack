@@ -26,7 +26,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test(path) {
+          return path.endsWith('.js') && !path.endsWith('.test.js');
+        },
         exclude: /node_modules/,
         use: { loader: 'babel-loader' }
       },
