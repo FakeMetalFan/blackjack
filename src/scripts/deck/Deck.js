@@ -12,7 +12,9 @@ export class Deck {
     suits,
     ranks,
   ) {
-    this._init(elem, suits, ranks);
+    this.cardStack = new DeckCardStack(elem);
+
+    this._init(suits, ranks);
   }
 
   async intro() {
@@ -25,9 +27,7 @@ export class Deck {
     await Promise.all(this._getShuffleAnimations());
   }
 
-  _init(elem, suits, ranks) {
-    this.cardStack = new DeckCardStack(elem);
-
+  _init(suits, ranks) {
     suits.forEach(suit =>
       ranks.forEach(rank => {
         const card = new Card(rank, suit);
