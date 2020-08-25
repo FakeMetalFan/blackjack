@@ -5,18 +5,22 @@ export const getAnimation = ({ duration, delay, onStart, onProgress, onComplete 
 
   onStart && onStart();
 
+  !duration && resolve();
+
   const start = performance.now();
   const requestId = requestAnimationFrame(function tick(t) {
     const dt = (t - start) / duration;
 
     if (dt < 1) {
-      onProgress(easeWithCubicInOut(dt));
+      onProgress && onProgress(easeWithCubicInOut(dt));
 
       return requestAnimationFrame(tick);
     }
 
     onComplete && onComplete();
+
     cancelAnimationFrame(requestId);
+
     resolve();
   });
 });

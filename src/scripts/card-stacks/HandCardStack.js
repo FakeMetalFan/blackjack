@@ -1,7 +1,7 @@
 import { CardStack } from './internals/CardStack';
 
 export class HandCardStack extends CardStack {
-  reset() {
+  empty() {
     this.cards = [];
   }
 

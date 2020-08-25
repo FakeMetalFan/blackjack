@@ -1,7 +1,13 @@
 import { getAnimation, getAnimationStep } from './utils';
 
 export class Popup {
-  _elem = document.getElementById('popup');
+  _elem;
+
+  constructor(
+    elem
+  ) {
+    this._elem = elem;
+  }
 
   show(message) {
     this._elem.innerText = message;

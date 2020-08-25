@@ -1,10 +1,10 @@
-import { Hand } from './internals/Hand';
+import { Hand } from './Hand';
 
 const MAX_SCORE = 17;
 
 export class Dealer extends Hand {
-  constructor() {
-    super(document.getElementById('dealer'));
+  constructor(elem) {
+    super(elem);
   }
 
   revealSecondCard() {
@@ -12,6 +12,6 @@ export class Dealer extends Hand {
   }
 
   canDrawCard() {
-    return this.cardStack.getValue() < MAX_SCORE;
+    return this.getValue() < MAX_SCORE;
   }
 }

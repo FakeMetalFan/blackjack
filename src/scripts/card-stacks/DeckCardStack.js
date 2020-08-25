@@ -10,11 +10,11 @@ export class DeckCardStack extends CardStack {
   }
 
   toForeground() {
-    this._elem.style.zIndex = '1';
+    this._style.zIndex = '1';
   }
 
   toBackground() {
-    this._elem.style.zIndex = '-1';
+    this._style.zIndex = '-1';
   }
 
   getTopPosition() {
@@ -22,5 +22,9 @@ export class DeckCardStack extends CardStack {
     const { x: dx, y: dy } = this.top.getPosition();
 
     return { x: x + dx, y: y + dy };
+  }
+
+  get _style() {
+    return this._elem.style;
   }
 }
