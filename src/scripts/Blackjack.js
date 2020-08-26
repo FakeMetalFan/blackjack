@@ -37,6 +37,7 @@ export class Blackjack {
     this._buttons.hit.attachHandler(() => this._hit());
     this._buttons.stand.attachHandler(() => this._stand());
 
+    this._buttons.disableAll();
     this._buttons.deal.enable();
   }
 
