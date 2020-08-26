@@ -11,6 +11,10 @@ describe('Card', () => {
 
   beforeEach(() => card = new Card(rank.Ace, suit.Spades));
 
+  it('should have rank', () => {
+    expect(card.rank).toBe(rank.Ace);
+  });
+
   it('should have class name', () => {
     expect(getClassName()).toBe('card ace-of-spades');
   });

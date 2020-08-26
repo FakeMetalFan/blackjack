@@ -1,3 +1,10 @@
+<a name="1.0.1"></a>
+# 1.0.1 (2020-08-26)
+
+### Fixes
+
+* **Disabled "rest", "hit" and "stand" buttons on init**
+
 <a name="1.0.0"></a>
 # 1.0.0 (2020-08-25)
 

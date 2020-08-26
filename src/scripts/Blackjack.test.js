@@ -22,9 +22,9 @@ describe('Blackjack', () => {
 
   let deckIntroSpy;
   let attachHandlerSpy;
+  let disableAllButtonsSpy;
   let enableBtnSpy;
 
-  let disableAllButtonsSpy;
   let shuffleDeckSpy;
   let hidePopupSpy;
   let showPopupSpy;
@@ -39,9 +39,9 @@ describe('Blackjack', () => {
   beforeEach(() => {
     deckIntroSpy = jest.spyOn(Deck.prototype, 'intro');
     attachHandlerSpy = jest.spyOn(Button.prototype, 'attachHandler');
+    disableAllButtonsSpy = jest.spyOn(Buttons.prototype, 'disableAll');
     enableBtnSpy = jest.spyOn(Button.prototype, 'enable');
 
-    disableAllButtonsSpy = jest.spyOn(Buttons.prototype, 'disableAll');
     shuffleDeckSpy = jest.spyOn(Deck.prototype, 'shuffle');
     hidePopupSpy = jest.spyOn(Popup.prototype, 'hide');
     showPopupSpy = jest.spyOn(Popup.prototype, 'show');
@@ -74,6 +74,10 @@ describe('Blackjack', () => {
   it('should attach event handlers to buttons', () => {
     expect(attachHandlerSpy).toHaveBeenCalledTimes(4);
     expect(attachHandlerSpy).toHaveBeenCalledWith(expect.any(Function));
+  });
+
+  it('should disable all buttons', () => {
+    expect(disableAllButtonsSpy).toHaveBeenCalled();
   });
 
   it('should enable deal button', () => {
@@ -205,7 +209,11 @@ describe('Blackjack', () => {
   describe('reset', () => {
     let resetBtn;
 
-    beforeEach(() => resetBtn = getBtn('Reset'));
+    beforeEach(() => {
+      resetBtn = getBtn('Reset');
+
+      blackjack._buttons.reset.enable();
+    });
 
     it('should hide popup', () => {
       resetBtn.click();
@@ -268,6 +276,8 @@ describe('Blackjack', () => {
 
       playerBustedSpy = jest.spyOn(blackjack._player, 'isBusted');
       revealDealerSecondCardSpy.mockImplementation(jest.fn);
+
+      blackjack._buttons.hit.enable();
     });
 
     it('should disable buttons', () => {
@@ -359,6 +369,8 @@ describe('Blackjack', () => {
       dealerIsBustedSpy = jest.spyOn(blackjack._dealer, 'isBusted').mockReturnValue(false);
 
       revealDealerSecondCardSpy.mockImplementation(jest.fn);
+
+      blackjack._buttons.stand.enable();
     });
 
     it('should disable buttons', () => {
