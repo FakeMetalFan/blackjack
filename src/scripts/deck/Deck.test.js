@@ -13,7 +13,8 @@ describe('Deck', () => {
   let elem;
   let deck;
 
-  const getCardStyle = ({ elem }) => elem.style;
+  const getCardStyle = elem => elem.style;
+  const getCardsPositions = () => deck.cardStack.cards.map(({ elem }) => getCardStyle(elem).transform);
 
   beforeEach(() => {
     elem = document.createElement('div');
@@ -25,29 +26,22 @@ describe('Deck', () => {
   });
 
   it('should animate intro', () => {
-    const firstCard = deck.cardStack.cards[0];
-
-    expect(getCardStyle(firstCard).transform).toBe('translate(0px, -250px)');
+    const initialCardsPositions = getCardsPositions();
 
     deck.intro();
 
-    expect(getCardStyle(firstCard).transform).toBe('translate(0px, 0px)');
+    expect(getCardsPositions()).not.toEqual(initialCardsPositions);
   });
 
   it('should animate shuffle', () => {
-    const firstCard = deck.cardStack.cards[0];
-
-    firstCard.setPosition(0, 0); // flushing intro;
-
-    const z = '0';
-    const translate = 'translate(0px, 0px)';
-
-    expect(getCardStyle(firstCard).zIndex).toBe(z);
-    expect(getCardStyle(firstCard).transform).toBe(translate);
+    const initialCardsPositions = getCardsPositions();
+    const initialCardsForegrounds = deck.cardStack.cards.map(({ elem }) => getCardStyle(elem).zIndex);
 
     deck.shuffle();
 
-    expect(getCardStyle(firstCard).zIndex).not.toBe(z);
-    expect(getCardStyle(firstCard).translate).not.toBe(translate);
+    expect(initialCardsPositions).not.toEqual(getCardsPositions());
+    expect(initialCardsForegrounds).not.toEqual(
+      Array.from(elem.children).map(elem => getCardStyle(elem).zIndex)
+    );
   });
 });
