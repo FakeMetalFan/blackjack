@@ -13,7 +13,7 @@ export class Hand {
   }
 
   getValue() {
-    return this.cardStack.cards.reduce((acc, { rank }, index) => acc += rankValueFnMap.get(rank)(acc, index), 0);
+    return this.cardStack.cards.reduce((acc, { rank }, index) => acc + rankValueFnMap.get(rank)(acc, index), 0);
   }
 
   isBlackjacked() {
