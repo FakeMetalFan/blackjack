@@ -19,6 +19,7 @@
     "@babel/core": "^7.11.4",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
+    "@babel/runtime": "^7.11.2",
     "@fortawesome/fontawesome-free": "^5.14.0",
     "@types/jest": "^26.0.10",
     "babel-jest": "^26.3.0",
@@ -36,9 +37,5 @@
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
-  },
-  "dependencies": {
-    "@babel/runtime": "^7.11.2",
-    "favicons-webpack-plugin": "^4.2.0"
   }
 }
