@@ -236,17 +236,21 @@ describe('Blackjack', () => {
     });
 
     it('should empty player and dealer cards', async () => {
-      const spy = jest.spyOn(HandCardStack.prototype, 'empty');
-
-      // flushing "_moveCardToDeck" animations;
       blackjack._drawCardFromDeck(blackjack._player);
       blackjack._drawCardFromDeck(blackjack._dealer);
+
+      expect(playerElem.childElementCount).toBe(1);
+      expect(dealerElem.childElementCount).toBe(1);
+
+      const spy = jest.spyOn(HandCardStack.prototype, 'empty');
 
       resetBtn.click();
 
       await flushPromises();
 
       expect(spy).toHaveBeenCalledTimes(2);
+      expect(playerElem.childElementCount).toBe(0);
+      expect(dealerElem.childElementCount).toBe(0);
     });
 
     it('should shuffle deck', async () => {
@@ -386,7 +390,7 @@ describe('Blackjack', () => {
     });
 
     it('should supply dealer with cards', async () => {
-      blackjack._deck.shuffle(); // randomizing dealer's hand;
+      blackjack._deck.shuffle();
 
       standBtn.click();
 
