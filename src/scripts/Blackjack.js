@@ -49,10 +49,10 @@ export class Blackjack {
     await this._deck.shuffle();
     await this._deck.shuffle();
 
-    await this._drawCardFromDeck(this._player);
-    await this._drawCardFromDeck(this._player);
-    await this._drawCardFromDeck(this._dealer);
-    await this._drawCardFromDeck(this._dealer, false);
+    await this._dragCardFromDeck(this._player);
+    await this._dragCardFromDeck(this._player);
+    await this._dragCardFromDeck(this._dealer);
+    await this._dragCardFromDeck(this._dealer, false);
 
     this._buttons.reset.enable();
 
@@ -73,7 +73,7 @@ export class Blackjack {
     this._buttons.disableAll();
     this._deck.cardStack.toBackground();
 
-    await Promise.all(this._getResetAnimations());
+    await runAnimations(this._getResetAnimations());
 
     this._dealer.cardStack.empty();
     this._player.cardStack.empty();
@@ -87,7 +87,7 @@ export class Blackjack {
   async _hit() {
     this._buttons.disableAll();
 
-    await this._drawCardFromDeck(this._player);
+    await this._dragCardFromDeck(this._player);
 
     if (this._player.isBusted()) {
       this._dealer.revealSecondCard();
@@ -120,46 +120,47 @@ export class Blackjack {
     this._buttons.reset.enable();
   }
 
-  async _drawCardFromDeck({ cardStack }, shouldShowFace = true) {
+  async _dragCardFromDeck({ cardStack }, shouldShowFace = true) {
     const card = this._deck.cardStack.pop();
 
     const { x: dx, y } = cardStack.getTopPosition(card.getWidth());
 
-    await this._moveCard({
-      card,
-      dx,
-      dy: y - this._deck.cardStack.rect.y,
-      onEnd: () => {
-        card.setPosition(dx, 0);
-        shouldShowFace && card.show();
+    await runAnimations([
+      this._getCardDragAnimation({
+        card,
+        dx,
+        dy: y - this._deck.cardStack.rect.y,
+        onEnd: () => {
+          card.setPosition(dx, 0);
+          shouldShowFace && card.show();
 
-        cardStack.push(card);
-      },
-    });
+          cardStack.push(card);
+        },
+      }),
+    ]);
   }
 
-  async _moveCard({ card, dx, dy, onEnd }) {
+  _getCardDragAnimation({ card, dx, dy, onEnd }) {
     const { x, y } = card.getPosition();
 
-    await runAnimations([
-      getAnimation({
-        onEnd,
-        duration: 300,
-        onProgress: pr => card.setPosition(getAnimationStep(x, dx, pr), getAnimationStep(y, dy, pr)),
-      })
-    ]);
+    return getAnimation({
+      onEnd,
+      duration: 300,
+      onProgress: pr => card.setPosition(getAnimationStep(x, dx, pr), getAnimationStep(y, dy, pr)),
+    });
   }
 
   _getResetAnimations() {
     const { count, cards } = this._player.cardStack;
 
     return [
-      ...cards.map((card, index) => this._moveCardToDeck(card, this._player, index)),
-      ...this._dealer.cardStack.cards.map((card, index) => this._moveCardToDeck(card, this._dealer, count + index)),
+      ...cards.map((card, index) => this._getDragCardToDeckAnimation(card, this._player, index)),
+      ...this._dealer.cardStack.cards.map((card, index) =>
+        this._getDragCardToDeckAnimation(card, this._dealer, count + index)),
     ];
   }
 
-  async _moveCardToDeck(card, { cardStack: { rect } }, index) {
+  _getDragCardToDeckAnimation(card, { cardStack: { rect } }, index) {
     card.hide();
 
     const z = this._deck.cardStack.count + index;
@@ -169,7 +170,7 @@ export class Blackjack {
     const { x, y } = this._deck.cardStack.getTopPosition();
     const offset = index / 4;
 
-    await this._moveCard({
+    return this._getCardDragAnimation({
       card,
       dx: x - rect.x - offset,
       dy: y - rect.y - offset,
@@ -185,7 +186,7 @@ export class Blackjack {
 
   async _supplyDealerWithCards() {
     if (this._dealer.canDrawCard() && !this._dealer.isCardsLimitReached) {
-      await this._drawCardFromDeck(this._dealer);
+      await this._dragCardFromDeck(this._dealer);
       await this._supplyDealerWithCards();
     }
   }

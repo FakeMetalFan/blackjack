@@ -238,8 +238,8 @@ describe('Blackjack', () => {
     });
 
     it('should empty player and dealer cards', async () => {
-      blackjack._drawCardFromDeck(blackjack._player);
-      blackjack._drawCardFromDeck(blackjack._dealer);
+      blackjack._dragCardFromDeck(blackjack._player);
+      blackjack._dragCardFromDeck(blackjack._dealer);
 
       expect(playerElem.childElementCount).toBe(1);
       expect(dealerElem.childElementCount).toBe(1);
