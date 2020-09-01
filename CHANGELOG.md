@@ -4,6 +4,7 @@
 ### Fixes
 
 * **Footer: year left margin**
+* **Footer: added copyright symbol**
 
 ### Features
 
