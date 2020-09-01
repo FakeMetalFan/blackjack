@@ -1,11 +1,13 @@
 import { ranks, suits } from '../consts';
 import { Deck } from './Deck';
 
-jest.mock('../utils/animation', () => ({
-  getAnimation: ({ onStart, onProgress, onComplete }) => {
-    onStart && onStart();
-    onProgress && onProgress(.996);
-    onComplete && onComplete();
+jest.mock('../utils/animation-runner', () => ({
+  runAnimations: animations => {
+    animations.forEach(({ onStart, onProgress, onEnd }) => {
+      onStart && onStart();
+      onProgress && onProgress(.996);
+      onEnd && onEnd();
+    });
   },
 }));
 

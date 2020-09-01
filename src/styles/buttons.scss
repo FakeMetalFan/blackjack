@@ -23,10 +23,10 @@ button {
 
   &:not(:disabled) {
     cursor: pointer;
-  }
 
-  &:active {
-    transform: translateY(2px);
-    box-shadow: 0 .5px 1px 0 $box-shadow-color;
+    &:active {
+      transform: translateY(2px);
+      box-shadow: 0 .5px 1px 0 $box-shadow-color;
+    }
   }
 }

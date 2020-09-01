@@ -1,6 +1,6 @@
 import { Card } from './internals/Card';
-import { getAnimation, getAnimationStep, getFontSize } from '../utils';
 import { DeckCardStack } from '../card-stacks';
+import { getAnimation, runAnimations, getAnimationStep, getFontSize } from '../utils';
 
 const INTRO_OFFSET = -250;
 
@@ -18,13 +18,13 @@ export class Deck {
   }
 
   async intro() {
-    await Promise.all(this._getIntroAnimations());
+    await runAnimations(this._getIntroAnimations());
   }
 
   async shuffle() {
     this.cardStack.shuffle();
 
-    await Promise.all(this._getShuffleAnimations());
+    await runAnimations(this._getShuffleAnimations());
   }
 
   _init(suits, ranks) {
@@ -45,23 +45,23 @@ export class Deck {
 
   _getIntroAnimations() {
     return this.cardStack.cards.reduce((acc, card, index) => {
-      const duration = 600;
       const delay = 500 + index * 10;
+      const duration = 600;
 
       const { x, y } = card.getPosition();
       const offset = -index / 4;
 
       acc.push(
         getAnimation({
-          duration,
           delay,
-          onProgress: dt => card.setPosition(getAnimationStep(x, offset, dt), getAnimationStep(y, offset, dt)),
+          duration,
+          onProgress: pr => card.setPosition(getAnimationStep(x, offset, pr), getAnimationStep(y, offset, pr)),
         }),
         getAnimation({
-          duration,
           delay,
-          onProgress: dt => card.opacity = getAnimationStep(0, 1, dt),
-          onComplete: () => {
+          duration,
+          onProgress: pr => card.opacity = getAnimationStep(0, 1, pr),
+          onEnd: () => {
             card.hide();
             card.opacity = '';
           },
@@ -74,8 +74,8 @@ export class Deck {
 
   _getShuffleAnimations() {
     return this.cardStack.cards.reduce((acc, card, index) => {
-      const duration = 200;
       const delay = index * 2;
+      const duration = 200;
 
       const { x, y } = card.getPosition();
       const randomOffset = (Math.round(Math.random()) * 2 - 1) * (Math.random() * 40 + 20) * getFontSize() / 16;
@@ -83,15 +83,15 @@ export class Deck {
 
       acc.push(
         getAnimation({
-          duration,
           delay,
-          onProgress: dt => card.setPosition(getAnimationStep(x, randomOffset, dt), getAnimationStep(y, offset, dt)),
+          duration,
+          onProgress: pr => card.setPosition(getAnimationStep(x, randomOffset, pr), getAnimationStep(y, offset, pr)),
         }),
         getAnimation({
           duration,
           delay: duration + delay,
           onStart: () => card.foreground = index,
-          onProgress: dt => card.setPosition(getAnimationStep(randomOffset, offset, dt), offset),
+          onProgress: pr => card.setPosition(getAnimationStep(randomOffset, offset, pr), offset),
         })
       );
 

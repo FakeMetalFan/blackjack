@@ -1,4 +1,4 @@
-import { getAnimation, getAnimationStep } from './utils';
+import { getAnimation, runAnimations, getAnimationStep } from './utils';
 
 export class Popup {
   _elem;
@@ -12,19 +12,23 @@ export class Popup {
   show(message) {
     this._elem.innerText = message;
 
-    getAnimation({
-      duration: 200,
-      onProgress: dt => this._opacity = getAnimationStep(0, 1, dt),
-      onComplete: () => this._opacity = '',
-    });
+    runAnimations([
+      getAnimation({
+        duration: 200,
+        onProgress: pr => this._opacity = getAnimationStep(0, 1, pr),
+        onEnd: () => this._opacity = '',
+      }),
+    ]);
   }
 
   hide() {
-    this._isVisible && getAnimation({
-      duration: 300,
-      onProgress: dt => this._opacity = getAnimationStep(1, 0, dt),
-      onComplete: () => this._opacity = 0,
-    });
+    this._isVisible && runAnimations([
+      getAnimation({
+        duration: 300,
+        onProgress: pr => this._opacity = getAnimationStep(1, 0, pr),
+        onEnd: () => this._opacity = 0,
+      }),
+    ]);
   }
 
   get _style() {

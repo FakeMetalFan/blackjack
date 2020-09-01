@@ -1,9 +1,9 @@
 import { Deck } from './deck/Deck';
 import { suits, ranks, popupMessage } from './consts';
 import { Buttons } from './buttons/Buttons';
-import { getAnimation, getAnimationStep } from './utils';
 import { Popup } from './Popup';
 import { Dealer, Hand } from './hands';
+import { getAnimation, runAnimations, getAnimationStep } from './utils';
 
 export class Blackjack {
   _dealer;
@@ -129,7 +129,7 @@ export class Blackjack {
       card,
       dx,
       dy: y - this._deck.cardStack.rect.y,
-      onComplete: () => {
+      onEnd: () => {
         card.setPosition(dx, 0);
         shouldShowFace && card.show();
 
@@ -138,14 +138,16 @@ export class Blackjack {
     });
   }
 
-  async _moveCard({ card, dx, dy, onComplete }) {
+  async _moveCard({ card, dx, dy, onEnd }) {
     const { x, y } = card.getPosition();
 
-    await getAnimation({
-      onComplete,
-      duration: 300,
-      onProgress: dt => card.setPosition(getAnimationStep(x, dx, dt), getAnimationStep(y, dy, dt)),
-    });
+    await runAnimations([
+      getAnimation({
+        onEnd,
+        duration: 300,
+        onProgress: pr => card.setPosition(getAnimationStep(x, dx, pr), getAnimationStep(y, dy, pr)),
+      })
+    ]);
   }
 
   _getResetAnimations() {
@@ -171,7 +173,7 @@ export class Blackjack {
       card,
       dx: x - rect.x - offset,
       dy: y - rect.y - offset,
-      onComplete: () => {
+      onEnd: () => {
         const insertionOffset = -z / 4;
 
         card.setPosition(insertionOffset, insertionOffset);

@@ -1,42 +1,18 @@
 import { getAnimation } from './animation';
 
 describe('getAnimation', () => {
-  it('should wait with provided delay', () => {
-    const delay = 1e4;
-    const spy = jest.spyOn(window, 'setTimeout');
+  it('should return animation object', () => {
+    const animation = {
+      start: expect.any(Number),
+      end: expect.any(Number),
+      onStart: void 0,
+      onProgress: void 0,
+      onEnd: void 0,
+    };
 
-    getAnimation({ delay });
-
-    expect(spy).toHaveBeenCalledWith(expect.any(Function), delay);
-  });
-
-  it('should execute provided function on start', () => {
-    const spy = jest.fn();
-
-    getAnimation({ onStart: spy });
-
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should last provided duration and run provided function on completion', async () => {
-    const fnSpy = jest.fn();
-    const requestAnimationFrameSpy = jest.spyOn(window, 'requestAnimationFrame');
-    const cancelAnimationFrameSpy = jest.spyOn(window, 'cancelAnimationFrame');
-
-    await getAnimation({ duration: 50, onComplete: fnSpy })
-
-    expect(requestAnimationFrameSpy).toHaveBeenCalled();
-    expect(fnSpy).toHaveBeenCalled();
-    expect(cancelAnimationFrameSpy).toHaveBeenCalled();
-  });
-
-  it('should run provided "animation progress" function during execution', async () => {
-    let executionCount = 0;
-    const spy = jest.fn(() => executionCount++);
-
-    await getAnimation({ duration: 50, onProgress: spy });
-
-    expect(spy).toHaveBeenCalled();
-    expect(executionCount).toBeGreaterThan(0);
+    expect(getAnimation({})).toEqual(animation);
+    expect(getAnimation(({ onStart: jest.fn() }))).toEqual({ ...animation, onStart: expect.any(Function) });
+    expect(getAnimation(({ onProgress: jest.fn() }))).toEqual({ ...animation, onProgress: expect.any(Function) });
+    expect(getAnimation(({ onEnd: jest.fn() }))).toEqual({ ...animation, onEnd: expect.any(Function) });
   });
 });

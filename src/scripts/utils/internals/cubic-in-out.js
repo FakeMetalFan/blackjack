@@ -1,3 +1,3 @@
-export const easeWithCubicInOut = dt => dt < .5
-  ? 4 * dt ** 3
-  : (dt - 1) * (2 * dt - 2) * (2 * dt - 2) + 1;
+export const easeWithCubicInOut = pr => pr < .5
+  ? 4 * pr ** 3
+  : (pr - 1) * (2 * pr - 2) * (2 * pr - 2) + 1;
