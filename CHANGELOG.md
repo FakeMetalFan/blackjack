@@ -1,3 +1,12 @@
+<a name="1.0.4"></a>
+# 1.0.4 (2020-09-01)
+
+### Fixes
+
+* **Footer: year left margin**
+
+### Features
+
 <a name="1.0.3"></a>
 # 1.0.3 (2020-09-01)
 

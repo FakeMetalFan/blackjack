@@ -9,9 +9,11 @@ footer {
   background-color: $header-background-color;
   font-size: 80%;
   color: white;
-  text-align: center;
+  display: flex;
+  justify-content: center;
 
   a {
     display: inline-block;
+    margin: 0 4px;
   }
 }
