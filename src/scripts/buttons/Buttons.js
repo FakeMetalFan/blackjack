@@ -1,5 +1,5 @@
 import { Button } from './internals/Button';
-import { getAnimation, getAnimationStep } from '../utils';
+import { getAnimation, getAnimationStep, runAnimations } from '../utils';
 
 export class Buttons {
   deal = new Button(document.createElement('button'), 'Deal');
@@ -27,14 +27,16 @@ export class Buttons {
   }
 
   _init() {
+    this._opacity = 0;
     this._buttons.forEach(({ elem: btn }) => this._elem.append(btn));
 
-    getAnimation({
-      duration: 200,
-      onStart: () => this._opacity = 0,
-      onProgress: dt => this._opacity = getAnimationStep(0, 1, dt),
-      onComplete: () => this._opacity = '',
-    });
+    runAnimations([
+      getAnimation({
+        duration: 200,
+        onProgress: pr => this._opacity = getAnimationStep(0, 1, pr),
+        onEnd: () => this._opacity = '',
+      }),
+    ]);
   }
 
   get _buttons() {

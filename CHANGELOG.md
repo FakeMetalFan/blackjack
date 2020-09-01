@@ -1,3 +1,14 @@
+<a name="1.0.3"></a>
+# 1.0.3 (2020-09-01)
+
+### Features
+
+* **Refactored Animations**
+
+### Fixes
+
+* **Prevented disabled button animation in Firefox**
+
 <a name="1.0.2"></a>
 # 1.0.2 (2020-08-27)
 

@@ -1,9 +1,11 @@
 import { Popup } from './Popup';
 
-jest.mock('./utils/animation', () => ({
-  getAnimation: ({ onProgress, onComplete }) => {
-    onProgress && onProgress(.996);
-    onComplete && onComplete();
+jest.mock('./utils/animation-runner', () => ({
+  runAnimations: animations => {
+    animations.forEach(({ onProgress, onEnd }) => {
+      onProgress && onProgress(.996);
+      onEnd && onEnd();
+    });
   },
 }));
 
