@@ -10,7 +10,7 @@ describe('runAnimations', () => {
     expect(runAnimations([])).toBeInstanceOf(Promise);
   });
 
-  it('should resolve a promise upon animation completion', () => {
+  it('should resolve a promise upon all the animations completion', () => {
     expect(runAnimations([])).resolves.toBe(void 0);
   });
 

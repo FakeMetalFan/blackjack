@@ -4,7 +4,7 @@ export const runAnimations = animations => new Promise(resolve => {
   const animationsWithFlags = animations.map(animation => ({ ...animation, hasStarted: false, hasEnded: false }));
 
   requestAnimationFrame(function tick() {
-    if (animationsWithFlags.every(({ hasEnded }) => hasEnded)) return resolve();
+    if (!animationsWithFlags.some(({ hasEnded }) => !hasEnded)) return resolve();
 
     const now = Date.now();
 
