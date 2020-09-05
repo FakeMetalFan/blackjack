@@ -10,6 +10,14 @@ describe('runAnimations', () => {
     expect(runAnimations([])).toBeInstanceOf(Promise);
   });
 
+  it('should not resolve a promise until all the animations have completed', () => {
+    const spy = jest.fn();
+
+    runAnimations([getAnimation({ duration: 50 })]).then(spy);
+
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   it('should resolve a promise upon all the animations completion', () => {
     expect(runAnimations([])).resolves.toBe(void 0);
   });
