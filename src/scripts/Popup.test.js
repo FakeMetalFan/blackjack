@@ -3,8 +3,8 @@ import { Popup } from './Popup';
 jest.mock('./utils/animation-runner', () => ({
   runAnimations: animations => {
     animations.forEach(({ onProgress, onEnd }) => {
-      onProgress && onProgress(.996);
-      onEnd && onEnd();
+      onProgress?.(.996);
+      onEnd?.();
     });
   },
 }));

@@ -14,14 +14,14 @@ export const runAnimations = animations => new Promise(resolve => {
       if (hasEnded || now < start) return;
       if (!hasStarted) {
         animation.hasStarted = true;
-        onStart && onStart();
+        onStart?.();
       }
 
-      onProgress && onProgress(easeWithCubicInOut((now - start) / (end - start)));
+      onProgress?.(easeWithCubicInOut((now - start) / (end - start)));
 
       if (now > end) {
         animation.hasEnded = true;
-        onEnd && onEnd();
+        onEnd?.();
       }
     });
 

@@ -4,9 +4,9 @@ import { Deck } from './Deck';
 jest.mock('../utils/animation-runner', () => ({
   runAnimations: animations => {
     animations.forEach(({ onStart, onProgress, onEnd }) => {
-      onStart && onStart();
-      onProgress && onProgress(.996);
-      onEnd && onEnd();
+      onStart?.();
+      onProgress?.(.996);
+      onEnd?.();
     });
   },
 }));
