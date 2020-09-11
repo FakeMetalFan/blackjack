@@ -12,6 +12,7 @@ export const runAnimations = animations => new Promise(resolve => {
       const { start, end, onStart, onProgress, onEnd, hasStarted, hasEnded } = animation;
 
       if (hasEnded || now < start) return;
+
       if (!hasStarted) {
         animation.hasStarted = true;
         onStart?.();
