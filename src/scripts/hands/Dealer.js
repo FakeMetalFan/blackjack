@@ -3,7 +3,9 @@ import { Hand } from './Hand';
 const MAX_SCORE = 17;
 
 export class Dealer extends Hand {
-  constructor(elem) {
+  constructor(
+    elem
+  ) {
     super(elem);
   }
 
