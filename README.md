@@ -21,7 +21,7 @@ npm start
 
 ## Goals
 
-The main goal of this repository is to refactor the older version of this project with up to date Javascript features
+The main goal of this repository is to refactor the older version of this project with an up to date Javascript features
 
 ## Features
 
