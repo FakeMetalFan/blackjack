@@ -8,7 +8,7 @@ describe('bind', () => {
     }
   }
 
-  const mock = new Mock();
+  const mock = new Mock;
   const testFn = function(methodRef) {
     return methodRef();
   };
