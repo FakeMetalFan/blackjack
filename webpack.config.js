@@ -8,6 +8,14 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/bundle.js'
   },
+  resolve: {
+    alias: {
+      '@card-stack': path.resolve(__dirname, './src/scripts/card-stack'),
+      '@const': path.resolve(__dirname, './src/scripts/const'),
+      '@utils': path.resolve(__dirname, './src/scripts/utils'),
+      '@styles': path.resolve(__dirname, './src/styles')
+    }
+  },
   devServer: {
     contentBase: 'dist'
   },
@@ -18,8 +26,8 @@ module.exports = {
       favicon: './src/img/favicon.ico',
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     }),
   ],
   module: {

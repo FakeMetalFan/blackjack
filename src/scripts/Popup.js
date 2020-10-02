@@ -15,8 +15,12 @@ export class Popup {
     runAnimations([
       getAnimation({
         duration: 200,
-        onProgress: pr => this._opacity = getAnimationStep(0, 1, pr),
-        onEnd: () => this._opacity = '',
+        onProgress: pr => {
+          this._opacity = getAnimationStep(0, 1, pr);
+        },
+        onEnd: () => {
+          this._opacity = '';
+        },
       }),
     ]);
   }
@@ -25,8 +29,12 @@ export class Popup {
     this._isVisible && runAnimations([
       getAnimation({
         duration: 300,
-        onProgress: pr => this._opacity = getAnimationStep(1, 0, pr),
-        onEnd: () => this._opacity = 0,
+        onProgress: pr => {
+          this._opacity = getAnimationStep(1, 0, pr);
+        },
+        onEnd: () => {
+          this._opacity = 0;
+        },
       }),
     ]);
   }

@@ -1,9 +1,16 @@
-import { Deck } from './deck/Deck';
-import { suits, ranks, popupMessage } from './consts';
-import { Buttons } from './buttons/Buttons';
+import { Deck } from './deck';
+
+import { suits, ranks, popupMessage } from './const';
+
+import { Buttons } from './buttons';
+
 import { Popup } from './Popup';
-import { Dealer, Hand } from './hands';
+
+import { Dealer, Hand } from './hand';
+
 import { getAnimation, runAnimations, getAnimationStep } from './utils';
+
+import { bind } from './decorators/bind';
 
 export class Blackjack {
   _dealer;
@@ -19,28 +26,22 @@ export class Blackjack {
     popupElem,
     buttonsElem,
   ) {
-    this._init(dealerElem, deckElem, playerElem, popupElem, buttonsElem);
-  }
-
-  async _init(dealerElem, deckElem, playerElem, popupElem, buttonsElem) {
     this._dealer = new Dealer(dealerElem);
     this._deck = new Deck(deckElem, suits, ranks);
     this._player = new Hand(playerElem);
     this._popup = new Popup(popupElem);
-
-    await this._deck.intro();
-
     this._buttons = new Buttons(buttonsElem);
 
-    this._buttons.deal.attachHandler(() => this._deal());
-    this._buttons.reset.attachHandler(() => this._reset());
-    this._buttons.hit.attachHandler(() => this._hit());
-    this._buttons.stand.attachHandler(() => this._stand());
+    this._buttons.deal.attachHandler(this._deal);
+    this._buttons.reset.attachHandler(this._reset);
+    this._buttons.hit.attachHandler(this._hit);
+    this._buttons.stand.attachHandler(this._stand);
 
     this._buttons.disableAll();
     this._buttons.deal.enable();
   }
 
+  @bind
   async _deal() {
     this._popup.hide();
     this._buttons.disableAll();
@@ -68,6 +69,7 @@ export class Blackjack {
     this._buttons.allowHitOrStand();
   }
 
+  @bind
   async _reset() {
     this._popup.hide();
     this._buttons.disableAll();
@@ -84,6 +86,7 @@ export class Blackjack {
     this._buttons.deal.enable();
   }
 
+  @bind
   async _hit() {
     this._buttons.disableAll();
 
@@ -102,6 +105,7 @@ export class Blackjack {
     this._buttons.allowHitOrStand();
   }
 
+  @bind
   async _stand() {
     this._buttons.disableAll();
     this._dealer.revealSecondCard();
@@ -146,7 +150,9 @@ export class Blackjack {
     return getAnimation({
       onEnd,
       duration: 300,
-      onProgress: pr => card.setPosition(getAnimationStep(x, dx, pr), getAnimationStep(y, dy, pr)),
+      onProgress: pr => {
+        card.setPosition(getAnimationStep(x, dx, pr), getAnimationStep(y, dy, pr));
+      },
     });
   }
 

@@ -2,7 +2,7 @@ import '@fortawesome/fontawesome-free/js/all.min';
 
 import { Blackjack } from './Blackjack';
 
-import '../styles/index.scss';
+import '@styles/index.scss';
 
 new Blackjack(
   document.getElementById('dealer'),

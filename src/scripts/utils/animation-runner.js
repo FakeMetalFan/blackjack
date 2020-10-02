@@ -1,4 +1,4 @@
-import { easeWithCubicInOut } from './internals/cubic-in-out';
+import { easeWithCubicInOut } from './cubic-in-out';
 
 export const runAnimations = animations => new Promise(resolve => {
   const animationsWithFlags = animations.map(animation => ({ ...animation, hasStarted: false, hasEnded: false }));
@@ -15,6 +15,7 @@ export const runAnimations = animations => new Promise(resolve => {
 
       if (!hasStarted) {
         animation.hasStarted = true;
+
         onStart?.();
       }
 
@@ -22,6 +23,7 @@ export const runAnimations = animations => new Promise(resolve => {
 
       if (now > end) {
         animation.hasEnded = true;
+
         onEnd?.();
       }
     });

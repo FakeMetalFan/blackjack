@@ -1,5 +1,4 @@
-import { Button } from './internals/Button';
-import { getAnimation, getAnimationStep, runAnimations } from '../utils';
+import { Button } from './Button';
 
 export class Buttons {
   deal = new Button(document.createElement('button'), 'Deal');
@@ -13,12 +12,15 @@ export class Buttons {
     elem
   ) {
     this._elem = elem;
-
-    this._init();
+    this._buttons.forEach(({ elem }) => {
+      this._elem.append(elem);
+    });
   }
 
   disableAll() {
-    this._buttons.forEach(btn => btn.disable());
+    this._buttons.forEach(btn => {
+      btn.disable();
+    });
   }
 
   allowHitOrStand() {
@@ -26,24 +28,7 @@ export class Buttons {
     this.stand.enable();
   }
 
-  _init() {
-    this._opacity = 0;
-    this._buttons.forEach(({ elem: btn }) => this._elem.append(btn));
-
-    runAnimations([
-      getAnimation({
-        duration: 200,
-        onProgress: pr => this._opacity = getAnimationStep(0, 1, pr),
-        onEnd: () => this._opacity = '',
-      }),
-    ]);
-  }
-
   get _buttons() {
     return [this.deal, this.reset, this.hit, this.stand];
-  }
-
-  set _opacity(val) {
-    this._elem.style.opacity = val;
   }
 }
