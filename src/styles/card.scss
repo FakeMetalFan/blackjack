@@ -1,29 +1,3 @@
-@function getBackgroundImageUrl($rank, $suit) {
-  @return '../img/' + $rank + '-of-' + $suit + '.png';
-}
-
-@mixin cardFace($rank) {
-
-  .#{ $rank } {
-
-    &-of-clubs {
-      background-image: url(getBackgroundImageUrl($rank, 'clubs'));
-    }
-
-    &-of-spades {
-      background-image: url(getBackgroundImageUrl($rank, 'spades'));
-    }
-
-    &-of-hearts {
-      background-image: url(getBackgroundImageUrl($rank, 'hearts'));
-    }
-
-    &-of-diamonds {
-      background-image: url(getBackgroundImageUrl($rank, 'diamonds'));
-    }
-  }
-}
-
 .card {
   position: absolute;
   left: -1.9375em;
@@ -35,20 +9,18 @@
   background-position: center;
 
   &.back {
-    background-image: url(../img/card-back.png);
+    background-image: url(@img/card-back.png);
   }
 }
 
-@include cardFace('ace');
-@include cardFace('two');
-@include cardFace('three');
-@include cardFace('four');
-@include cardFace('five');
-@include cardFace('six');
-@include cardFace('seven');
-@include cardFace('eight');
-@include cardFace('nine');
-@include cardFace('ten');
-@include cardFace('jack');
-@include cardFace('queen');
-@include cardFace('king');
+$suits: 'clubs', 'spades', 'hearts', 'diamonds';
+$ranks: 'ace', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'jack', 'queen', 'king';
+
+@each $suit in $suits {
+  @each $rank in $ranks {
+
+    .#{ $rank }-of-#{ $suit } {
+      background-image: url('@img/' + $rank + '-of-' + $suit + '.png');
+    }
+  }
+}
