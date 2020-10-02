@@ -27,6 +27,7 @@ The main goal of this repository is to refactor the older version of this projec
 
 - Vanilla Javascript (including "Class" syntax, arrow functions, async / await etc.)
 - OOP principles (Composition + Inheritance, favoring SOLID principles)
+- Custom decorators support (featuring Babels "@" syntax implementation)
 - Easy asynchronous code flow (featuring Javascript Promise, async / await)
 - Fully tested (100% unit tests code coverage)
 

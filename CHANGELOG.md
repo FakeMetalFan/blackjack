@@ -1,3 +1,15 @@
+<a name="1.0.5"></a>
+# 1.0.5 (2020-02-10)
+
+### Features
+
+* **Removed intro**
+* **Added custom decorators support, @bind decorator**
+* **Various code improvements**
+* **Improved imports (added Webpack's module aliases support)**
+* **Files / folders structure improvements**
+* **Moved unit tests into separated directory (also added Jest's module aliases support)**
+
 <a name="1.0.4"></a>
 # 1.0.4 (2020-09-01)
 
