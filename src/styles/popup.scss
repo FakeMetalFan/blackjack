@@ -1,10 +1,8 @@
 @import 'variables';
 
-$height: 35px;
-
 #popup {
   width: $buttons-width;
-  height: $height;
+  height: 35px;
   background: white;
   border-radius: 10px;
   box-shadow: 0 2px 5px 0 rgba(black, .3);
@@ -13,5 +11,4 @@ $height: 35px;
   top: 15%;
   font-size: 85%;
   text-align: center;
-  line-height: $height;
 }
