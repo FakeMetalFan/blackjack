@@ -3,7 +3,7 @@ import { CardStack } from './CardStack';
 export class DeckCardStack extends CardStack {
   shuffle() {
     for (let i = this.count - 1; i; i--) {
-      const j = Math.random() * i | 0;
+      const j = Math.random() * (i + 1) | 0;
 
       [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
     }
