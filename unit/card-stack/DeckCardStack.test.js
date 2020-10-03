@@ -14,12 +14,16 @@ describe('DeckCardStack', () => {
     deckCardStack = new DeckCardStack(elem);
 
     cards = suits.reduce((acc, suit) => {
-      ranks.forEach(rank => acc.push(new Card(rank, suit)));
+      ranks.forEach(rank => {
+        acc.push(new Card(rank, suit));
+      });
 
       return acc;
     }, []);
 
-    cards.forEach(card => deckCardStack.push(card));
+    cards.forEach(card => {
+      deckCardStack.push(card);
+    });
   });
 
   it('should shuffle cards in place', () => {
