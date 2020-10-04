@@ -6,6 +6,7 @@ export class Card {
   rank;
 
   _backClassName = 'card back';
+
   _faceClassName;
 
   constructor(
