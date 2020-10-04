@@ -3,6 +3,8 @@ import { Card } from '@scripts/deck';
 import { rank, suit } from '@scripts/const';
 
 describe('Card', () => {
+  const [x, y, z] = [1, 2, 3];
+
   let card;
 
   const getClassName = () => card.elem.className;
@@ -11,11 +13,19 @@ describe('Card', () => {
   const isFaceDown = () => getClassName() === 'card back';
 
   beforeEach(() => {
-    card = new Card(rank.Ace, suit.Spades);
+    card = new Card(rank.Ace, suit.Spades, x, y, z);
   });
 
   it('should have rank', () => {
     expect(card.rank).toBe(rank.Ace);
+  });
+
+  it('should set position on init', () => {
+    expect(getStyle().transform).toBe(`translate(${x}px, ${y}px)`);
+  });
+
+  it('should set foreground on init', () => {
+    expect(getStyle().zIndex).toBe(z + '');
   });
 
   it('should have class name', () => {
@@ -40,12 +50,11 @@ describe('Card', () => {
   });
 
   it('should set position', () => {
-    const x = .25;
-    const y = .25;
+    const offset = .25;
 
-    card.setPosition(x, y);
+    card.setPosition(offset, offset);
 
-    expect(getStyle().transform).toBe(`translate(${x}px, ${y}px)`);
+    expect(getStyle().transform).toBe(`translate(${offset}px, ${offset}px)`);
   });
 
   it('should return element width', () => {

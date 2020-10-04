@@ -11,9 +11,14 @@ export class Card {
 
   constructor(
     rank,
-    suit
+    suit,
+    x,
+    y,
+    z
   ) {
     this.rank = rank;
+    this.setPosition(x, y);
+    this.foreground = z;
 
     this._faceClassName = `card ${rank}-of-${suit}`;
     this._className = this._backClassName;

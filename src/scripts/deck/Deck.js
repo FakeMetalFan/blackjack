@@ -16,15 +16,10 @@ export class Deck {
 
     suits.forEach(suit => {
       ranks.forEach(rank => {
-        const card = new Card(rank, suit);
-
         const { count: z } = this.cardStack;
         const offset = -z / 4;
 
-        card.foreground = z;
-        card.setPosition(offset, offset);
-
-        this.cardStack.push(card);
+        this.cardStack.push(new Card(rank, suit, offset, offset, z));
       });
     });
   }
