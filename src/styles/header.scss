@@ -6,14 +6,14 @@ header {
   top: 0;
   width: 100%;
   padding: .25em 0;
-  background-color: $header-background-color;
+  background-color: $tooltip-background-color;
   font-size: 110%;
   color: white;
   text-align: center;
-}
 
-.project-repo {
-  position: fixed;
-  top: .25em;
-  right: .75em;
+  a {
+    position: fixed;
+    top: .25em;
+    right: .75em;
+  }
 }
