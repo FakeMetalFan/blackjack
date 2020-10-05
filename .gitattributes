@@ -1,2 +1,2 @@
-src/* linguist-vendored
+src/styles/* linguist-vendored
 styles/card.scss linguist-vendored=false
