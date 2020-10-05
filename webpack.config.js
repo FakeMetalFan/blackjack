@@ -6,7 +6,7 @@ module.exports = {
   entry: './src/scripts/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'js/bundle.js'
+    filename: 'js/bundle.js',
   },
   resolve: {
     alias: {
@@ -14,21 +14,21 @@ module.exports = {
       '@card-stack': path.resolve(__dirname, './src/scripts/card-stack'),
       '@const': path.resolve(__dirname, './src/scripts/const'),
       '@utils': path.resolve(__dirname, './src/scripts/utils'),
-      '@styles': path.resolve(__dirname, './src/styles')
-    }
+      '@styles': path.resolve(__dirname, './src/styles'),
+    },
   },
   devServer: {
-    contentBase: 'dist'
+    contentBase: 'dist',
   },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './src/index.html',
-      favicon: './src/img/favicon.ico',
+      favicon: './src/favicon.ico',
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: '[id].css'
+      chunkFilename: '[id].css',
     }),
   ],
   module: {
@@ -38,20 +38,16 @@ module.exports = {
           return path.endsWith('.js') && !path.endsWith('.test.js');
         },
         exclude: /node_modules/,
-        use: { loader: 'babel-loader' }
+        use: { loader: 'babel-loader' },
       },
       {
         test: /\.scss$/,
         loader: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          { loader: 'sass-loader' }
-        ]
+          { loader: 'sass-loader' },
+        ],
       },
-      {
-        test: /\.png$/,
-        loader: 'file-loader',
-      },
-    ]
-  }
+    ],
+  },
 };

@@ -25,7 +25,11 @@ jest.mock('@scripts/utils/animation-runner', () => ({
 describe('Blackjack', () => {
   let dealerElem;
   let playerElem;
-  let buttonsElem;
+
+  let dealBtnElem;
+  let resetBtnElem;
+  let hitBtnElem;
+  let standBtnElem;
 
   let attachHandlerSpy;
   let disableAllButtonsSpy;
@@ -40,7 +44,6 @@ describe('Blackjack', () => {
   let blackjack;
 
   const flushPromises = () => new Promise(setImmediate);
-  const getBtn = name => Array.from(buttonsElem.children).find(({ innerText }) => innerText === name);
 
   beforeEach(() => {
     attachHandlerSpy = jest.spyOn(Button.prototype, 'attachHandler');
@@ -55,18 +58,27 @@ describe('Blackjack', () => {
   });
 
   beforeEach(() => {
-    const createElem = () => document.createElement('div');
+    const createElem = tagName => document.createElement(tagName);
+    const createDiv = () => createElem('div');
+    const createBtn = () => createElem('button');
 
-    dealerElem = createElem();
-    playerElem = createElem();
-    buttonsElem = createElem();
+    dealerElem = createDiv();
+    playerElem = createDiv();
+
+    dealBtnElem = createBtn();
+    resetBtnElem = createBtn();
+    hitBtnElem = createBtn();
+    standBtnElem = createBtn();
 
     blackjack = new Blackjack(
       dealerElem,
-      createElem(),
+      createDiv(),
       playerElem,
-      createElem(),
-      buttonsElem
+      createDiv(),
+      dealBtnElem,
+      resetBtnElem,
+      hitBtnElem,
+      standBtnElem
     );
   });
 
@@ -88,26 +100,22 @@ describe('Blackjack', () => {
   });
 
   describe('deal', () => {
-    let dealBtn;
-
     let playerBlackjackedSpy;
     let dealerBlackjackedSpy;
 
     beforeEach(() => {
-      dealBtn = getBtn('Deal');
-
       playerBlackjackedSpy = jest.spyOn(blackjack._player, 'isBlackjacked').mockReturnValue(false);
       dealerBlackjackedSpy = jest.spyOn(blackjack._dealer, 'isBlackjacked').mockReturnValue(false);
     });
 
     it('should hide popup', () => {
-      dealBtn.click();
+      dealBtnElem.click();
 
       expect(hidePopupSpy).toHaveBeenCalled();
     });
 
     it('should disable buttons', () => {
-      dealBtn.click();
+      dealBtnElem.click();
 
       expect(disableAllButtonsSpy).toHaveBeenCalled();
     });
@@ -115,13 +123,13 @@ describe('Blackjack', () => {
     it(`should move deck's card stack to foreground`, () => {
       const spy = jest.spyOn(blackjack._deck.cardStack, 'toForeground');
 
-      dealBtn.click();
+      dealBtnElem.click();
 
       expect(spy).toHaveBeenCalled();
     });
 
     it('should shuffle deck', async () => {
-      dealBtn.click();
+      dealBtnElem.click();
 
       await flushPromises();
 
@@ -129,7 +137,7 @@ describe('Blackjack', () => {
     });
 
     it('should supply both player and dealer with 2 cards', async () => {
-      dealBtn.click();
+      dealBtnElem.click();
 
       await flushPromises();
 
@@ -138,22 +146,20 @@ describe('Blackjack', () => {
     });
 
     it('should enable reset button', async () => {
-      dealBtn.click();
+      dealBtnElem.click();
 
-      const resetBtn = getBtn('Reset');
-
-      expect(resetBtn.disabled).toBe(true);
+      expect(resetBtnElem.disabled).toBe(true);
 
       await flushPromises();
 
-      expect(resetBtn.disabled).toBe(false);
+      expect(resetBtnElem.disabled).toBe(false);
     });
 
     it('should show popup if both player and dealer have got a blackjack', async () => {
       playerBlackjackedSpy.mockReturnValue(true);
       dealerBlackjackedSpy.mockReturnValue(true);
 
-      dealBtn.click();
+      dealBtnElem.click();
 
       await flushPromises();
 
@@ -163,7 +169,7 @@ describe('Blackjack', () => {
     it('should show popup if player has got a blackjack', async () => {
       playerBlackjackedSpy.mockReturnValue(true);
 
-      dealBtn.click();
+      dealBtnElem.click();
 
       await flushPromises();
 
@@ -173,7 +179,7 @@ describe('Blackjack', () => {
     it('should show popup if dealer has got a blackjack', async () => {
       dealerBlackjackedSpy.mockReturnValue(true);
 
-      dealBtn.click();
+      dealBtnElem.click();
 
       await flushPromises();
 
@@ -183,7 +189,7 @@ describe('Blackjack', () => {
     it(`should reveal dealer's second card if a blackjack occurs`, async () => {
       playerBlackjackedSpy.mockReturnValue(true);
 
-      dealBtn.click();
+      dealBtnElem.click();
 
       await flushPromises();
 
@@ -193,7 +199,7 @@ describe('Blackjack', () => {
     it('should not enable hit and stand buttons if blackjack occurs', async () => {
       playerBlackjackedSpy.mockReturnValue(true);
 
-      dealBtn.click();
+      dealBtnElem.click();
 
       await flushPromises();
 
@@ -201,7 +207,7 @@ describe('Blackjack', () => {
     });
 
     it('should enable hit and stand buttons if no blackjack occurs', async () => {
-      dealBtn.click();
+      dealBtnElem.click();
 
       await flushPromises();
 
@@ -210,22 +216,18 @@ describe('Blackjack', () => {
   });
 
   describe('reset', () => {
-    let resetBtn;
-
     beforeEach(() => {
-      resetBtn = getBtn('Reset');
-
       blackjack._buttons.reset.enable();
     });
 
     it('should hide popup', () => {
-      resetBtn.click();
+      resetBtnElem.click();
 
       expect(hidePopupSpy).toHaveBeenCalled();
     });
 
     it('should disable buttons', () => {
-      resetBtn.click();
+      resetBtnElem.click();
 
       expect(disableAllButtonsSpy).toHaveBeenCalled();
     });
@@ -233,7 +235,7 @@ describe('Blackjack', () => {
     it(`should move deck's card stack to background`, () => {
       const spy = jest.spyOn(blackjack._deck.cardStack, 'toBackground');
 
-      resetBtn.click();
+      resetBtnElem.click();
 
       expect(spy).toHaveBeenCalled();
     });
@@ -247,7 +249,7 @@ describe('Blackjack', () => {
 
       const spy = jest.spyOn(HandCardStack.prototype, 'empty');
 
-      resetBtn.click();
+      resetBtnElem.click();
 
       await flushPromises();
 
@@ -257,7 +259,7 @@ describe('Blackjack', () => {
     });
 
     it('should shuffle deck', async () => {
-      resetBtn.click();
+      resetBtnElem.click();
 
       await flushPromises();
 
@@ -265,7 +267,7 @@ describe('Blackjack', () => {
     });
 
     it('should enable deal button', async () => {
-      resetBtn.click();
+      resetBtnElem.click();
 
       await flushPromises();
 
@@ -274,13 +276,9 @@ describe('Blackjack', () => {
   });
 
   describe('hit', () => {
-    let hitBtn;
-
     let playerBustedSpy;
 
     beforeEach(() => {
-      hitBtn = getBtn('Hit');
-
       playerBustedSpy = jest.spyOn(blackjack._player, 'isBusted');
       revealDealerSecondCardSpy.mockImplementation(jest.fn);
 
@@ -288,13 +286,13 @@ describe('Blackjack', () => {
     });
 
     it('should disable buttons', () => {
-      hitBtn.click();
+      hitBtnElem.click();
 
       expect(disableAllButtonsSpy).toHaveBeenCalled();
     });
 
     it('should add card to player', async () => {
-      hitBtn.click();
+      hitBtnElem.click();
 
       await flushPromises();
 
@@ -304,7 +302,7 @@ describe('Blackjack', () => {
     it(`should reveal dealer's second card if player is busted`, async () => {
       playerBustedSpy.mockReturnValue(true);
 
-      hitBtn.click();
+      hitBtnElem.click();
 
       await flushPromises();
 
@@ -314,7 +312,7 @@ describe('Blackjack', () => {
     it('should show popup if player is busted', async () => {
       playerBustedSpy.mockReturnValue(true);
 
-      hitBtn.click();
+      hitBtnElem.click();
 
       await flushPromises();
 
@@ -324,15 +322,13 @@ describe('Blackjack', () => {
     it('should enable reset button if player is busted', async () => {
       playerBustedSpy.mockReturnValue(true);
 
-      hitBtn.click();
+      hitBtnElem.click();
 
-      const resetBtn = getBtn('Reset');
-
-      expect(resetBtn.disabled).toBe(true);
+      expect(resetBtnElem.disabled).toBe(true);
 
       await flushPromises();
 
-      expect(resetBtn.disabled).toBe(false);
+      expect(resetBtnElem.disabled).toBe(false);
     });
 
     it(`should stand if player's card limit is reached`, async () => {
@@ -340,7 +336,7 @@ describe('Blackjack', () => {
 
       jest.spyOn(blackjack._player, 'isCardsLimitReached', 'get').mockReturnValue(true);
 
-      hitBtn.click();
+      hitBtnElem.click();
 
       await flushPromises();
 
@@ -348,29 +344,23 @@ describe('Blackjack', () => {
     });
 
     it('should enable reset, hit and stand buttons if neither bust nor card limit has occurred', async () => {
-      hitBtn.click();
+      hitBtnElem.click();
 
-      const resetBtn = getBtn('Reset');
-
-      expect(resetBtn.disabled).toBe(true);
+      expect(resetBtnElem.disabled).toBe(true);
 
       await flushPromises();
 
-      expect(resetBtn.disabled).toBe(false);
+      expect(resetBtnElem.disabled).toBe(false);
       expect(allowHitOrStandSpy).toHaveBeenCalled();
     });
   });
 
   describe('stand', () => {
-    let standBtn;
-
     let playerValueSpy;
     let dealerValueSpy;
     let dealerIsBustedSpy;
 
     beforeEach(() => {
-      standBtn = getBtn('Stand');
-
       playerValueSpy = jest.spyOn(blackjack._player, 'getValue');
       dealerValueSpy = jest.spyOn(blackjack._dealer, 'getValue');
       dealerIsBustedSpy = jest.spyOn(blackjack._dealer, 'isBusted').mockReturnValue(false);
@@ -381,13 +371,13 @@ describe('Blackjack', () => {
     });
 
     it('should disable buttons', () => {
-      standBtn.click();
+      standBtnElem.click();
 
       expect(disableAllButtonsSpy).toHaveBeenCalled();
     });
 
     it(`should reveal dealer's second card`, () => {
-      standBtn.click();
+      standBtnElem.click();
 
       expect(revealDealerSecondCardSpy).toHaveBeenCalled();
     });
@@ -395,7 +385,7 @@ describe('Blackjack', () => {
     it('should supply dealer with cards', async () => {
       blackjack._deck.shuffle();
 
-      standBtn.click();
+      standBtnElem.click();
 
       await flushPromises();
 
@@ -406,7 +396,7 @@ describe('Blackjack', () => {
     it('should show popup if dealer is busted', async () => {
       dealerIsBustedSpy.mockReturnValue(true);
 
-      standBtn.click();
+      standBtnElem.click();
 
       await flushPromises();
 
@@ -417,7 +407,7 @@ describe('Blackjack', () => {
       playerValueSpy.mockReturnValue(18);
       dealerValueSpy.mockReturnValue(17);
 
-      standBtn.click();
+      standBtnElem.click();
 
       await flushPromises();
 
@@ -428,7 +418,7 @@ describe('Blackjack', () => {
       playerValueSpy.mockReturnValue(17);
       dealerValueSpy.mockReturnValue(17);
 
-      standBtn.click();
+      standBtnElem.click();
 
       await flushPromises();
 
@@ -439,7 +429,7 @@ describe('Blackjack', () => {
       playerValueSpy.mockReturnValue(4);
       dealerValueSpy.mockReturnValue(17);
 
-      standBtn.click();
+      standBtnElem.click();
 
       await flushPromises();
 
@@ -447,15 +437,13 @@ describe('Blackjack', () => {
     });
 
     it('should enable reset button', async () => {
-      standBtn.click();
+      standBtnElem.click();
 
-      const resetBtn = getBtn('Reset');
-
-      expect(resetBtn.disabled).toBe(true);
+      expect(resetBtnElem.disabled).toBe(true);
 
       await flushPromises();
 
-      expect(resetBtn.disabled).toBe(false);
+      expect(resetBtnElem.disabled).toBe(false);
     });
   });
 });

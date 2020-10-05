@@ -1,34 +1,32 @@
 import { Button } from './Button';
 
 export class Buttons {
-  deal = new Button(document.createElement('button'), 'Deal');
-  reset = new Button(document.createElement('button'), 'Reset');
-  hit = new Button(document.createElement('button'), 'Hit');
-  stand = new Button(document.createElement('button'), 'Stand');
-
-  _elem;
+  deal;
+  reset;
+  hit;
+  stand;
 
   constructor(
-    elem
+    dealBtnElem,
+    resetBtnElem,
+    hitBtnElem,
+    standBtnElem
   ) {
-    this._elem = elem;
-    this._buttons.forEach(({ elem }) => {
-      this._elem.append(elem);
-    });
+    this.deal = new Button(dealBtnElem);
+    this.reset = new Button(resetBtnElem);
+    this.hit = new Button(hitBtnElem);
+    this.stand = new Button(standBtnElem);
   }
 
   disableAll() {
-    this._buttons.forEach(btn => {
-      btn.disable();
-    });
+    this.deal.disable();
+    this.reset.disable();
+    this.hit.disable();
+    this.stand.disable();
   }
 
   allowHitOrStand() {
     this.hit.enable();
     this.stand.enable();
-  }
-
-  get _buttons() {
-    return [this.deal, this.reset, this.hit, this.stand];
   }
 }

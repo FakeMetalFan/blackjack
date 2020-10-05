@@ -3,20 +3,26 @@
   <head>
     <meta charset="UTF-8">
     <title>Blackjack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
     <header>
       Blackjack
 
       <a href="https://github.com/FakeMetalFan/blackjack" target="_blank">
-        <i class="fab fa-github"></i>
+        <i class="fa fa-github"></i>
       </a>
     </header>
 
     <div id="dealer"></div>
     <div id="deck" style="z-index: 1"></div>
     <div id="player"></div>
-    <div id="buttons"></div>
+    <div class="buttons">
+      <button id="deal-btn" disabled>Deal</button>
+      <button id="reset-btn" disabled>Reset</button>
+      <button id="hit-btn" disabled>Hit</button>
+      <button id="stand-btn" disabled>Stand</button>
+    </div>
     <div id="popup" style="opacity: 0"></div>
 
     <footer>
@@ -25,77 +31,11 @@
       </span>
 
       <a href="https://github.com/FakeMetalFan" target="_blank">
-        <i class="fab fa-github"></i>
+        <i class="fa fa-github"></i>
       </a>
 
       &copy;<span id="current-year"></span>
     </footer>
-
-    <!--card faces preloading-->
-    <img src=<%=require("@img/ace-of-clubs.png").default%>>
-    <img src=<%=require("@img/ace-of-diamonds.png").default%>>
-    <img src=<%=require("@img/ace-of-hearts.png").default%>>
-    <img src=<%=require("@img/ace-of-spades.png").default%>>
-
-    <img src=<%=require("@img/two-of-clubs.png").default%>>
-    <img src=<%=require("@img/two-of-diamonds.png").default%>>
-    <img src=<%=require("@img/two-of-hearts.png").default%>>
-    <img src=<%=require("@img/two-of-spades.png").default%>>
-
-    <img src=<%=require("@img/three-of-clubs.png").default%>>
-    <img src=<%=require("@img/three-of-diamonds.png").default%>>
-    <img src=<%=require("@img/three-of-hearts.png").default%>>
-    <img src=<%=require("@img/three-of-spades.png").default%>>
-
-    <img src=<%=require("@img/four-of-clubs.png").default%>>
-    <img src=<%=require("@img/four-of-diamonds.png").default%>>
-    <img src=<%=require("@img/four-of-hearts.png").default%>>
-    <img src=<%=require("@img/four-of-spades.png").default%>>
-
-    <img src=<%=require("@img/five-of-clubs.png").default%>>
-    <img src=<%=require("@img/five-of-diamonds.png").default%>>
-    <img src=<%=require("@img/five-of-hearts.png").default%>>
-    <img src=<%=require("@img/five-of-spades.png").default%>>
-
-    <img src=<%=require("@img/six-of-clubs.png").default%>>
-    <img src=<%=require("@img/six-of-diamonds.png").default%>>
-    <img src=<%=require("@img/six-of-hearts.png").default%>>
-    <img src=<%=require("@img/six-of-spades.png").default%>>
-
-    <img src=<%=require("@img/seven-of-clubs.png").default%>>
-    <img src=<%=require("@img/seven-of-diamonds.png").default%>>
-    <img src=<%=require("@img/seven-of-hearts.png").default%>>
-    <img src=<%=require("@img/seven-of-spades.png").default%>>
-
-    <img src=<%=require("@img/eight-of-clubs.png").default%>>
-    <img src=<%=require("@img/eight-of-diamonds.png").default%>>
-    <img src=<%=require("@img/eight-of-hearts.png").default%>>
-    <img src=<%=require("@img/eight-of-spades.png").default%>>
-
-    <img src=<%=require("@img/nine-of-clubs.png").default%>>
-    <img src=<%=require("@img/nine-of-diamonds.png").default%>>
-    <img src=<%=require("@img/nine-of-hearts.png").default%>>
-    <img src=<%=require("@img/nine-of-spades.png").default%>>
-
-    <img src=<%=require("@img/ten-of-clubs.png").default%>>
-    <img src=<%=require("@img/ten-of-diamonds.png").default%>>
-    <img src=<%=require("@img/ten-of-hearts.png").default%>>
-    <img src=<%=require("@img/ten-of-spades.png").default%>>
-
-    <img src=<%=require("@img/jack-of-clubs.png").default%>>
-    <img src=<%=require("@img/jack-of-diamonds.png").default%>>
-    <img src=<%=require("@img/jack-of-hearts.png").default%>>
-    <img src=<%=require("@img/jack-of-spades.png").default%>>
-
-    <img src=<%=require("@img/queen-of-clubs.png").default%>>
-    <img src=<%=require("@img/queen-of-diamonds.png").default%>>
-    <img src=<%=require("@img/queen-of-hearts.png").default%>>
-    <img src=<%=require("@img/queen-of-spades.png").default%>>
-
-    <img src=<%=require("@img/king-of-clubs.png").default%>>
-    <img src=<%=require("@img/king-of-diamonds.png").default%>>
-    <img src=<%=require("@img/king-of-hearts.png").default%>>
-    <img src=<%=require("@img/king-of-spades.png").default%>>
 
     <script>
       document.getElementById('current-year').innerText = new Date().getFullYear();

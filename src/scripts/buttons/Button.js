@@ -3,22 +3,19 @@ export class Button {
 
   constructor(
     elem,
-    name
   ) {
-    elem.innerText = name;
-
-    this.elem = elem;
+    this._elem = elem;
   }
 
   attachHandler(handlerFn) {
-    this.elem.onclick = handlerFn;
+    this._elem.onclick = handlerFn;
   }
 
   disable() {
-    this.elem.setAttribute('disabled', '');
+    this._elem.setAttribute('disabled', '');
   }
 
   enable() {
-    this.elem.removeAttribute('disabled');
+    this._elem.removeAttribute('disabled');
   }
 }

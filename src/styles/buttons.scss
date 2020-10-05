@@ -2,7 +2,7 @@
 
 $box-shadow-color: #333;
 
-#buttons {
+.buttons {
   position: fixed;
   left: calc(50% - #{$buttons-width / 2});
   bottom: 25%;

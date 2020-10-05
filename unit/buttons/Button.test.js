@@ -2,16 +2,11 @@ import { Button } from '@scripts/buttons';
 
 describe('Button', () => {
   let elem;
-  const btnName = 'btn';
   let btn;
 
   beforeEach(() => {
     elem = document.createElement('button');
-    btn = new Button(elem, btnName);
-  });
-
-  it(`should set button's name`, () => {
-    expect(elem.innerText).toBe(btnName);
+    btn = new Button(elem);
   });
 
   it('should attach click handler to a button element', () => {

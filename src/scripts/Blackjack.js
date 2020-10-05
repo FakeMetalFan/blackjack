@@ -24,13 +24,16 @@ export class Blackjack {
     deckElem,
     playerElem,
     popupElem,
-    buttonsElem,
+    dealBtnElem,
+    resetBtnElem,
+    hitBtnElem,
+    standBtnElem
   ) {
     this._dealer = new Dealer(dealerElem);
     this._deck = new Deck(deckElem, suits, ranks);
     this._player = new Hand(playerElem);
     this._popup = new Popup(popupElem);
-    this._buttons = new Buttons(buttonsElem);
+    this._buttons = new Buttons(dealBtnElem, resetBtnElem, hitBtnElem, standBtnElem);
 
     this._buttons.deal.attachHandler(this._deal);
     this._buttons.reset.attachHandler(this._reset);
