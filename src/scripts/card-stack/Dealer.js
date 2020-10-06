@@ -3,14 +3,8 @@ import { Hand } from './Hand';
 const MAX_SCORE = 17;
 
 export class Dealer extends Hand {
-  constructor(
-    elem
-  ) {
-    super(elem);
-  }
-
   revealSecondCard() {
-    this.cardStack.cards[1].show();
+    this.cards[1].show();
   }
 
   canDrawCard() {

@@ -1,8 +1,6 @@
 import { CardSupplier } from '@scripts/CardSupplier';
 
-import { Dealer, Hand } from '@scripts/hand';
-
-import { Deck } from '@scripts/deck';
+import { Dealer, Deck, Hand } from '@scripts/card-stack';
 
 import { ranks, suits } from '@scripts/const';
 

@@ -1,35 +1,36 @@
-import { DeckCardStack } from '../card-stack';
+import { CardStack } from './CardStack';
 
-import { runAnimations, getAnimationStep, getFontSize } from '../utils';
+import { Card } from '../Card';
+
+import { getAnimationStep, getFontSize, runAnimations } from '../utils';
 
 import { Animation } from '../Animation';
 
-import { Card } from './Card';
-
-export class Deck {
-  cardStack;
-
+export class Deck extends CardStack {
   constructor(
     elem,
     suits,
     ranks,
   ) {
-    this.cardStack = new DeckCardStack(elem);
+    super(elem);
 
     suits.forEach(suit => {
       ranks.forEach(rank => {
-        const { count: z } = this.cardStack;
-        const offset = -z / 4;
+        const offset = -this.count / 4;
 
-        this.cardStack.push(new Card(rank, suit, offset, offset, z));
+        this.push(new Card(rank, suit, offset, offset, this.count));
       });
     });
   }
 
   async shuffle() {
-    this.cardStack.shuffle();
+    for (let i = this.count - 1; i; i--) {
+      const j = Math.random() * (i + 1) | 0;
 
-    await runAnimations(this.cardStack.cards.reduce((acc, card, index) => {
+      [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+    }
+
+    await runAnimations(this.cards.reduce((acc, card, index) => {
       const delay = index * 2;
       const duration = 200;
 
@@ -59,5 +60,24 @@ export class Deck {
 
       return acc;
     }, []));
+  }
+
+  toForeground() {
+    this._style.zIndex = '1';
+  }
+
+  toBackground() {
+    this._style.zIndex = '-1';
+  }
+
+  getTopPosition() {
+    const { x, y } = this.rect;
+    const { x: dx, y: dy } = this.top.getPosition();
+
+    return { x: x + dx, y: y + dy };
+  }
+
+  get _style() {
+    return this._elem.style;
   }
 }

@@ -26,31 +26,29 @@ export class CardSupplier {
   }
 
   async supplyDeckWithCards() {
-    const { count, cards } = this._player.cardStack;
+    const { count, cards } = this._player;
 
     await runAnimations([
       ...cards.map((card, index) => this._getDragCardToDeckAnimation(card, this._player, index)),
-      ...this._dealer.cardStack.cards.map(
-        (card, index) => this._getDragCardToDeckAnimation(card, this._dealer, count + index)
-      ),
+      ...this._dealer.cards.map((card, index) => this._getDragCardToDeckAnimation(card, this._dealer, count + index)),
     ]);
   }
 
-  async _dragCardFromDeck({ cardStack }, shouldShowFace = true) {
-    const card = this._deck.cardStack.pop();
+  async _dragCardFromDeck(hand, shouldShowFace = true) {
+    const card = this._deck.pop();
 
-    const { x: dx, y } = cardStack.getTopPosition(card.getWidth());
+    const { x: dx, y } = hand.getTopPosition(card.getWidth());
 
     await runAnimations([
       this._getCardDragAnimation({
         card,
         dx,
-        dy: y - this._deck.cardStack.rect.y,
+        dy: y - this._deck.rect.y,
         onEnd: () => {
           card.setPosition(dx, 0);
           shouldShowFace && card.show();
 
-          cardStack.push(card);
+          hand.push(card);
         },
       }),
     ]);
@@ -68,14 +66,14 @@ export class CardSupplier {
     });
   }
 
-  _getDragCardToDeckAnimation(card, { cardStack: { rect } }, i) {
+  _getDragCardToDeckAnimation(card, { rect }, i) {
     card.hide();
 
-    const z = this._deck.cardStack.count + i;
+    const z = this._deck.count + i;
 
     card.foreground = z;
 
-    const { x, y } = this._deck.cardStack.getTopPosition();
+    const { x, y } = this._deck.getTopPosition();
     const offset = i / 4;
 
     return this._getCardDragAnimation({
@@ -87,7 +85,7 @@ export class CardSupplier {
 
         card.setPosition(insertionOffset, insertionOffset);
 
-        this._deck.cardStack.push(card);
+        this._deck.push(card);
       },
     });
   }

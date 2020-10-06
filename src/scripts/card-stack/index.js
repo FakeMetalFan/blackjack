@@ -1,3 +1,4 @@
 export * from './CardStack';
-export * from './DeckCardStack';
-export * from './HandCardStack';
+export * from './Dealer';
+export * from './Deck';
+export * from './Hand';
