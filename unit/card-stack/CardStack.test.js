@@ -1,6 +1,6 @@
 import { CardStack } from '@scripts/card-stack';
 
-import { Card } from '@scripts/deck';
+import { Card } from '@scripts/Card';
 
 import { rank, suit } from '@scripts/const';
 

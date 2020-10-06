@@ -2,15 +2,11 @@ import { Blackjack } from '@scripts/Blackjack';
 
 import { popupMessage } from '@scripts/const';
 
-import { HandCardStack } from '@scripts/card-stack';
+import { Deck, Dealer, Hand } from '@scripts/card-stack';
 
 import { Button, Buttons } from '@scripts/buttons';
 
-import { Deck } from '@scripts/deck';
-
 import { Popup } from '@scripts/Popup';
-
-import { Dealer } from '@scripts/hand';
 
 jest.mock('@scripts/utils/animation-runner', () => ({
   runAnimations: animations => {
@@ -24,7 +20,9 @@ jest.mock('@scripts/utils/animation-runner', () => ({
 
 describe('Blackjack', () => {
   let dealerElem;
+  let deckElem;
   let playerElem;
+  let popupElem;
 
   let dealBtnElem;
   let resetBtnElem;
@@ -34,7 +32,6 @@ describe('Blackjack', () => {
   let attachHandlerSpy;
   let disableAllButtonsSpy;
   let enableBtnSpy;
-
   let shuffleDeckSpy;
   let hidePopupSpy;
   let showPopupSpy;
@@ -49,11 +46,10 @@ describe('Blackjack', () => {
     attachHandlerSpy = jest.spyOn(Button.prototype, 'attachHandler');
     disableAllButtonsSpy = jest.spyOn(Buttons.prototype, 'disableAll');
     enableBtnSpy = jest.spyOn(Button.prototype, 'enable');
-
     shuffleDeckSpy = jest.spyOn(Deck.prototype, 'shuffle');
     hidePopupSpy = jest.spyOn(Popup.prototype, 'hide');
     showPopupSpy = jest.spyOn(Popup.prototype, 'show');
-    revealDealerSecondCardSpy = jest.spyOn(Dealer.prototype, 'revealSecondCard');
+    revealDealerSecondCardSpy = jest.spyOn(Dealer.prototype, 'revealSecondCard').mockImplementation(jest.fn());
     allowHitOrStandSpy = jest.spyOn(Buttons.prototype, 'allowHitOrStand');
   });
 
@@ -63,23 +59,18 @@ describe('Blackjack', () => {
     const createBtn = () => createElem('button');
 
     dealerElem = createDiv();
+    deckElem = createDiv();
     playerElem = createDiv();
+    popupElem = createDiv();
 
     dealBtnElem = createBtn();
     resetBtnElem = createBtn();
     hitBtnElem = createBtn();
     standBtnElem = createBtn();
 
-    blackjack = new Blackjack({
-      dealerElem,
-      playerElem,
-      dealBtnElem,
-      resetBtnElem,
-      hitBtnElem,
-      standBtnElem,
-      deckElem: createDiv(),
-      popupElem: createDiv(),
-    });
+    blackjack = new Blackjack(
+      { dealerElem, deckElem, playerElem, popupElem, dealBtnElem, resetBtnElem, hitBtnElem, standBtnElem }
+    );
   });
 
   afterEach(() => {
@@ -100,12 +91,12 @@ describe('Blackjack', () => {
   });
 
   describe('deal', () => {
-    let playerBlackjackedSpy;
-    let dealerBlackjackedSpy;
+    let playerBlackjackedMock;
+    let dealerBlackjackedMock;
 
     beforeEach(() => {
-      playerBlackjackedSpy = jest.spyOn(blackjack._player, 'isBlackjacked').mockReturnValue(false);
-      dealerBlackjackedSpy = jest.spyOn(blackjack._dealer, 'isBlackjacked').mockReturnValue(false);
+      playerBlackjackedMock = jest.spyOn(blackjack._player, 'isBlackjacked').mockReturnValue(false);
+      dealerBlackjackedMock = jest.spyOn(blackjack._dealer, 'isBlackjacked').mockReturnValue(false);
     });
 
     it('should hide popup', () => {
@@ -121,11 +112,9 @@ describe('Blackjack', () => {
     });
 
     it(`should move deck's card stack to foreground`, () => {
-      const spy = jest.spyOn(blackjack._deck.cardStack, 'toForeground');
-
       dealBtnElem.click();
 
-      expect(spy).toHaveBeenCalled();
+      expect(deckElem.style.zIndex).toBe('1');
     });
 
     it('should shuffle deck', async () => {
@@ -145,19 +134,15 @@ describe('Blackjack', () => {
       expect(dealerElem.childElementCount).toBe(2);
     });
 
-    it('should enable reset button', async () => {
+    it('should enable reset button', () => {
       dealBtnElem.click();
 
-      expect(resetBtnElem.disabled).toBe(true);
-
-      await flushPromises();
-
-      expect(resetBtnElem.disabled).toBe(false);
+      expect(enableBtnSpy).toHaveBeenCalled();
     });
 
     it('should show popup if both player and dealer get a blackjack', async () => {
-      playerBlackjackedSpy.mockReturnValue(true);
-      dealerBlackjackedSpy.mockReturnValue(true);
+      playerBlackjackedMock.mockReturnValue(true);
+      dealerBlackjackedMock.mockReturnValue(true);
 
       dealBtnElem.click();
 
@@ -167,7 +152,7 @@ describe('Blackjack', () => {
     });
 
     it('should show popup if player gets a blackjack', async () => {
-      playerBlackjackedSpy.mockReturnValue(true);
+      playerBlackjackedMock.mockReturnValue(true);
 
       dealBtnElem.click();
 
@@ -177,7 +162,7 @@ describe('Blackjack', () => {
     });
 
     it('should show popup if dealer gets a blackjack', async () => {
-      dealerBlackjackedSpy.mockReturnValue(true);
+      dealerBlackjackedMock.mockReturnValue(true);
 
       dealBtnElem.click();
 
@@ -187,7 +172,7 @@ describe('Blackjack', () => {
     });
 
     it(`should reveal dealer's second card if a blackjack occurs`, async () => {
-      playerBlackjackedSpy.mockReturnValue(true);
+      playerBlackjackedMock.mockReturnValue(true);
 
       dealBtnElem.click();
 
@@ -197,7 +182,7 @@ describe('Blackjack', () => {
     });
 
     it('should not enable hit and stand buttons if blackjack occurs', async () => {
-      playerBlackjackedSpy.mockReturnValue(true);
+      playerBlackjackedMock.mockReturnValue(true);
 
       dealBtnElem.click();
 
@@ -232,30 +217,20 @@ describe('Blackjack', () => {
       expect(disableAllButtonsSpy).toHaveBeenCalled();
     });
 
-    it(`should move deck's card stack to background`, () => {
-      const spy = jest.spyOn(blackjack._deck.cardStack, 'toBackground');
-
+    it('should put deck to background', () => {
       resetBtnElem.click();
 
-      expect(spy).toHaveBeenCalled();
+      expect(deckElem.style.zIndex).toBe('-1');
     });
 
     it('should empty player and dealer cards', async () => {
-      blackjack._cardSupplier.supplyPlayerWithCard();
-      blackjack._cardSupplier.supplyDealerWithCard();
-
-      expect(playerElem.childElementCount).toBe(1);
-      expect(dealerElem.childElementCount).toBe(1);
-
-      const spy = jest.spyOn(HandCardStack.prototype, 'empty');
+      const spy = jest.spyOn(Hand.prototype, 'empty');
 
       resetBtnElem.click();
 
       await flushPromises();
 
       expect(spy).toHaveBeenCalledTimes(2);
-      expect(playerElem.childElementCount).toBe(0);
-      expect(dealerElem.childElementCount).toBe(0);
     });
 
     it('should shuffle deck', async () => {
@@ -276,11 +251,10 @@ describe('Blackjack', () => {
   });
 
   describe('hit', () => {
-    let playerBustedSpy;
+    let playerBustedMock;
 
     beforeEach(() => {
-      playerBustedSpy = jest.spyOn(blackjack._player, 'isBusted');
-      revealDealerSecondCardSpy.mockImplementation(jest.fn);
+      playerBustedMock = jest.spyOn(blackjack._player, 'isBusted');
 
       blackjack._buttons.hit.enable();
     });
@@ -300,7 +274,7 @@ describe('Blackjack', () => {
     });
 
     it(`should reveal dealer's second card if player is busted`, async () => {
-      playerBustedSpy.mockReturnValue(true);
+      playerBustedMock.mockReturnValue(true);
 
       hitBtnElem.click();
 
@@ -310,7 +284,7 @@ describe('Blackjack', () => {
     });
 
     it('should show popup if player is busted', async () => {
-      playerBustedSpy.mockReturnValue(true);
+      playerBustedMock.mockReturnValue(true);
 
       hitBtnElem.click();
 
@@ -320,15 +294,13 @@ describe('Blackjack', () => {
     });
 
     it('should enable reset button if player is busted', async () => {
-      playerBustedSpy.mockReturnValue(true);
+      playerBustedMock.mockReturnValue(true);
 
       hitBtnElem.click();
 
-      expect(resetBtnElem.disabled).toBe(true);
-
       await flushPromises();
 
-      expect(resetBtnElem.disabled).toBe(false);
+      expect(enableBtnSpy).toHaveBeenCalled();
     });
 
     it(`should stand if player's card limit is reached`, async () => {
@@ -356,17 +328,17 @@ describe('Blackjack', () => {
   });
 
   describe('stand', () => {
-    let playerValueSpy;
-    let dealerValueSpy;
-    let dealerIsBustedSpy;
+    let playerValueMock;
+    let dealerValueMock;
+    let dealerIsBustedMock;
 
     beforeEach(() => {
-      playerValueSpy = jest.spyOn(blackjack._player, 'getValue');
-      dealerValueSpy = jest.spyOn(blackjack._dealer, 'getValue');
-      dealerIsBustedSpy = jest.spyOn(blackjack._dealer, 'isBusted').mockReturnValue(false);
+      playerValueMock = jest.spyOn(blackjack._player, 'getValue');
+      dealerValueMock = jest.spyOn(blackjack._dealer, 'getValue');
+      dealerIsBustedMock = jest.spyOn(blackjack._dealer, 'isBusted').mockReturnValue(false);
 
-      revealDealerSecondCardSpy.mockImplementation(jest.fn);
-
+      blackjack._cardSupplier.supplyDealerWithCard();
+      blackjack._cardSupplier.supplyDealerWithCard(false);
       blackjack._buttons.stand.enable();
     });
 
@@ -383,18 +355,15 @@ describe('Blackjack', () => {
     });
 
     it('should supply dealer with cards', async () => {
-      blackjack._deck.shuffle();
-
       standBtnElem.click();
 
       await flushPromises();
 
       expect(dealerElem.childElementCount).toBeGreaterThanOrEqual(2);
-      expect(blackjack._dealer.getValue()).toBeGreaterThanOrEqual(17);
     });
 
     it('should show popup if dealer is busted', async () => {
-      dealerIsBustedSpy.mockReturnValue(true);
+      dealerIsBustedMock.mockReturnValue(true);
 
       standBtnElem.click();
 
@@ -404,8 +373,8 @@ describe('Blackjack', () => {
     });
 
     it(`should show popup if player's score is greater then dealer's`, async () => {
-      playerValueSpy.mockReturnValue(18);
-      dealerValueSpy.mockReturnValue(17);
+      playerValueMock.mockReturnValue(18);
+      dealerValueMock.mockReturnValue(17);
 
       standBtnElem.click();
 
@@ -415,8 +384,8 @@ describe('Blackjack', () => {
     });
 
     it(`should show popup if player's score equals dealer's`, async () => {
-      playerValueSpy.mockReturnValue(17);
-      dealerValueSpy.mockReturnValue(17);
+      playerValueMock.mockReturnValue(17);
+      dealerValueMock.mockReturnValue(17);
 
       standBtnElem.click();
 
@@ -426,8 +395,8 @@ describe('Blackjack', () => {
     });
 
     it(`should show popup if player's score is less then dealer's`, async () => {
-      playerValueSpy.mockReturnValue(4);
-      dealerValueSpy.mockReturnValue(17);
+      playerValueMock.mockReturnValue(4);
+      dealerValueMock.mockReturnValue(17);
 
       standBtnElem.click();
 

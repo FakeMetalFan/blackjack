@@ -1,12 +1,10 @@
-import { Deck } from './deck';
+import { Dealer, Hand, Deck } from './card-stack';
 
 import { suits, ranks, popupMessage } from './const';
 
 import { Buttons } from './buttons';
 
 import { Popup } from './Popup';
-
-import { Dealer, Hand } from './hand';
 
 import { bind } from './decorators/bind';
 
@@ -45,7 +43,7 @@ export class Blackjack {
   async _deal() {
     this._popup.hide();
     this._buttons.disableAll();
-    this._deck.cardStack.toForeground();
+    this._deck.toForeground();
 
     await this._deck.shuffle();
     await this._deck.shuffle();
@@ -64,12 +62,12 @@ export class Blackjack {
   async _reset() {
     this._popup.hide();
     this._buttons.disableAll();
-    this._deck.cardStack.toBackground();
+    this._deck.toBackground();
 
     await this._cardSupplier.supplyDeckWithCards();
 
-    this._dealer.cardStack.empty();
-    this._player.cardStack.empty();
+    this._dealer.empty();
+    this._player.empty();
 
     await this._deck.shuffle();
     await this._deck.shuffle();

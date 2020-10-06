@@ -1,4 +1,4 @@
-import { getTransformValue, getWidth } from '../utils';
+import { getTransformValue, getWidth } from './utils';
 
 export class Card {
   elem = document.createElement('div');
