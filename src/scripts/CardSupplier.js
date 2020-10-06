@@ -21,7 +21,7 @@ export class CardSupplier {
     await this._dragCardFromDeck(this._player);
   }
 
-  async supplyDealerWithCard(shouldShowFace = true) {
+  async supplyDealerWithCard(shouldShowFace) {
     await this._dragCardFromDeck(this._dealer, shouldShowFace);
   }
 
@@ -36,7 +36,7 @@ export class CardSupplier {
     ]);
   }
 
-  async _dragCardFromDeck({ cardStack }, shouldShowFace) {
+  async _dragCardFromDeck({ cardStack }, shouldShowFace = true) {
     const card = this._deck.cardStack.pop();
 
     const { x: dx, y } = cardStack.getTopPosition(card.getWidth());
