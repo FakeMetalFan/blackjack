@@ -1,4 +1,4 @@
-import { CardStack } from '@scripts/card-stack/CardStack';
+import { CardStack } from '@scripts/card-stack';
 
 import { Card } from '@scripts/deck';
 

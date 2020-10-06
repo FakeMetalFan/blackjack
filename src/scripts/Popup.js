@@ -1,4 +1,6 @@
-import { getAnimation, runAnimations, getAnimationStep } from './utils';
+import { Animation } from './Animation';
+
+import { runAnimations, getAnimationStep } from './utils';
 
 export class Popup {
   _elem;
@@ -13,7 +15,7 @@ export class Popup {
     this._elem.innerText = message;
 
     runAnimations([
-      getAnimation({
+      new Animation({
         duration: 200,
         onProgress: pr => {
           this._opacity = getAnimationStep(0, 1, pr);
@@ -27,7 +29,7 @@ export class Popup {
 
   hide() {
     this._isVisible && runAnimations([
-      getAnimation({
+      new Animation({
         duration: 300,
         onProgress: pr => {
           this._opacity = getAnimationStep(1, 0, pr);

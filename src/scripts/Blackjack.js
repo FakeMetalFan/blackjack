@@ -8,9 +8,9 @@ import { Popup } from './Popup';
 
 import { Dealer, Hand } from './hand';
 
-import { getAnimation, runAnimations, getAnimationStep } from './utils';
-
 import { bind } from './decorators/bind';
+
+import { CardSupplier } from './CardSupplier';
 
 export class Blackjack {
   _dealer;
@@ -19,21 +19,18 @@ export class Blackjack {
   _popup;
   _buttons;
 
+  _cardSupplier;
+
   constructor(
-    dealerElem,
-    deckElem,
-    playerElem,
-    popupElem,
-    dealBtnElem,
-    resetBtnElem,
-    hitBtnElem,
-    standBtnElem
+    { dealerElem, deckElem, playerElem, popupElem, dealBtnElem, resetBtnElem, hitBtnElem, standBtnElem }
   ) {
     this._dealer = new Dealer(dealerElem);
     this._deck = new Deck(deckElem, suits, ranks);
     this._player = new Hand(playerElem);
     this._popup = new Popup(popupElem);
     this._buttons = new Buttons(dealBtnElem, resetBtnElem, hitBtnElem, standBtnElem);
+
+    this._cardSupplier = new CardSupplier(this._dealer, this._deck, this._player);
 
     this._buttons.deal.attachHandler(this._deal);
     this._buttons.reset.attachHandler(this._reset);
@@ -53,23 +50,14 @@ export class Blackjack {
     await this._deck.shuffle();
     await this._deck.shuffle();
 
-    await this._dragCardFromDeck(this._player);
-    await this._dragCardFromDeck(this._player);
-    await this._dragCardFromDeck(this._dealer);
-    await this._dragCardFromDeck(this._dealer, false);
+    await this._cardSupplier.supplyPlayerWithCard();
+    await this._cardSupplier.supplyPlayerWithCard();
+    await this._cardSupplier.supplyDealerWithCard();
+    await this._cardSupplier.supplyDealerWithCard(false);
 
     this._buttons.reset.enable();
 
-    const isPlayerBlackjacked = this._player.isBlackjacked();
-    const isDealerBlackjacked = this._dealer.isBlackjacked();
-
-    if (isPlayerBlackjacked && isDealerBlackjacked) this._popup.show(popupMessage.Push);
-    else if (isPlayerBlackjacked) this._popup.show(popupMessage.PlayerBlackjack);
-    else if (isDealerBlackjacked) this._popup.show(popupMessage.DealerBlackjack);
-
-    if (isPlayerBlackjacked || isDealerBlackjacked) return this._dealer.revealSecondCard();
-
-    this._buttons.allowHitOrStand();
+    this._checkForBlackjack();
   }
 
   @bind
@@ -78,7 +66,7 @@ export class Blackjack {
     this._buttons.disableAll();
     this._deck.cardStack.toBackground();
 
-    await runAnimations(this._getResetAnimations());
+    await this._cardSupplier.supplyDeckWithCards();
 
     this._dealer.cardStack.empty();
     this._player.cardStack.empty();
@@ -93,19 +81,17 @@ export class Blackjack {
   async _hit() {
     this._buttons.disableAll();
 
-    await this._dragCardFromDeck(this._player);
+    await this._cardSupplier.supplyPlayerWithCard();
 
     if (this._player.isBusted()) {
       this._dealer.revealSecondCard();
       this._popup.show(popupMessage.PlayerLost);
-
-      return this._buttons.reset.enable();
+      this._buttons.reset.enable();
+    } else if (this._player.isCardsLimitReached) this._stand();
+    else {
+      this._buttons.reset.enable();
+      this._buttons.allowHitOrStand();
     }
-
-    if (this._player.isCardsLimitReached) return await this._stand();
-
-    this._buttons.reset.enable();
-    this._buttons.allowHitOrStand();
   }
 
   @bind
@@ -115,6 +101,24 @@ export class Blackjack {
 
     await this._supplyDealerWithCards();
 
+    this._conclude();
+  }
+
+  _checkForBlackjack() {
+    if (this._player.isBlackjacked() || this._dealer.isBlackjacked()) {
+      this._popup.show(popupMessage.Blackjack);
+      this._dealer.revealSecondCard();
+    } else this._buttons.allowHitOrStand();
+  }
+
+  async _supplyDealerWithCards() {
+    if (this._dealer.canDrawCard() && !this._dealer.isCardsLimitReached) {
+      await this._cardSupplier.supplyDealerWithCard();
+      await this._supplyDealerWithCards();
+    }
+  }
+
+  _conclude() {
     const playerScore = this._player.getValue();
     const dealerScore = this._dealer.getValue();
 
@@ -125,78 +129,5 @@ export class Blackjack {
 
     this._popup.show(message);
     this._buttons.reset.enable();
-  }
-
-  async _dragCardFromDeck({ cardStack }, shouldShowFace = true) {
-    const card = this._deck.cardStack.pop();
-
-    const { x: dx, y } = cardStack.getTopPosition(card.getWidth());
-
-    await runAnimations([
-      this._getCardDragAnimation({
-        card,
-        dx,
-        dy: y - this._deck.cardStack.rect.y,
-        onEnd: () => {
-          card.setPosition(dx, 0);
-          shouldShowFace && card.show();
-
-          cardStack.push(card);
-        },
-      }),
-    ]);
-  }
-
-  _getCardDragAnimation({ card, dx, dy, onEnd }) {
-    const { x, y } = card.getPosition();
-
-    return getAnimation({
-      onEnd,
-      duration: 300,
-      onProgress: pr => {
-        card.setPosition(getAnimationStep(x, dx, pr), getAnimationStep(y, dy, pr));
-      },
-    });
-  }
-
-  _getResetAnimations() {
-    const { count, cards } = this._player.cardStack;
-
-    return [
-      ...cards.map((card, index) => this._getDragCardToDeckAnimation(card, this._player, index)),
-      ...this._dealer.cardStack.cards.map((card, index) =>
-        this._getDragCardToDeckAnimation(card, this._dealer, count + index)),
-    ];
-  }
-
-  _getDragCardToDeckAnimation(card, { cardStack: { rect } }, index) {
-    card.hide();
-
-    const z = this._deck.cardStack.count + index;
-
-    card.foreground = z;
-
-    const { x, y } = this._deck.cardStack.getTopPosition();
-    const offset = index / 4;
-
-    return this._getCardDragAnimation({
-      card,
-      dx: x - rect.x - offset,
-      dy: y - rect.y - offset,
-      onEnd: () => {
-        const insertionOffset = -z / 4;
-
-        card.setPosition(insertionOffset, insertionOffset);
-
-        this._deck.cardStack.push(card);
-      },
-    });
-  }
-
-  async _supplyDealerWithCards() {
-    if (this._dealer.canDrawCard() && !this._dealer.isCardsLimitReached) {
-      await this._dragCardFromDeck(this._dealer);
-      await this._supplyDealerWithCards();
-    }
   }
 }

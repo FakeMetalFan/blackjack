@@ -70,16 +70,16 @@ describe('Blackjack', () => {
     hitBtnElem = createBtn();
     standBtnElem = createBtn();
 
-    blackjack = new Blackjack(
+    blackjack = new Blackjack({
       dealerElem,
-      createDiv(),
       playerElem,
-      createDiv(),
       dealBtnElem,
       resetBtnElem,
       hitBtnElem,
-      standBtnElem
-    );
+      standBtnElem,
+      deckElem: createDiv(),
+      popupElem: createDiv(),
+    });
   });
 
   afterEach(() => {
@@ -155,7 +155,7 @@ describe('Blackjack', () => {
       expect(resetBtnElem.disabled).toBe(false);
     });
 
-    it('should show popup if both player and dealer have got a blackjack', async () => {
+    it('should show popup if both player and dealer get a blackjack', async () => {
       playerBlackjackedSpy.mockReturnValue(true);
       dealerBlackjackedSpy.mockReturnValue(true);
 
@@ -163,27 +163,27 @@ describe('Blackjack', () => {
 
       await flushPromises();
 
-      expect(showPopupSpy).toHaveBeenCalledWith(popupMessage.Push);
+      expect(showPopupSpy).toHaveBeenCalledWith(popupMessage.Blackjack);
     });
 
-    it('should show popup if player has got a blackjack', async () => {
+    it('should show popup if player gets a blackjack', async () => {
       playerBlackjackedSpy.mockReturnValue(true);
 
       dealBtnElem.click();
 
       await flushPromises();
 
-      expect(showPopupSpy).toHaveBeenCalledWith(popupMessage.PlayerBlackjack);
+      expect(showPopupSpy).toHaveBeenCalledWith(popupMessage.Blackjack);
     });
 
-    it('should show popup if dealer has got a blackjack', async () => {
+    it('should show popup if dealer gets a blackjack', async () => {
       dealerBlackjackedSpy.mockReturnValue(true);
 
       dealBtnElem.click();
 
       await flushPromises();
 
-      expect(showPopupSpy).toHaveBeenCalledWith(popupMessage.DealerBlackjack);
+      expect(showPopupSpy).toHaveBeenCalledWith(popupMessage.Blackjack);
     });
 
     it(`should reveal dealer's second card if a blackjack occurs`, async () => {
@@ -241,8 +241,8 @@ describe('Blackjack', () => {
     });
 
     it('should empty player and dealer cards', async () => {
-      blackjack._dragCardFromDeck(blackjack._player);
-      blackjack._dragCardFromDeck(blackjack._dealer);
+      blackjack._cardSupplier.supplyPlayerWithCard();
+      blackjack._cardSupplier.supplyDealerWithCard();
 
       expect(playerElem.childElementCount).toBe(1);
       expect(dealerElem.childElementCount).toBe(1);
