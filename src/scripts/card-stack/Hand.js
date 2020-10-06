@@ -1,6 +1,6 @@
 import { CardStack } from './CardStack';
 
-import { rankValueFnMap } from '../const';
+import { rankValue } from '../const';
 
 const TOP_SCORE = 21;
 
@@ -14,7 +14,7 @@ export class Hand extends CardStack {
   }
 
   getValue() {
-    return this.cards.reduce((acc, { rank }, index) => acc + rankValueFnMap.get(rank)(acc, index), 0);
+    return this.cards.reduce((acc, { rank }, index) => acc + rankValue.get(rank)(acc, index), 0);
   }
 
   isBlackjacked() {

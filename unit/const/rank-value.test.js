@@ -1,6 +1,6 @@
 import { rank, rankValueFnMap } from '@scripts/const';
 
-describe('rankValueFnMap', () => {
+describe('rankValue', () => {
   it(`should return Ace's rank value`, () => {
     expect(rankValueFnMap.get(rank.Ace)(0, 1)).toBe(11);
     expect(rankValueFnMap.get(rank.Ace)(11, 2)).toBe(1);

@@ -1,6 +1,6 @@
 import { rank } from './rank';
 
-export const rankValueFnMap = new Map()
+export const rankValue = new Map()
   .set(rank.Ace, (score, index) => score < 11 && index < 2 ? 11 : 1)
   .set(rank.Two, () => 2)
   .set(rank.Three, () => 3)
