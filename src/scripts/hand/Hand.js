@@ -1,6 +1,6 @@
-import { HandCardStack } from '@card-stack';
+import { HandCardStack } from '../card-stack';
 
-import { rankValueFnMap } from '@const';
+import { rankValueFnMap } from '../const';
 
 const TOP_SCORE = 21;
 

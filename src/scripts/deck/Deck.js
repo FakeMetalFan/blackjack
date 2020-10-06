@@ -1,6 +1,8 @@
-import { DeckCardStack } from '@card-stack';
+import { DeckCardStack } from '../card-stack';
 
-import { getAnimation, runAnimations, getAnimationStep, getFontSize } from '@utils';
+import { runAnimations, getAnimationStep, getFontSize } from '../utils';
+
+import { Animation } from '../Animation';
 
 import { Card } from './Card';
 
@@ -36,14 +38,14 @@ export class Deck {
       const offset = -index / 4;
 
       acc.push(
-        getAnimation({
+        new Animation({
           delay,
           duration,
           onProgress: pr => {
             card.setPosition(getAnimationStep(x, randomOffset, pr), getAnimationStep(y, offset, pr));
           },
         }),
-        getAnimation({
+        new Animation({
           duration,
           delay: duration + delay,
           onStart: () => {

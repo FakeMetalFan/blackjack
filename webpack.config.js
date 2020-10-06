@@ -10,10 +10,6 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@img': path.resolve(__dirname, './src/img'),
-      '@card-stack': path.resolve(__dirname, './src/scripts/card-stack'),
-      '@const': path.resolve(__dirname, './src/scripts/const'),
-      '@utils': path.resolve(__dirname, './src/scripts/utils'),
       '@styles': path.resolve(__dirname, './src/styles'),
     },
   },
