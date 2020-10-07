@@ -2,6 +2,8 @@ import { Deck } from '@scripts/card-stack';
 
 import { ranks, suits } from '@scripts/const';
 
+import { Card } from '@scripts/Card';
+
 jest.mock('@scripts/utils/animation-runner', () => ({
   runAnimations: animations => {
     animations.forEach(({ onStart, onProgress, onEnd }) => {
@@ -16,6 +18,9 @@ describe('Deck', () => {
   let elem;
   let deck;
 
+  const getStyle = elem => elem.style;
+  const getCardsPositions = () => deck.cards.map(({ elem }) => getStyle(elem).transform);
+
   beforeEach(() => {
     elem = document.createElement('div');
     deck = new Deck(elem, ranks, suits);
@@ -25,17 +30,28 @@ describe('Deck', () => {
     expect(elem.childElementCount).toBe(52);
   });
 
-  it('should shuffle cards', () => {
-    const getCardStyle = elem => elem.style;
-    const getCardsPositions = () => deck.cards.map(({ elem }) => getCardStyle(elem).transform);
+  it('should show intro', () => {
+    const showSpy = jest.spyOn(Card.prototype, 'show');
+    const hideSpy = jest.spyOn(Card.prototype, 'hide');
+    const setPositionSpy = jest.spyOn(Card.prototype, 'setPosition');
+    const opacitySpy = jest.spyOn(Card.prototype, 'opacity', 'set');
 
+    deck.intro();
+
+    expect(showSpy).toHaveBeenCalled();
+    expect(hideSpy).toHaveBeenCalled();
+    expect(setPositionSpy).toHaveBeenCalled();
+    expect(opacitySpy).toHaveBeenCalled();
+  });
+
+  it('should shuffle cards', () => {
     const initialCardsPositions = getCardsPositions();
-    const initialCardsForegrounds = deck.cards.map(({ elem }) => getCardStyle(elem).zIndex);
+    const initialCardsForegrounds = deck.cards.map(({ elem }) => getStyle(elem).zIndex);
 
     deck.shuffle();
 
     expect(initialCardsPositions).not.toEqual(getCardsPositions());
-    expect(initialCardsForegrounds).not.toEqual(Array.from(elem.children).map(elem => getCardStyle(elem).zIndex));
+    expect(initialCardsForegrounds).not.toEqual(Array.from(elem.children).map(elem => getStyle(elem).zIndex));
   });
 
   it('should put container element to foreground', () => {

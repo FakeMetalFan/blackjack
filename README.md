@@ -1,7 +1,7 @@
 # Blackjack
 
 ## About
-A simplified version of popular Blackjack game built with vanilla Javascript
+A simplified version of popular Blackjack game built with vanilla Javascript. Inspired by https://deck.of.cards/old/.
 
 ## Getting started
 

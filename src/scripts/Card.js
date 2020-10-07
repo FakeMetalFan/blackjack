@@ -12,13 +12,14 @@ export class Card {
   constructor(
     rank,
     suit,
-    x,
-    y,
-    z
+    index
   ) {
     this.rank = rank;
-    this.setPosition(x, y);
-    this.foreground = z;
+
+    const offset = -index / 4;
+
+    this.setPosition(offset, offset);
+    this.foreground = index;
 
     this._faceClassName = `card ${rank}-of-${suit}`;
     this._className = this._backClassName;
@@ -46,6 +47,10 @@ export class Card {
 
   set foreground(z) {
     this._style.zIndex = z;
+  }
+
+  set opacity(opacity) {
+    this._style.opacity = opacity;
   }
 
   get _style() {

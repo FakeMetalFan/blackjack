@@ -3,7 +3,7 @@ import { Card } from '@scripts/Card';
 import { rank, suit } from '@scripts/const';
 
 describe('Card', () => {
-  const [x, y, z] = [1, 2, 3];
+  const index = 1;
 
   let card;
 
@@ -13,7 +13,7 @@ describe('Card', () => {
   const isFaceDown = () => getClassName() === 'card back';
 
   beforeEach(() => {
-    card = new Card(rank.Ace, suit.Spades, x, y, z);
+    card = new Card(rank.Ace, suit.Spades, index);
   });
 
   it('should have rank', () => {
@@ -21,11 +21,13 @@ describe('Card', () => {
   });
 
   it('should set position on init', () => {
-    expect(getStyle().transform).toBe(`translate(${x}px, ${y}px)`);
+    const offset = -index / 4;
+
+    expect(getStyle().transform).toBe(`translate(${offset}px, ${offset}px)`);
   });
 
   it('should set foreground on init', () => {
-    expect(getStyle().zIndex).toBe(z + '');
+    expect(getStyle().zIndex).toBe(index + '');
   });
 
   it('should have class name', () => {
@@ -69,5 +71,11 @@ describe('Card', () => {
     card.foreground = 1;
 
     expect(getStyle().zIndex).toBe('1');
+  });
+
+  it('should set opacity', () => {
+    card.opacity = 1;
+
+    expect(getStyle().opacity).toBe('1');
   });
 });

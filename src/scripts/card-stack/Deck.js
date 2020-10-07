@@ -2,7 +2,7 @@ import { CardStack } from './CardStack';
 
 import { Card } from '../Card';
 
-import { getAnimationStep, getFontSize, runAnimations } from '../utils';
+import { getAnimationStep, runAnimations } from '../utils';
 
 import { Animation } from '../Animation';
 
@@ -16,11 +16,37 @@ export class Deck extends CardStack {
 
     suits.forEach(suit => {
       ranks.forEach(rank => {
-        const offset = -this.count / 4;
-
-        this.push(new Card(rank, suit, offset, offset, this.count));
+        this.push(new Card(rank, suit, this.count));
       });
     });
+  }
+
+  async intro() {
+    this.cards.forEach((card, index) => {
+      const offset = -index / 4;
+
+      card.show();
+      card.setPosition(offset, -200 + offset);
+      card.opacity = 0;
+    });
+
+    await runAnimations(this.cards.map((card, index) => {
+      const { x, y } = card.getPosition();
+
+      const offset = -index / 4;
+
+      return new Animation({
+        delay: index * 8,
+        duration: 600,
+        onProgress: pr => {
+          card.setPosition(getAnimationStep(x, offset, pr), getAnimationStep(y, offset, pr));
+          card.opacity = getAnimationStep(0, 1, pr);
+        },
+        onEnd: () => {
+          card.hide();
+        },
+      });
+    }));
   }
 
   async shuffle() {
@@ -35,7 +61,8 @@ export class Deck extends CardStack {
       const duration = 200;
 
       const { x, y } = card.getPosition();
-      const randomOffset = (Math.round(Math.random()) * 2 - 1) * (Math.random() * 40 + 20) * getFontSize() / 16;
+
+      const randomOffset = (Math.round(Math.random()) * 2 - 1) * (Math.random() * card.getWidth() / 2 + 30);
       const offset = -index / 4;
 
       acc.push(
@@ -48,7 +75,7 @@ export class Deck extends CardStack {
         }),
         new Animation({
           duration,
-          delay: duration + delay,
+          delay: delay + duration,
           onStart: () => {
             card.foreground = index;
           },

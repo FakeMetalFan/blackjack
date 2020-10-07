@@ -35,8 +35,10 @@ export class Blackjack {
     this._buttons.hit.attachHandler(this._hit);
     this._buttons.stand.attachHandler(this._stand);
 
-    this._buttons.disableAll();
-    this._buttons.deal.enable();
+    (async () => {
+      await this._deck.intro();
+      this._buttons.deal.enable();
+    })();
   }
 
   @bind

@@ -31,6 +31,7 @@ describe('Blackjack', () => {
   let attachHandlerSpy;
   let disableAllButtonsSpy;
   let enableBtnSpy;
+  let deckIntroSpy;
   let shuffleDeckSpy;
   let hidePopupSpy;
   let showPopupSpy;
@@ -45,6 +46,7 @@ describe('Blackjack', () => {
     attachHandlerSpy = jest.spyOn(Button.prototype, 'attachHandler');
     disableAllButtonsSpy = jest.spyOn(Buttons.prototype, 'disableAll');
     enableBtnSpy = jest.spyOn(Button.prototype, 'enable');
+    deckIntroSpy = jest.spyOn(Deck.prototype, 'intro');
     shuffleDeckSpy = jest.spyOn(Deck.prototype, 'shuffle');
     hidePopupSpy = jest.spyOn(Popup.prototype, 'hide');
     showPopupSpy = jest.spyOn(Popup.prototype, 'show');
@@ -87,8 +89,8 @@ describe('Blackjack', () => {
     expect(attachHandlerSpy).toHaveBeenCalledWith(expect.any(Function));
   });
 
-  it('should disable all buttons', () => {
-    expect(disableAllButtonsSpy).toHaveBeenCalled();
+  it(`should show deck's intro`, () => {
+    expect(deckIntroSpy).toHaveBeenCalled();
   });
 
   it('should enable deal button', () => {
