@@ -36,7 +36,7 @@ describe('Hand', () => {
     hand.push(card);
     hand.push(card);
 
-    expect(hand.getValue()).toEqual(12);
+    expect(hand.getValue()).toBe(12);
   });
 
   it('should indicate if hand has got a blackjack', () => {
