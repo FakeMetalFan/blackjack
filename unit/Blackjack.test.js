@@ -22,7 +22,6 @@ describe('Blackjack', () => {
   let dealerElem;
   let deckElem;
   let playerElem;
-  let popupElem;
 
   let dealBtnElem;
   let resetBtnElem;
@@ -61,16 +60,22 @@ describe('Blackjack', () => {
     dealerElem = createDiv();
     deckElem = createDiv();
     playerElem = createDiv();
-    popupElem = createDiv();
 
     dealBtnElem = createBtn();
     resetBtnElem = createBtn();
     hitBtnElem = createBtn();
     standBtnElem = createBtn();
 
-    blackjack = new Blackjack(
-      { dealerElem, deckElem, playerElem, popupElem, dealBtnElem, resetBtnElem, hitBtnElem, standBtnElem }
-    );
+    blackjack = new Blackjack({
+      dealerElem,
+      deckElem,
+      playerElem,
+      dealBtnElem,
+      resetBtnElem,
+      hitBtnElem,
+      standBtnElem,
+      popupElem: createDiv(),
+    });
   });
 
   afterEach(() => {
