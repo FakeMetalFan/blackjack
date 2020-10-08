@@ -19,7 +19,7 @@ describe('Hand', () => {
   });
 
   it('should return top position', () => {
-    jest.spyOn(hand, 'rect', 'get').mockReturnValue({ x: 0, y: 0 });
+    jest.spyOn(hand, 'getRect').mockReturnValue({ x: 0, y: 0 });
 
     const cardWidth = 77.5;
 

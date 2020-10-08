@@ -34,8 +34,11 @@ describe('CardStack', () => {
     expect(cardStack.count).toBe(1);
   });
 
-  it(`should return container's element "boundingClientRect"`, () => {
-    expect(cardStack.rect).toEqual(expect.any(Object));
+  it(`should return element's rect`, () => {
+    const spy = jest.spyOn(Element.prototype, 'getBoundingClientRect');
+
+    expect(cardStack.getRect()).toEqual(expect.any(Object));
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should return top card reference', () => {

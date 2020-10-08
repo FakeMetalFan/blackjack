@@ -18,12 +18,12 @@ export class CardStack {
     return this.cards.pop();
   }
 
-  get count() {
-    return this.cards.length;
+  getRect() {
+    return this._elem.getBoundingClientRect();
   }
 
-  get rect() {
-    return this._elem.getBoundingClientRect();
+  get count() {
+    return this.cards.length;
   }
 
   get top() {

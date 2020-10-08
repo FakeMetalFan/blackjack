@@ -33,7 +33,7 @@ describe('Deck', () => {
   it('should show intro', () => {
     const showSpy = jest.spyOn(Card.prototype, 'show');
     const hideSpy = jest.spyOn(Card.prototype, 'hide');
-    const setPositionSpy = jest.spyOn(Card.prototype, 'setPosition');
+    const setPositionSpy = jest.spyOn(Card.prototype, 'setTransform');
     const opacitySpy = jest.spyOn(Card.prototype, 'opacity', 'set');
 
     deck.intro();

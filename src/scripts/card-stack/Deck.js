@@ -26,12 +26,12 @@ export class Deck extends CardStack {
       const offset = -index / 4;
 
       card.show();
-      card.setPosition(offset, -200 + offset);
+      card.setTransform(offset, -200 + offset);
       card.opacity = 0;
     });
 
     await runAnimations(this.cards.map((card, index) => {
-      const { x, y } = card.getPosition();
+      const { x, y } = card.getTransform();
 
       const offset = -index / 4;
 
@@ -39,7 +39,7 @@ export class Deck extends CardStack {
         delay: index * 8,
         duration: 600,
         onProgress: pr => {
-          card.setPosition(getAnimationStep(x, offset, pr), getAnimationStep(y, offset, pr));
+          card.setTransform(getAnimationStep(x, offset, pr), getAnimationStep(y, offset, pr));
           card.opacity = getAnimationStep(0, 1, pr);
         },
         onEnd: () => {
@@ -60,9 +60,9 @@ export class Deck extends CardStack {
       const delay = index * 2;
       const duration = 200;
 
-      const { x, y } = card.getPosition();
+      const { x, y } = card.getTransform();
 
-      const randomOffset = (Math.round(Math.random()) * 2 - 1) * (Math.random() * card.getWidth() / 2 + 30);
+      const randomOffset = (Math.round(Math.random()) * 2 - 1) * (Math.random() * card.getRect().width / 2 + 30);
       const offset = -index / 4;
 
       acc.push(
@@ -70,7 +70,7 @@ export class Deck extends CardStack {
           delay,
           duration,
           onProgress: pr => {
-            card.setPosition(getAnimationStep(x, randomOffset, pr), getAnimationStep(y, offset, pr));
+            card.setTransform(getAnimationStep(x, randomOffset, pr), getAnimationStep(y, offset, pr));
           },
         }),
         new Animation({
@@ -80,7 +80,7 @@ export class Deck extends CardStack {
             card.foreground = index;
           },
           onProgress: pr => {
-            card.setPosition(getAnimationStep(randomOffset, offset, pr), offset);
+            card.setTransform(getAnimationStep(randomOffset, offset, pr), offset);
           },
         })
       );
@@ -98,8 +98,8 @@ export class Deck extends CardStack {
   }
 
   getTopPosition() {
-    const { x, y } = this.rect;
-    const { x: dx, y: dy } = this.top.getPosition();
+    const { x, y } = this.getRect();
+    const { x: dx, y: dy } = this.top.getTransform();
 
     return { x: x + dx, y: y + dy };
   }

@@ -10,7 +10,7 @@ export class Hand extends CardStack {
   }
 
   getTopPosition(cardWidth) {
-    return { x: (this.count === 2 ? 0 : this.count - 2) * cardWidth, y: this.rect.y };
+    return { x: (this.count === 2 ? 0 : this.count - 2) * cardWidth, y: this.getRect().y };
   }
 
   getValue() {

@@ -1,3 +1,11 @@
+<a name="1.0.7"></a>
+# 1.0.7 (2020-08-10)
+
+### Features
+
+* **Changed reset animation**
+* **Removed bunch of redundant stuff, lots of improvements**
+
 <a name="1.0.6"></a>
 # 1.0.6 (2020-07-10)
 
