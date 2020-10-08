@@ -47,24 +47,23 @@ describe('Card', () => {
     expect(isFaceDown()).toBe(true);
   });
 
-  it('should return position', () => {
-    expect(card.getPosition()).toEqual(expect.any(Object));
+  it(`should return transform's value`, () => {
+    expect(card.getTransform()).toEqual(expect.any(Object));
   });
 
-  it('should set position', () => {
+  it(`should set transform's value`, () => {
     const offset = .25;
 
-    card.setPosition(offset, offset);
+    card.setTransform(offset, offset);
 
     expect(getStyle().transform).toBe(`translate(${offset}px, ${offset}px)`);
   });
 
-  it('should return element width', () => {
-    const width = 77.5;
+  it(`should return element's rect`, () => {
+    const spy = jest.spyOn(Element.prototype, 'getBoundingClientRect');
 
-    getStyle().width = `${width}px`;
-
-    expect(card.getWidth()).toBe(width);
+    expect(card.getRect()).toEqual(expect.any(Object));
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should set foreground', () => {

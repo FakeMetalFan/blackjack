@@ -230,12 +230,10 @@ describe('Blackjack', () => {
       expect(deckElem.style.zIndex).toBe('-1');
     });
 
-    it('should empty player and dealer cards', async () => {
+    it('should empty player and dealer cards', () => {
       const spy = jest.spyOn(Hand.prototype, 'empty');
 
       resetBtnElem.click();
-
-      await flushPromises();
 
       expect(spy).toHaveBeenCalledTimes(2);
     });

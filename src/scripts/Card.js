@@ -1,4 +1,4 @@
-import { getTransformValue, getWidth } from './utils';
+import { getTransformValue } from './utils';
 
 export class Card {
   elem = document.createElement('div');
@@ -18,7 +18,7 @@ export class Card {
 
     const offset = -index / 4;
 
-    this.setPosition(offset, offset);
+    this.setTransform(offset, offset);
     this.foreground = index;
 
     this._faceClassName = `card ${rank}-of-${suit}`;
@@ -33,16 +33,16 @@ export class Card {
     this._className = this._backClassName;
   }
 
-  getPosition() {
+  getTransform() {
     return getTransformValue(this.elem);
   }
 
-  setPosition(x, y) {
+  setTransform(x, y) {
     this._style.transform = `translate(${x}px, ${y}px)`;
   }
 
-  getWidth() {
-    return getWidth(this.elem);
+  getRect() {
+    return this.elem.getBoundingClientRect();
   }
 
   set foreground(z) {

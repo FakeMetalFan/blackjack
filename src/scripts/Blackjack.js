@@ -6,8 +6,6 @@ import { Buttons } from './buttons';
 
 import { Popup } from './Popup';
 
-import { bind } from './decorators/bind';
-
 import { CardSupplier } from './CardSupplier';
 
 export class Blackjack {
@@ -30,18 +28,24 @@ export class Blackjack {
 
     this._cardSupplier = new CardSupplier(this._dealer, this._deck, this._player);
 
-    this._buttons.deal.attachHandler(this._deal);
-    this._buttons.reset.attachHandler(this._reset);
-    this._buttons.hit.attachHandler(this._hit);
-    this._buttons.stand.attachHandler(this._stand);
+    this._buttons.deal.attachHandler(() => {
+      this._deal();
+    });
+    this._buttons.reset.attachHandler(() => {
+      this._reset();
+    });
+    this._buttons.hit.attachHandler(() => {
+      this._hit();
+    });
+    this._buttons.stand.attachHandler(() => {
+      this._stand();
+    });
 
-    (async () => {
-      await this._deck.intro();
+    this._deck.intro().then(() => {
       this._buttons.deal.enable();
-    })();
+    });
   }
 
-  @bind
   async _deal() {
     this._popup.hide();
     this._buttons.disableAll();
@@ -60,13 +64,12 @@ export class Blackjack {
     this._checkForBlackjack();
   }
 
-  @bind
   async _reset() {
     this._popup.hide();
     this._buttons.disableAll();
     this._deck.toBackground();
 
-    await this._cardSupplier.supplyDeckWithCards();
+    this._cardSupplier.supplyDeckWithCards();
 
     this._dealer.empty();
     this._player.empty();
@@ -77,7 +80,6 @@ export class Blackjack {
     this._buttons.deal.enable();
   }
 
-  @bind
   async _hit() {
     this._buttons.disableAll();
 
@@ -94,7 +96,6 @@ export class Blackjack {
     }
   }
 
-  @bind
   async _stand() {
     this._buttons.disableAll();
     this._dealer.revealSecondCard();
