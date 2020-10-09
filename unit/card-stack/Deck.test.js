@@ -54,19 +54,7 @@ describe('Deck', () => {
     expect(initialCardsForegrounds).not.toEqual(Array.from(elem.children).map(elem => getStyle(elem).zIndex));
   });
 
-  it('should put container element to foreground', () => {
-    deck.toForeground();
-
-    expect(elem.style.zIndex).toBe('1');
-  });
-
-  it('should put container element to background', () => {
-    deck.toBackground();
-
-    expect(elem.style.zIndex).toBe('-1');
-  });
-
-  it('should return cards top position', () => {
+  it('should return top position', () => {
     expect(deck.getTopPosition()).toEqual(expect.any(Object));
   });
 });

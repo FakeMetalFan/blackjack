@@ -5,7 +5,7 @@ $box-shadow-color: #333;
 .buttons {
   position: fixed;
   left: calc(50% - #{$buttons-width / 2});
-  bottom: 25%;
+  bottom: 15%;
   width: $buttons-width;
   display: flex;
   justify-content: space-between;

@@ -1,6 +1,8 @@
+@import 'variables';
+
 #dealer {
   position: fixed;
-  top: 35%;
+  top: $hand-vertical-offset;
   left: 50%;
   z-index: 1;
 }
@@ -14,6 +16,6 @@
 #player {
   position: fixed;
   left: 50%;
-  bottom: 36.2%;
-  z-index: 0;
+  bottom: $hand-vertical-offset;
+  z-index: 2;
 }

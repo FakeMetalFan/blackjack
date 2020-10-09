@@ -17,8 +17,7 @@ describe('Dealer', () => {
     const secondCard = new Card(rank.Ace, suit.Spades);
 
     secondCard.hide();
-    dealer.push(secondCard);
-    dealer.revealSecondCard();
+    dealer.push(secondCard).revealSecondCard();
 
     expect(secondCard.elem.className).toBe('card ace-of-spades');
   });
@@ -26,10 +25,7 @@ describe('Dealer', () => {
   it('should indicate ability to draw', () => {
     const card = new Card(rank.Four, suit.Spades);
 
-    dealer.push(card);
-    dealer.push(card);
-    dealer.push(card);
-    dealer.push(card);
+    dealer.push(card).push(card).push(card).push(card);
 
     expect(dealer.canDrawCard()).toBe(true);
 

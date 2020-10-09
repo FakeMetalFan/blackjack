@@ -41,9 +41,9 @@ describe('CardStack', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should return top card reference', () => {
+  it('should return topCard card reference', () => {
     cardStack.push(card);
 
-    expect(cardStack.top).toEqual(card);
+    expect(cardStack.topCard).toEqual(card);
   });
 });

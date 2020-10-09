@@ -1,14 +1,14 @@
 @import 'variables';
 
 #popup {
-  width: $buttons-width;
+  width: $popup-width;
   line-height: 35px;
   background: white;
   border-radius: 10px;
   box-shadow: 0 2px 5px 0 rgba(black, .3);
   position: fixed;
-  left: calc(50% - #{$buttons-width / 2});
-  top: 15%;
+  left: calc(50% - #{$popup-width / 2});
+  top: $popup-vertical-offset;
   font-size: 85%;
   text-align: center;
 }

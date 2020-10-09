@@ -35,8 +35,7 @@ describe('Card', () => {
   });
 
   it('should show face', () => {
-    card.hide();
-    card.show();
+    card.hide().show();
 
     expect(isFaceUp()).toBe(true);
   });

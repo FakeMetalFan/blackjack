@@ -25,9 +25,7 @@ export class Deck extends CardStack {
     this.cards.forEach((card, index) => {
       const offset = -index / 4;
 
-      card.show();
-      card.setTransform(offset, -200 + offset);
-      card.opacity = 0;
+      card.show().setTransform(offset, -200 + offset).opacity = 0;
     });
 
     await runAnimations(this.cards.map((card, index) => {
@@ -39,8 +37,9 @@ export class Deck extends CardStack {
         delay: index * 8,
         duration: 600,
         onProgress: pr => {
-          card.setTransform(getAnimationStep(x, offset, pr), getAnimationStep(y, offset, pr));
-          card.opacity = getAnimationStep(0, 1, pr);
+          card
+            .setTransform(getAnimationStep(x, offset, pr), getAnimationStep(y, offset, pr))
+            .opacity = getAnimationStep(0, 1, pr);
         },
         onEnd: () => {
           card.hide();
@@ -89,22 +88,10 @@ export class Deck extends CardStack {
     }, []));
   }
 
-  toForeground() {
-    this._style.zIndex = '1';
-  }
-
-  toBackground() {
-    this._style.zIndex = '-1';
-  }
-
   getTopPosition() {
     const { x, y } = this.getRect();
-    const { x: dx, y: dy } = this.top.getTransform();
+    const { x: dx, y: dy } = this.topCard.getTransform();
 
     return { x: x + dx, y: y + dy };
-  }
-
-  get _style() {
-    return this._elem.style;
   }
 }

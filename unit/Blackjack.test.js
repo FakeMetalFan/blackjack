@@ -118,12 +118,6 @@ describe('Blackjack', () => {
       expect(disableAllButtonsSpy).toHaveBeenCalled();
     });
 
-    it(`should move deck's card stack to foreground`, () => {
-      dealBtnElem.click();
-
-      expect(deckElem.style.zIndex).toBe('1');
-    });
-
     it('should shuffle deck', async () => {
       dealBtnElem.click();
 
@@ -224,10 +218,15 @@ describe('Blackjack', () => {
       expect(disableAllButtonsSpy).toHaveBeenCalled();
     });
 
-    it('should put deck to background', () => {
+    it('should supply deck with cards', () => {
+      blackjack._supplyHandWithCard(blackjack._player);
+      blackjack._supplyHandWithCard(blackjack._dealer);
+
+      expect(deckElem.childElementCount).toBe(50);
+
       resetBtnElem.click();
 
-      expect(deckElem.style.zIndex).toBe('-1');
+      expect(deckElem.childElementCount).toBe(52);
     });
 
     it('should empty player and dealer cards', () => {
@@ -333,17 +332,19 @@ describe('Blackjack', () => {
   });
 
   describe('stand', () => {
-    let playerValueMock;
-    let dealerValueMock;
+    let playerScoreMock;
+    let dealerScoreMock;
+
     let dealerIsBustedMock;
 
     beforeEach(() => {
-      playerValueMock = jest.spyOn(blackjack._player, 'getValue');
-      dealerValueMock = jest.spyOn(blackjack._dealer, 'getValue');
+      playerScoreMock = jest.spyOn(blackjack._player, 'getScore');
+      dealerScoreMock = jest.spyOn(blackjack._dealer, 'getScore');
+
       dealerIsBustedMock = jest.spyOn(blackjack._dealer, 'isBusted').mockReturnValue(false);
 
-      blackjack._cardSupplier.supplyDealerWithCard();
-      blackjack._cardSupplier.supplyDealerWithCard(false);
+      blackjack._supplyHandWithCard(blackjack._dealer);
+      blackjack._supplyHandWithCard(blackjack._dealer, false);
       blackjack._buttons.stand.enable();
     });
 
@@ -378,8 +379,8 @@ describe('Blackjack', () => {
     });
 
     it(`should show popup if player's score is greater then dealer's`, async () => {
-      playerValueMock.mockReturnValue(18);
-      dealerValueMock.mockReturnValue(17);
+      playerScoreMock.mockReturnValue(18);
+      dealerScoreMock.mockReturnValue(17);
 
       standBtnElem.click();
 
@@ -389,8 +390,8 @@ describe('Blackjack', () => {
     });
 
     it(`should show popup if player's score equals dealer's`, async () => {
-      playerValueMock.mockReturnValue(17);
-      dealerValueMock.mockReturnValue(17);
+      playerScoreMock.mockReturnValue(17);
+      dealerScoreMock.mockReturnValue(17);
 
       standBtnElem.click();
 
@@ -400,8 +401,8 @@ describe('Blackjack', () => {
     });
 
     it(`should show popup if player's score is less then dealer's`, async () => {
-      playerValueMock.mockReturnValue(4);
-      dealerValueMock.mockReturnValue(17);
+      playerScoreMock.mockReturnValue(4);
+      dealerScoreMock.mockReturnValue(17);
 
       standBtnElem.click();
 

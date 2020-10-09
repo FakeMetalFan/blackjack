@@ -18,8 +18,7 @@ export class Card {
 
     const offset = -index / 4;
 
-    this.setTransform(offset, offset);
-    this.foreground = index;
+    this.setTransform(offset, offset).foreground = index;
 
     this._faceClassName = `card ${rank}-of-${suit}`;
     this._className = this._backClassName;
@@ -27,10 +26,14 @@ export class Card {
 
   show() {
     this._className = this._faceClassName;
+
+    return this;
   }
 
   hide() {
     this._className = this._backClassName;
+
+    return this;
   }
 
   getTransform() {
@@ -39,6 +42,8 @@ export class Card {
 
   setTransform(x, y) {
     this._style.transform = `translate(${x}px, ${y}px)`;
+
+    return this;
   }
 
   getRect() {

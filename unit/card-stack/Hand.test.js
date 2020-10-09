@@ -4,6 +4,15 @@ import { Card } from '@scripts/Card';
 
 import { rank, suit } from '@scripts/const';
 
+jest.mock('@scripts/utils/animation-runner', () => ({
+  runAnimations: animations => {
+    animations.forEach(({ onProgress, onEnd }) => {
+      onProgress?.(.996);
+      onEnd?.();
+    });
+  },
+}));
+
 describe('Hand', () => {
   let hand;
 
@@ -11,32 +20,30 @@ describe('Hand', () => {
     hand = new Hand(document.createElement('div'));
   });
 
-  it('should empty stack', () => {
-    hand.push(new Card(rank.Ace, suit.Spades));
-    hand.empty();
+  it('should drag card', () => {
+    const offset = .25;
+    const card = new Card(rank.Ace, suit.Spades).setTransform(offset, offset);
 
-    expect(hand.count).toBe(0);
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({ width: 77.5 });
+
+    hand.push(card).push(card).push(card).drag(false);
+
+    expect(card.getTransform()).not.toEqual({ x: offset, y: offset });
+    expect(card.elem.className).not.toEqual('card ace-of-spades');
   });
 
-  it('should return top position', () => {
-    jest.spyOn(hand, 'getRect').mockReturnValue({ x: 0, y: 0 });
+  it('should empty stack', () => {
+    hand.push(new Card(rank.Ace, suit.Spades)).empty();
 
-    const cardWidth = 77.5;
-
-    expect(hand.getTopPosition(cardWidth)).toEqual({ x: -2 * cardWidth, y: 0 });
-
-    jest.spyOn(hand, 'count', 'get').mockReturnValue(2);
-
-    expect(hand.getTopPosition(cardWidth)).toEqual({ x: 0, y: 0 });
+    expect(hand.count).toBe(0);
   });
 
   it('should return cards value', () => {
     const card = new Card(rank.Ace, suit.Spades);
 
-    hand.push(card);
-    hand.push(card);
+    hand.push(card).push(card);
 
-    expect(hand.getValue()).toBe(12);
+    expect(hand.getScore()).toBe(12);
   });
 
   it('should indicate if hand has got a blackjack', () => {
@@ -52,8 +59,7 @@ describe('Hand', () => {
   it('should indicate if hand is busted', () => {
     const ace = new Card(rank.Ace, suit.Spades);
 
-    hand.push(ace);
-    hand.push(new Card(rank.Jack, suit.Clubs));
+    hand.push(ace).push(new Card(rank.Jack, suit.Clubs));
 
     expect(hand.isBusted()).toBe(false);
 
@@ -65,10 +71,7 @@ describe('Hand', () => {
   it('should indicate if cards limit has been reached', () => {
     const card = new Card(rank.Ace, suit.Spades);
 
-    hand.push(card);
-    hand.push(card);
-    hand.push(card);
-    hand.push(card);
+    hand.push(card).push(card).push(card).push(card);
 
     expect(hand.isCardsLimitReached).toBe(false);
 

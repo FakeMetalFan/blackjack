@@ -12,6 +12,8 @@ export class CardStack {
   push(card) {
     this.cards.push(card);
     this._elem.append(card.elem);
+
+    return this;
   }
 
   pop() {
@@ -26,7 +28,7 @@ export class CardStack {
     return this.cards.length;
   }
 
-  get top() {
+  get topCard() {
     return this.cards[this.count - 1];
   }
 }
