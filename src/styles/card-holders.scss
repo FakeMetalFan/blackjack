@@ -1,0 +1,19 @@
+.dealer {
+  left: 50%;
+  position: fixed;
+  top: var(--hand-vertical-offset);
+  z-index: 1;
+}
+
+.deck {
+  position: fixed;
+  right: 35%;
+  top: 50%;
+}
+
+.player {
+  bottom: var(--hand-vertical-offset);
+  left: 50%;
+  position: fixed;
+  z-index: 2;
+}

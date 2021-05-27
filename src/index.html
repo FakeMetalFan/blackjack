@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Blackjack</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      Blackjack
+      <a href="https://github.com/FakeMetalFan/blackjack" target="_blank">
+        <i class="fa fa-github"></i>
+      </a>
+    </header>
+    <div id="dealer" class="dealer"></div>
+    <div id="deck" class="deck"></div>
+    <div id="player" class="player"></div>
+    <div class="buttons">
+      <button id="deal-btn" disabled>Deal</button>
+      <button id="reset-btn" disabled>Reset</button>
+      <button id="hit-btn" disabled>Hit</button>
+      <button id="stand-btn" disabled>Stand</button>
+    </div>
+    <div id="popup" style="opacity: 0" class="popup"></div>
+    <footer>
+      <span>Powered by</span>
+      <a href="https://github.com/FakeMetalFan" target="_blank">
+        <i class="fa fa-github"></i>
+      </a>
+      &copy;
+      <span id="current-year"></span>
+    </footer>
+    <script>
+      document.getElementById('current-year').innerText =
+        new Date().getFullYear();
+    </script>
+  </body>
+</html>

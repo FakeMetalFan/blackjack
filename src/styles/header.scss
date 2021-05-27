@@ -1,0 +1,17 @@
+header {
+  background-color: var(--toolbar-background-color);
+  color: white;
+  font-size: 110%;
+  left: 0;
+  padding: 0.25em 0;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+
+  a {
+    position: fixed;
+    right: 0.75em;
+    top: 0.25em;
+  }
+}

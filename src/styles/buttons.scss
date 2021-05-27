@@ -1,0 +1,30 @@
+$box-shadow-color: #333;
+
+.buttons {
+  bottom: 15%;
+  display: flex;
+  justify-content: space-between;
+  left: calc(50% - #{var(--buttons-width) / 2});
+  position: fixed;
+  width: var(--buttons-width);
+}
+
+button {
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 1.5px 0.5px 0 $box-shadow-color;
+  font-family: inherit;
+  font-weight: bold;
+  height: 30px;
+  outline: none;
+  width: 60px;
+
+  &:not(:disabled) {
+    cursor: pointer;
+
+    &:active {
+      box-shadow: 0 0.5px 1px 0 $box-shadow-color;
+      transform: translateY(2px);
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@import 'buttons';
+@import 'card';
+@import 'card-holders';
+@import 'footer';
+@import 'header';
+@import 'popup';
+
+* {
+  margin: 0;
+}
+
+body {
+  background-color: #45a173;
+  font-family: Comic Sans MS, cursive, sans-serif;
+  font-size: 125%;
+}
+
+a {
+  color: inherit;
+  cursor: pointer;
+}
+
+:root {
+  --buttons-width: 255px;
+  --popup-width: var(--buttons-width);
+  --toolbar-background-color: #334d41;
+  --hand-vertical-offset: 30%;
+}
