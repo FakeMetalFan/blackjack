@@ -2,7 +2,7 @@ import Hand from './hand';
 
 class Dealer extends Hand {
   revealTopCard() {
-    this.topCard.show();
+    this.topCard?.show();
   }
 
   canDrawCard() {

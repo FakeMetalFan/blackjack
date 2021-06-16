@@ -1,12 +1,12 @@
-import animate from './utils/animate';
-import createAnimation from './utils/create-animation';
-import getAnimationStep from './utils/get-animation-step';
+import animate from 'utils/animate';
+import createAnimation from 'utils/createAnimation';
+import getAnimationStep from 'utils/getAnimationStep';
 
 class Popup {
   constructor(private elem: HTMLDivElement) {}
 
   show(text: string) {
-    this.text = text;
+    this.elem.textContent = text;
 
     animate([
       createAnimation({
@@ -22,8 +22,6 @@ class Popup {
   }
 
   hide() {
-    this.text = '';
-
     animate([
       createAnimation({
         duration: 200,
@@ -35,10 +33,6 @@ class Popup {
         },
       }),
     ]);
-  }
-
-  private set text(text: string) {
-    this.elem.innerText = text;
   }
 
   private set opacity(opacity: number | string) {

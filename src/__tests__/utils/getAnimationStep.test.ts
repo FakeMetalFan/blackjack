@@ -1,4 +1,4 @@
-import getAnimationStep from '../../src/scripts/utils/get-animation-step';
+import getAnimationStep from 'utils/getAnimationStep';
 
 describe('getAnimationStep', () => {
   it('should calculate animation step', () => {

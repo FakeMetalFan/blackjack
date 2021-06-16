@@ -1,10 +1,11 @@
-import Card from '../card';
-import Rank from '../constants/ranks';
-import Suit from '../constants/suits';
-import animate from '../utils/animate';
-import createAnimation from '../utils/create-animation';
-import getAnimationStep from '../utils/get-animation-step';
-import CardStack from './card-stack';
+import Card from 'card';
+import Rank from 'constants/ranks';
+import Suit from 'constants/suits';
+import animate from 'utils/animate';
+import createAnimation from 'utils/createAnimation';
+import getAnimationStep from 'utils/getAnimationStep';
+
+import CardStack from './cardStack';
 
 class Deck extends CardStack {
   constructor(elem: HTMLDivElement, suits: Suit[], ranks: Rank[]) {
@@ -12,29 +13,29 @@ class Deck extends CardStack {
 
     suits.forEach((suit) => {
       ranks.forEach((rank) => {
-        this.push(new Card(rank, suit, this.count));
+        const offset = -this.count / 4;
+        const card = new Card(rank, suit, this.count)
+          .show()
+          .setTransform(offset, -200 + offset);
+
+        card.opacity = 0;
+
+        this.push(card);
       });
     });
   }
 
   async intro() {
-    this.cards.forEach((card, index) => {
-      const offset = -index / 4;
-
-      /* eslint-disable no-param-reassign */
-      card.show().setTransform(offset, -200 + offset).opacity = 0;
-    });
-
     await animate(
       this.cards.map((card, index) => {
         const { x, y } = card.getTransform();
-
         const offset = -index / 4;
 
         return createAnimation({
           delay: index * 8,
           duration: 600,
           onProgress: (pr) => {
+            /* eslint-disable no-param-reassign */
             card.setTransform(
               getAnimationStep(x, offset, pr),
               getAnimationStep(y, offset, pr)
@@ -62,9 +63,7 @@ class Deck extends CardStack {
       this.cards.reduce((acc, card, index) => {
         const delay = index * 2;
         const duration = 200;
-
         const { x, y } = card.getTransform();
-
         const offset = -index / 4;
         const randomOffset =
           (Math.round(Math.random()) * 2 - 1) *

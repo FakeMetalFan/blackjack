@@ -1,14 +1,14 @@
-import '../styles/index.scss';
+import 'styles/index.scss';
 
-import Blackjack from './blackjack';
-import Button from './buttons/button';
-import Buttons from './buttons/buttons';
-import Dealer from './card-holders/dealer';
-import Deck from './card-holders/deck';
-import Hand from './card-holders/hand';
-import { ranks } from './constants/ranks';
-import { suits } from './constants/suits';
-import Popup from './popup';
+import Blackjack from 'blackjack';
+import Button from 'buttons/button';
+import Buttons from 'buttons/buttons';
+import Dealer from 'cardHolders/dealer';
+import Deck from 'cardHolders/deck';
+import Hand from 'cardHolders/hand';
+import { ranks } from 'constants/ranks';
+import { suits } from 'constants/suits';
+import Popup from 'popup';
 
 const getElem = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;

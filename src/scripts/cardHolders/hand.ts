@@ -1,8 +1,9 @@
-import { rankValue } from '../constants/ranks';
-import animate from '../utils/animate';
-import createAnimation from '../utils/create-animation';
-import getAnimationStep from '../utils/get-animation-step';
-import CardStack from './card-stack';
+import { rankValue } from 'constants/ranks';
+import animate from 'utils/animate';
+import createAnimation from 'utils/createAnimation';
+import getAnimationStep from 'utils/getAnimationStep';
+
+import CardStack from './cardStack';
 
 const TOP_SCORE = 21;
 
@@ -32,6 +33,8 @@ class Hand extends CardStack {
 
   empty() {
     this.cards = [];
+
+    return this;
   }
 
   getScore() {

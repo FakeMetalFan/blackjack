@@ -1,4 +1,4 @@
-import getTransformValue from '../../src/scripts/utils/get-transform-value';
+import getTransformValue from 'utils/getTransformValue';
 
 describe('getTransformValue', () => {
   it(`should return transform's x, y values`, () => {

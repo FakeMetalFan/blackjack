@@ -1,4 +1,4 @@
-import createAnimation from '../../src/scripts/utils/create-animation';
+import createAnimation from 'utils/createAnimation';
 
 describe('createAnimation', () => {
   it('should create animation object', () => {

@@ -1,6 +1,7 @@
 # Blackjack
 
 ## About
+
 Simplified version of a Blackjack game built with Typescript
 
 ## Getting started
@@ -27,9 +28,9 @@ npm start
 
 ## Technologies Used
 
-- Typescript
+- Javascript / Typescript
 - Webpack
-- Jest
+- Jest, Jest-DOM, DOM-Testing-Library
 
 ## Working Demo
 

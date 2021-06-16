@@ -2,6 +2,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   entry: './src/scripts/index.ts',
@@ -13,6 +14,7 @@ module.exports = {
     contentBase: 'dist',
   },
   resolve: {
+    plugins: [new TsconfigPathsPlugin()],
     extensions: ['.ts', '.js'],
   },
   devtool: 'inline-source-map',

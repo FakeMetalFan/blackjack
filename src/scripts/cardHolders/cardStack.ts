@@ -1,4 +1,4 @@
-import Card from '../card';
+import Card from 'card';
 
 abstract class CardStack {
   cards: Card[] = [];

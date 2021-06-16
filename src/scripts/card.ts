@@ -1,6 +1,6 @@
-import Rank from './constants/ranks';
-import Suit from './constants/suits';
-import getTransformValue from './utils/get-transform-value';
+import Rank from 'constants/ranks';
+import Suit from 'constants/suits';
+import getTransformValue from 'utils/getTransformValue';
 
 class Card {
   elem = document.createElement('div');
@@ -11,7 +11,7 @@ class Card {
 
   private faceClassName: string;
 
-  constructor(rank: Rank, suit: Suit, index: number) {
+  constructor(rank: Rank, suit: Suit, index = 0) {
     this.rank = rank;
 
     const offset = -index / 4;

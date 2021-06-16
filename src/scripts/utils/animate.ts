@@ -1,4 +1,4 @@
-import easeAnimation from './ease-animation';
+import easeAnimation from './easeAnimation';
 
 export interface Animation {
   start: number;

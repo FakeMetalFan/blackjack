@@ -1,10 +1,10 @@
-import Buttons from './buttons/buttons';
-import Dealer from './card-holders/dealer';
-import Deck from './card-holders/deck';
-import Hand from './card-holders/hand';
-import PopupText from './constants/popup-text';
-import Popup from './popup';
-import bind from './utils/bind';
+import Buttons from 'buttons/buttons';
+import Dealer from 'cardHolders/dealer';
+import Deck from 'cardHolders/deck';
+import Hand from 'cardHolders/hand';
+import PopupText from 'constants/popupText';
+import Popup from 'popup';
+import bind from 'utils/bind';
 
 class Blackjack {
   constructor(
@@ -116,7 +116,6 @@ class Blackjack {
   private conclude() {
     const playerScore = this.player.getScore();
     const dealerScore = this.dealer.getScore();
-
     let text = PopupText.PlayerDefeat;
 
     if (this.dealer.hasBust() || playerScore > dealerScore) {

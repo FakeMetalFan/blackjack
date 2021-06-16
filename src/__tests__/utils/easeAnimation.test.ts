@@ -1,4 +1,4 @@
-import easeAnimation from '../../src/scripts/utils/ease-animation';
+import easeAnimation from 'utils/easeAnimation';
 
 describe('easeAnimation', () => {
   it('should ease animation progress', () => {

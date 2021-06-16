@@ -1,4 +1,4 @@
-import bind from '../../src/scripts/utils/bind';
+import bind from 'utils/bind';
 
 describe('Bind', () => {
   it(`should bind context to class's method`, () => {
