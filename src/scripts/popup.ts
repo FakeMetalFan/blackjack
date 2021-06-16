@@ -6,11 +6,12 @@ class Popup {
   constructor(private elem: HTMLDivElement) {}
 
   show(text: string) {
-    this.elem.textContent = text;
-
     animate([
       createAnimation({
         duration: 100,
+        onStart: () => {
+          this.elem.textContent = text;
+        },
         onProgress: (progress) => {
           this.opacity = getAnimationStep(0, 1, progress);
         },
@@ -22,21 +23,27 @@ class Popup {
   }
 
   hide() {
-    animate([
-      createAnimation({
-        duration: 200,
-        onProgress: (progress) => {
-          this.opacity = getAnimationStep(1, 0, progress);
-        },
-        onEnd: () => {
-          this.opacity = 0;
-        },
-      }),
-    ]);
+    if (this.styles.opacity !== '0') {
+      animate([
+        createAnimation({
+          duration: 200,
+          onProgress: (progress) => {
+            this.opacity = getAnimationStep(1, 0, progress);
+          },
+          onEnd: () => {
+            this.opacity = 0;
+          },
+        }),
+      ]);
+    }
+  }
+
+  private get styles() {
+    return this.elem.style;
   }
 
   private set opacity(opacity: number | string) {
-    this.elem.style.opacity = opacity.toString();
+    this.styles.opacity = opacity.toString();
   }
 }
 
