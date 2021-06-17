@@ -4,7 +4,7 @@
   "homepage": "http://fakemetalfan.github.io/blackjack/",
   "scripts": {
     "start": "webpack serve --mode development --open",
-    "lint:scripts": "eslint --ignore-pattern '/node_modules/' --ignore-pattern '/build/' . --fix",
+    "lint:scripts": "eslint . --fix",
     "lint:styles": "npx stylelint src/**/*.scss --fix",
     "prettify": "prettier --write .",
     "test": "jest",
@@ -12,8 +12,6 @@
     "build": "webpack --mode production",
     "deploy": "npm run build && gh-pages -d dist"
   },
-  "author": "FakeMetalFan",
-  "license": "ISC",
   "devDependencies": {
     "@testing-library/dom": "^7.31.2",
     "@testing-library/jest-dom": "^5.14.1",
@@ -51,86 +49,6 @@
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
   },
-  "prettier": {
-    "printWidth": 80,
-    "bracketSpacing": true,
-    "trailingComma": "es5",
-    "singleQuote": true
-  },
-  "eslintConfig": {
-    "extends": [
-      "airbnb-base/legacy",
-      "plugin:import/errors",
-      "plugin:import/warnings",
-      "plugin:import/typescript",
-      "plugin:prettier/recommended",
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "import",
-      "prettier",
-      "@typescript-eslint",
-      "simple-import-sort"
-    ],
-    "settings": {
-      "import/resolver": {
-        "node": {
-          "extensions": [
-            ".ts"
-          ],
-          "paths": [
-            "./src"
-          ]
-        },
-        "typescript": {}
-      }
-    },
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "singleQuote": true,
-          "endOfLine": "auto"
-        }
-      ],
-      "simple-import-sort/imports": "error",
-      "simple-import-sort/exports": "error",
-      "import/extensions": "off",
-      "import/prefer-default-export": "error",
-      "no-use-before-define": "off",
-      "@typescript-eslint/no-use-before-define": [
-        "error"
-      ],
-      "@typescript-eslint/member-ordering": [
-        "error"
-      ],
-      "@typescript-eslint/explicit-module-boundary-types": "off"
-    }
-  },
-  "stylelint": {
-    "extends": [
-      "stylelint-config-standard",
-      "stylelint-config-sass-guidelines"
-    ],
-    "plugins": [
-      "stylelint-order",
-      "stylelint-scss"
-    ],
-    "rules": {
-      "indentation": 2,
-      "number-leading-zero": null,
-      "color-named": "always-where-possible",
-      "order/order": [
-        "custom-properties",
-        "declarations"
-      ],
-      "order/properties-alphabetical-order": true,
-      "at-rule-no-unknown": null,
-      "scss/at-rule-no-unknown": true,
-      "max-nesting-depth": null
-    }
-  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run test && lint-staged"
@@ -149,23 +67,5 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.ts"
-    ],
-    "moduleNameMapper": {
-      "^buttons/(.*)": "<rootDir>/src/scripts/buttons/$1",
-      "^cardHolders/(.*)": "<rootDir>/src/scripts/cardHolders/$1",
-      "^constants/(.*)": "<rootDir>/src/scripts/constants/$1",
-      "^utils/(.*)": "<rootDir>/src/scripts/utils/$1",
-      "^blackjack": "<rootDir>/src/scripts/blackjack",
-      "^card": "<rootDir>/src/scripts/card",
-      "^popup": "<rootDir>/src/scripts/popup"
-    },
-    "transform": {
-      "^.+\\.(ts)$": "ts-jest"
-    },
-    "verbose": true
   }
 }

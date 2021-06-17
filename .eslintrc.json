@@ -1,0 +1,38 @@
+{
+  "extends": [
+    "airbnb-base/legacy",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["import", "prettier", "@typescript-eslint", "simple-import-sort"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts"],
+        "paths": ["./src"]
+      },
+      "typescript": {}
+    }
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "endOfLine": "auto"
+      }
+    ],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/extensions": "off",
+    "import/prefer-default-export": "error",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "@typescript-eslint/member-ordering": ["error"],
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  }
+}

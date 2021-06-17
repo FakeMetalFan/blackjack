@@ -1,0 +1,12 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-sass-guidelines"],
+  "plugins": ["stylelint-order", "stylelint-scss"],
+  "rules": {
+    "indentation": 2,
+    "number-leading-zero": null,
+    "color-named": "always-where-possible",
+    "order/order": ["custom-properties", "declarations"],
+    "order/properties-alphabetical-order": true,
+    "max-nesting-depth": null
+  }
+}
