@@ -60,7 +60,7 @@ class Deck extends CardStack {
     }
 
     await animate(
-      this.cards.reduce((acc, card, index) => {
+      this.cards.reduce((animations, card, index) => {
         const delay = index * 2;
         const duration = 200;
         const { x, y } = card.getTransform();
@@ -69,7 +69,7 @@ class Deck extends CardStack {
           (Math.round(Math.random()) * 2 - 1) *
           ((Math.random() * card.getRect().width) / 2 + 30);
 
-        acc.push(
+        animations.push(
           createAnimation({
             delay,
             duration,
@@ -95,7 +95,7 @@ class Deck extends CardStack {
           })
         );
 
-        return acc;
+        return animations;
       }, [])
     );
   }
