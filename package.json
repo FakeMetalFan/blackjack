@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack serve --mode development --open",
     "lint:scripts": "eslint . --fix",
-    "lint:styles": "npx stylelint src/**/*.scss --fix",
+    "lint:styles": "stylelint src/**/*.scss --fix",
     "prettify": "prettier --write .",
     "test": "jest",
     "code-coverage": "jest --coverage",
