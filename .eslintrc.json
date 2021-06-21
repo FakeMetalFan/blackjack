@@ -12,8 +12,7 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".ts"],
-        "paths": ["./src"]
+        "extensions": [".ts"]
       },
       "typescript": {}
     }
