@@ -63,7 +63,7 @@
       "npm run lint:styles",
       "git add"
     ],
-    "*.+(json|md)": [
+    "*.+(html|json|md)": [
       "prettier --write",
       "git add"
     ]
