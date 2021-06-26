@@ -15,6 +15,6 @@ describe('Bind', () => {
       return methodRef();
     };
 
-    expect(testFn(mock.testBind)).toStrictEqual(mock);
+    expect(testFn(mock.testBind)).toEqual(mock);
   });
 });
