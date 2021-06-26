@@ -2,14 +2,20 @@ import createAnimation from 'utils/createAnimation';
 
 describe('createAnimation', () => {
   it('should create animation object', () => {
-    expect(createAnimation({})).toEqual({
+    expect(createAnimation({})).toStrictEqual({
       start: expect.any(Number),
       end: expect.any(Number),
+      onStart: undefined,
+      onProgress: undefined,
+      onEnd: undefined,
     });
 
-    expect(createAnimation({ delay: 20, duration: 50 })).toEqual({
+    expect(createAnimation({ delay: 20, duration: 50 })).toStrictEqual({
       start: expect.any(Number),
       end: expect.any(Number),
+      onStart: undefined,
+      onProgress: undefined,
+      onEnd: undefined,
     });
 
     expect(
@@ -18,7 +24,7 @@ describe('createAnimation', () => {
         onProgress: () => null,
         onEnd: () => null,
       })
-    ).toEqual({
+    ).toStrictEqual({
       start: expect.any(Number),
       end: expect.any(Number),
       onStart: expect.any(Function),

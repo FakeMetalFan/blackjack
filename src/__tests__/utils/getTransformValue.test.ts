@@ -6,6 +6,6 @@ describe('getTransformValue', () => {
 
     elem.style.transform = 'translate(1px, 1px)';
 
-    expect(getTransformValue(elem)).toEqual(expect.any(Object));
+    expect(getTransformValue(elem)).toStrictEqual(expect.any(Object));
   });
 });

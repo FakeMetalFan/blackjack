@@ -7,9 +7,6 @@ import * as animate from 'utils/animate';
 describe('Deck', () => {
   let deck: Deck;
 
-  const getCardsTransforms = () =>
-    deck.cards.map(({ elem }) => elem.style.transform);
-
   beforeAll(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (animate as any).default = (animations: animate.Animation[]) => {
@@ -38,28 +35,38 @@ describe('Deck', () => {
   });
 
   it('should show intro', () => {
-    const transforms = getCardsTransforms();
+    const { children: cards } = screen.getByTestId('deck');
+    const transforms = Array.from(cards).map(
+      (elem) => (elem as HTMLElement).style.transform
+    );
 
     deck.intro();
 
-    expect(transforms).not.toStrictEqual(getCardsTransforms());
+    expect(transforms).not.toStrictEqual(
+      Array.from(cards).map((elem) => (elem as HTMLElement).style.transform)
+    );
   });
 
   it('should shuffle cards', () => {
-    const transforms = getCardsTransforms();
-    const foregrounds = deck.cards.map(({ elem }) => elem.style.zIndex);
+    const { children: cards } = screen.getByTestId('deck');
+    const transforms = Array.from(cards).map(
+      (elem) => (elem as HTMLElement).style.transform
+    );
+    const foregrounds = Array.from(cards).map(
+      (elem) => (elem as HTMLElement).style.zIndex
+    );
 
     deck.shuffle();
 
-    expect(transforms).not.toStrictEqual(getCardsTransforms());
-    expect(foregrounds).not.toEqual(
-      Array.from(screen.getByTestId('deck').children).map(
-        (elem) => (elem as HTMLElement).style.zIndex
-      )
+    expect(transforms).not.toStrictEqual(
+      Array.from(cards).map((elem) => (elem as HTMLElement).style.transform)
+    );
+    expect(foregrounds).not.toStrictEqual(
+      Array.from(cards).map((elem) => (elem as HTMLElement).style.zIndex)
     );
   });
 
   it('should return top position', () => {
-    expect(deck.getOffsetTop()).toEqual(expect.any(Object));
+    expect(deck.getOffsetTop()).toStrictEqual(expect.any(Object));
   });
 });

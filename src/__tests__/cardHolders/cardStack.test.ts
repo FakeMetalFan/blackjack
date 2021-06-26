@@ -21,7 +21,7 @@ describe('CardStack', () => {
   it('should pop card', () => {
     const card = new Card(Rank.Ace, Suit.Spades);
 
-    expect(cardStack.push(card).pop()).toEqual(card);
+    expect(cardStack.push(card).pop()).toStrictEqual(card);
   });
 
   it('should return cards count', () => {
@@ -29,12 +29,12 @@ describe('CardStack', () => {
   });
 
   it(`should return rect`, () => {
-    expect(cardStack.getRect()).toEqual(expect.any(Object));
+    expect(cardStack.getRect()).toStrictEqual(expect.any(Object));
   });
 
   it(`should return top card ref`, () => {
     const card = new Card(Rank.Ace, Suit.Spades);
 
-    expect(cardStack.push(card).topCard).toEqual(card);
+    expect(cardStack.push(card).topCard).toStrictEqual(card);
   });
 });

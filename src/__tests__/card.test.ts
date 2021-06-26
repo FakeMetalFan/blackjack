@@ -34,7 +34,7 @@ describe('Card', () => {
   });
 
   it(`should return transform's value`, () => {
-    expect(card.getTransform()).toEqual(expect.any(Object));
+    expect(card.getTransform()).toStrictEqual(expect.any(Object));
   });
 
   it(`should set transform's value`, () => {
@@ -44,7 +44,7 @@ describe('Card', () => {
   });
 
   it(`should return element's rect`, () => {
-    expect(card.getRect()).toEqual(expect.any(Object));
+    expect(card.getRect()).toStrictEqual(expect.any(Object));
   });
 
   it('should set foreground', () => {
