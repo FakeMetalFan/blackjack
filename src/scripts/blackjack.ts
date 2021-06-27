@@ -135,14 +135,12 @@ class Blackjack {
     this.buttons.stand.attachHandler(this.stand);
   }
 
-  private init() {
-    (async () => {
-      await this.deck.intro();
-      await this.deck.shuffle();
-      await this.deck.shuffle();
+  private async init() {
+    await this.deck.intro();
+    await this.deck.shuffle();
+    await this.deck.shuffle();
 
-      this.buttons.deal.enable();
-    })();
+    this.buttons.deal.enable();
   }
 }
 
