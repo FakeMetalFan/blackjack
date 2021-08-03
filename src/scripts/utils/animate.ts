@@ -1,4 +1,4 @@
-import easeAnimation from './easeAnimation';
+import easeAnimationProgress from './easeAnimationProgress';
 
 export interface Animation {
   start: number;
@@ -43,7 +43,7 @@ const animate = (animations: Animation[]) =>
           onStart?.();
         }
 
-        onProgress?.(easeAnimation((now - start) / (end - start)));
+        onProgress?.(easeAnimationProgress((now - start) / (end - start)));
 
         if (now > end) {
           animation.hasEnded = true;

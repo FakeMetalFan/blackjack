@@ -14,9 +14,10 @@ class Deck extends CardStack {
     suits.forEach((suit) => {
       ranks.forEach((rank) => {
         const offset = -this.count / 4;
-        const card = new Card(rank, suit, this.count)
-          .show()
-          .setTransform(offset, -200 + offset);
+        const card = new Card(rank, suit, this.count).setTransform(
+          offset,
+          -200 + offset
+        );
 
         card.opacity = 0;
 
@@ -34,15 +35,12 @@ class Deck extends CardStack {
         return createAnimation({
           delay: index * 8,
           duration: 600,
-          onProgress: (pr) => {
+          onProgress(pr) {
             /* eslint-disable no-param-reassign */
             card.setTransform(
               getAnimationStep(x, offset, pr),
               getAnimationStep(y, offset, pr)
             ).opacity = getAnimationStep(0, 1, pr);
-          },
-          onEnd: () => {
-            card.hide();
           },
         });
       })
@@ -63,30 +61,32 @@ class Deck extends CardStack {
       this.cards.reduce((animations, card, index) => {
         const delay = index * 2;
         const duration = 200;
-        const { x, y } = card.getTransform();
+        const { x, y, deg } = card.getTransform();
         const offset = -index / 4;
+        const { width } = card.getRect();
         const randomOffset =
           (Math.round(Math.random()) * 2 - 1) *
-          ((Math.random() * card.getRect().width) / 2 + 30);
+          ((Math.random() * width) / 2 + width / 2);
 
         animations.push(
           createAnimation({
             delay,
             duration,
-            onProgress: (pr) => {
+            onProgress(pr) {
               card.setTransform(
                 getAnimationStep(x, randomOffset, pr),
-                getAnimationStep(y, offset, pr)
+                getAnimationStep(y, offset, pr),
+                getAnimationStep(deg, 0, pr)
               );
             },
           }),
           createAnimation({
             duration,
             delay: delay + duration,
-            onStart: () => {
+            onStart() {
               card.foreground = index;
             },
-            onProgress: (pr) => {
+            onProgress(pr) {
               card.setTransform(
                 getAnimationStep(randomOffset, offset, pr),
                 offset
@@ -105,6 +105,10 @@ class Deck extends CardStack {
     const { x: dx, y: dy } = this.topCard.getTransform();
 
     return { x: x + dx, y: y + dy };
+  }
+
+  set foreground(zIndex: string) {
+    this.elem.style.zIndex = zIndex;
   }
 }
 

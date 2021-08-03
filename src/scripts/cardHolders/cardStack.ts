@@ -3,7 +3,7 @@ import Card from 'card';
 abstract class CardStack {
   cards: Card[] = [];
 
-  constructor(private elem: HTMLDivElement) {}
+  constructor(protected elem: HTMLDivElement) {}
 
   push(card: Card) {
     this.cards.push(card);

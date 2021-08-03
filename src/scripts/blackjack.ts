@@ -2,6 +2,7 @@ import Buttons from 'buttons/buttons';
 import Dealer from 'cardHolders/dealer';
 import Deck from 'cardHolders/deck';
 import Hand from 'cardHolders/hand';
+import Players from 'cardHolders/players';
 import PopupText from 'constants/popupText';
 import Popup from 'popup';
 import bind from 'utils/bind';
@@ -12,40 +13,58 @@ class Blackjack {
     private popup: Popup,
     private deck: Deck,
     private dealer: Dealer,
-    private player: Hand
+    private players: Players
   ) {
-    this.attachButtonsHandlers();
-    this.init();
+    this.buttons.deal.attachHandler(this.deal);
+    this.buttons.reset.attachHandler(this.reset);
+    this.buttons.hit.attachHandler(this.hit);
+    this.buttons.stand.attachHandler(this.stand);
+
+    (async () => {
+      await this.deck.intro();
+      await this.deck.shuffle();
+      await this.deck.shuffle();
+
+      this.buttons.deal.enable();
+    })();
   }
 
   @bind
   private async deal() {
     this.popup.hide();
+    this.deck.foreground = '';
     this.buttons.disableAll();
 
-    await this.supplyHandWithCard(this.player);
-    await this.supplyHandWithCard(this.player);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const hand of this.players.hands) {
+      /* eslint-disable no-await-in-loop */
+      await this.supplyHandWithCard(hand);
+      await this.supplyHandWithCard(hand);
+    }
+
     await this.supplyHandWithCard(this.dealer);
     await this.supplyHandWithCard(this.dealer, false);
 
-    this.buttons.reset.enable();
+    await this.checkBlackjack();
 
-    this.checkBlackjack();
+    this.buttons.reset.enable();
   }
 
   @bind
   private async reset() {
     this.popup.hide();
+    this.players.setInactive();
     this.buttons.disableAll();
 
     this.supplyDeckWithCards();
 
     this.dealer.empty();
-    this.player.empty();
+    this.players.empty();
 
     await this.deck.shuffle();
     await this.deck.shuffle();
 
+    this.players.resetCurrent();
     this.buttons.deal.enable();
   }
 
@@ -53,28 +72,36 @@ class Blackjack {
   private async hit() {
     this.buttons.disableAll();
 
-    await this.supplyHandWithCard(this.player);
+    await this.supplyHandWithCard(this.players.current);
 
-    if (this.player.hasBust()) {
-      this.dealer.revealTopCard();
-      this.popup.show(PopupText.PlayerDefeat);
-      this.buttons.reset.enable();
-    } else if (this.player.hasCardsLimit) {
-      this.stand();
+    if (this.players.current.hasCardsLimit) {
+      this.players.setNext();
+    }
+
+    if (this.players.current) {
+      this.players.current.setActive();
+      this.buttons.enableAllExceptDeal();
     } else {
-      this.buttons.reset.enable();
-      this.buttons.enableHitAndStand();
+      this.stand();
     }
   }
 
   @bind
   private async stand() {
     this.buttons.disableAll();
-    this.dealer.revealTopCard();
+    this.players.setNext();
 
-    await this.supplyDealerWithCards();
+    if (this.players.current) {
+      this.players.current.setActive();
+      this.buttons.enableAllExceptDeal();
+    } else {
+      await this.dealer.topCard.show();
+      await this.supplyDealerWithCards();
 
-    this.conclude();
+      this.conclude();
+
+      this.buttons.reset.enable();
+    }
   }
 
   private async supplyHandWithCard(hand: Hand, shouldShowFace = true) {
@@ -86,24 +113,36 @@ class Blackjack {
       .drag(shouldShowFace);
   }
 
-  private checkBlackjack() {
-    if (this.player.hasBlackjack() || this.dealer.hasBlackjack()) {
+  private async checkBlackjack() {
+    if (this.players.haveBlackjack() || this.dealer.hasBlackjack()) {
+      await this.dealer.topCard.show();
       this.popup.show(PopupText.Blackjack);
-      this.dealer.revealTopCard();
     } else {
-      this.buttons.enableHitAndStand();
+      this.players.current.setActive();
+      this.buttons.hit.enable();
+      this.buttons.stand.enable();
     }
   }
 
   private supplyDeckWithCards() {
-    [...this.player.cards, ...this.dealer.cards].forEach((card) => {
-      const { x, y, width, height } = card.getRect();
-      const { x: dx, y: dy } = this.deck.getRect();
+    this.deck.foreground = '1';
+    this.players.hands
+      .flatMap((hand) => hand.cards)
+      .concat(this.dealer.cards)
+      .forEach((card, index) => {
+        const { x, y } = card.getRect();
+        const { x: dx, y: dy } = this.deck.getRect();
 
-      this.deck.push(
-        card.hide().setTransform(x - dx + width / 2, y - dy + height / 2)
-      );
-    });
+        // eslint-disable-next-line no-param-reassign
+        card.foreground = this.deck.count + index;
+
+        this.deck.push(
+          card
+            .hide()
+            .setTransform(x - dx, y - dy)
+            .toggleClass('dealt')
+        );
+      });
   }
 
   private async supplyDealerWithCards() {
@@ -114,33 +153,16 @@ class Blackjack {
   }
 
   private conclude() {
-    const playerScore = this.player.getScore();
-    const dealerScore = this.dealer.getScore();
-    let text = PopupText.PlayerDefeat;
+    const dealerScore = this.dealer.hasBust() ? 0 : this.dealer.getScore();
+    const topScore = this.players.getTopScore();
 
-    if (this.dealer.hasBust() || playerScore > dealerScore) {
-      text = PopupText.PlayerVictory;
-    } else if (playerScore === dealerScore) {
-      text = PopupText.Push;
+    if (topScore > dealerScore) {
+      this.popup.show(PopupText.Victory);
+    } else if (topScore === dealerScore) {
+      this.popup.show(PopupText.Push);
+    } else {
+      this.popup.show(PopupText.Defeat);
     }
-
-    this.popup.show(text);
-    this.buttons.reset.enable();
-  }
-
-  private attachButtonsHandlers() {
-    this.buttons.deal.attachHandler(this.deal);
-    this.buttons.reset.attachHandler(this.reset);
-    this.buttons.hit.attachHandler(this.hit);
-    this.buttons.stand.attachHandler(this.stand);
-  }
-
-  private async init() {
-    await this.deck.intro();
-    await this.deck.shuffle();
-    await this.deck.shuffle();
-
-    this.buttons.deal.enable();
   }
 }
 

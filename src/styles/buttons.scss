@@ -1,12 +1,14 @@
 $box-shadow-color: #333;
+$height: 30px;
+$width: 255px;
 
 .buttons {
-  bottom: 15%;
+  bottom: calc(50% - #{$height} / 2 - 380px);
   display: flex;
   justify-content: space-between;
-  left: calc(50% - #{var(--buttons-width) / 2});
+  left: calc(50% - #{$width} / 2);
   position: fixed;
-  width: var(--buttons-width);
+  width: $width;
 }
 
 button {

@@ -15,7 +15,8 @@ class Buttons {
     this.stand.disable();
   }
 
-  enableHitAndStand() {
+  enableAllExceptDeal() {
+    this.reset.enable();
     this.hit.enable();
     this.stand.enable();
   }
