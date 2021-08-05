@@ -5,7 +5,6 @@ import Hand from 'cardHolders/hand';
 import Players from 'cardHolders/players';
 import PopupText from 'constants/popupText';
 import Popup from 'popup';
-import bind from 'utils/bind';
 
 class Blackjack {
   constructor(
@@ -15,10 +14,18 @@ class Blackjack {
     private dealer: Dealer,
     private players: Players
   ) {
-    this.buttons.deal.attachHandler(this.deal);
-    this.buttons.reset.attachHandler(this.reset);
-    this.buttons.hit.attachHandler(this.hit);
-    this.buttons.stand.attachHandler(this.stand);
+    this.buttons.deal.attachHandler(() => {
+      this.deal();
+    });
+    this.buttons.reset.attachHandler(() => {
+      this.reset();
+    });
+    this.buttons.hit.attachHandler(() => {
+      this.hit();
+    });
+    this.buttons.stand.attachHandler(() => {
+      this.stand();
+    });
 
     (async () => {
       await this.deck.intro();
@@ -29,7 +36,6 @@ class Blackjack {
     })();
   }
 
-  @bind
   private async deal() {
     this.popup.hide();
     this.deck.foreground = '';
@@ -50,7 +56,6 @@ class Blackjack {
     this.buttons.reset.enable();
   }
 
-  @bind
   private async reset() {
     this.popup.hide();
     this.players.setInactive();
@@ -68,7 +73,6 @@ class Blackjack {
     this.buttons.deal.enable();
   }
 
-  @bind
   private async hit() {
     this.buttons.disableAll();
 
@@ -86,7 +90,6 @@ class Blackjack {
     }
   }
 
-  @bind
   private async stand() {
     this.buttons.disableAll();
     this.players.setNext();
@@ -110,7 +113,7 @@ class Blackjack {
 
     await hand
       .push(this.deck.pop().setTransform(x - dx, y - dy))
-      .drag(shouldShowFace);
+      .dragCard(shouldShowFace);
   }
 
   private async checkBlackjack() {

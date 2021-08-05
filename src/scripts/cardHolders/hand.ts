@@ -8,12 +8,10 @@ import CardStack from './cardStack';
 const TOP_SCORE = 21;
 
 class Hand extends CardStack {
-  constructor(elem: HTMLDivElement, public name: string, protected deg = 0) {
-    super(elem);
-  }
-
-  async drag(shouldShowFace?: boolean) {
+  async dragCard(shouldShowFace?: boolean) {
     const { x, y } = this.topCard.getTransform();
+    const dx = (1 - this.count) * 15;
+    const dy = (1 - this.count) * 2.5;
 
     await animate([
       createAnimation({
@@ -25,9 +23,8 @@ class Hand extends CardStack {
         },
         onProgress: (pr) => {
           this.topCard.setTransform(
-            getAnimationStep(x, this.getCardOffsetX(), pr),
-            getAnimationStep(y, this.getCardOffsetY(), pr),
-            getAnimationStep(0, this.deg, pr)
+            getAnimationStep(x, dx, pr),
+            getAnimationStep(y, dy, pr)
           );
         },
         onEnd: () => {
@@ -66,36 +63,8 @@ class Hand extends CardStack {
     return this.getScore() > TOP_SCORE;
   }
 
-  private getCardOffsetX() {
-    switch (this.deg) {
-      case -45:
-        return 0;
-      case -90:
-        return -this.cardOffset;
-      default:
-        return this.cardOffset;
-    }
-  }
-
-  private getCardOffsetY() {
-    switch (this.deg) {
-      case 45:
-        return 0;
-      case 0:
-      case -45:
-      case -90:
-        return -this.cardOffset;
-      default:
-        return this.cardOffset;
-    }
-  }
-
   get hasCardsLimit() {
     return this.count === 5;
-  }
-
-  private get cardOffset() {
-    return -(this.count - 1) * 15;
   }
 
   private get classList() {

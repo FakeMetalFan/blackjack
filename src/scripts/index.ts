@@ -17,19 +17,17 @@ const getElem = <T extends HTMLElement>(id: string) =>
 // eslint-disable-next-line no-new
 new Blackjack(
   new Buttons(
-    new Button(getElem('deal-btn') as HTMLButtonElement),
-    new Button(getElem('reset-btn') as HTMLButtonElement),
-    new Button(getElem('hit-btn') as HTMLButtonElement),
-    new Button(getElem('stand-btn') as HTMLButtonElement)
+    new Button(getElem('deal-btn')),
+    new Button(getElem('reset-btn')),
+    new Button(getElem('hit-btn')),
+    new Button(getElem('stand-btn'))
   ),
-  new Popup(getElem('popup') as HTMLDivElement),
-  new Deck(getElem('deck') as HTMLDivElement, suits, ranks),
-  new Dealer(getElem('dealer') as HTMLDivElement, 'Dealer'),
+  new Popup(getElem('popup')),
+  new Deck(getElem('deck'), suits, ranks),
+  new Dealer(getElem('dealer')),
   new Players([
-    new Hand(getElem('player-1'), 'Player 1', 90),
-    new Hand(getElem('player-2'), 'Player 2', 45),
-    new Hand(getElem('player-3'), 'Player 3'),
-    new Hand(getElem('player-4'), 'Player 4', -45),
-    new Hand(getElem('player-5'), 'Player 5', -90),
+    new Hand(getElem('player-1')),
+    new Hand(getElem('player-2')),
+    new Hand(getElem('player-3')),
   ])
 );

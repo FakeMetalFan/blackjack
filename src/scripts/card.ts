@@ -56,8 +56,8 @@ class Card {
     return this;
   }
 
-  setTransform(x: number, y: number, deg = 0) {
-    this.styles.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
+  setTransform(x: number, y: number) {
+    this.styles.transform = `translate(${x}px, ${y}px)`;
 
     return this;
   }

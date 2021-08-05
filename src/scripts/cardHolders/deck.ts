@@ -61,7 +61,7 @@ class Deck extends CardStack {
       this.cards.reduce((animations, card, index) => {
         const delay = index * 2;
         const duration = 200;
-        const { x, y, deg } = card.getTransform();
+        const { x, y } = card.getTransform();
         const offset = -index / 4;
         const { width } = card.getRect();
         const randomOffset =
@@ -75,8 +75,7 @@ class Deck extends CardStack {
             onProgress(pr) {
               card.setTransform(
                 getAnimationStep(x, randomOffset, pr),
-                getAnimationStep(y, offset, pr),
-                getAnimationStep(deg, 0, pr)
+                getAnimationStep(y, offset, pr)
               );
             },
           }),

@@ -3,7 +3,7 @@ $height: 30px;
 $width: 255px;
 
 .buttons {
-  bottom: calc(50% - #{$height} / 2 - 380px);
+  bottom: calc(50% - #{$height} / 2 - 420px);
   display: flex;
   justify-content: space-between;
   left: calc(50% - #{$width} / 2);

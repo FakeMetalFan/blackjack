@@ -1,145 +1,76 @@
 $center-horizontally: calc(50% - var(--card-width) / 2);
 $center-vertically: calc(50% - var(--card-height) / 2);
-$triangle-width: 10px;
 
-@mixin position($deg: null, $left: null, $top: null, $right: null, $bottom: null) {
-  @if $deg {
-    transform: rotate($deg);
-  }
+$deck-offset-x: calc(#{$center-horizontally} - 240px);
+$deck-offset-y: calc(#{$center-vertically} - 300px);
 
-  @if $left {
-    left: $left;
-  }
-
-  @if $top {
-    top: $top;
-  }
-
-  @if $right {
-    right: $right;
-  }
-
-  @if $bottom {
-    bottom: $bottom;
-  }
-}
-
-@mixin card-holder($text, $deg: null, $left: null, $top: null, $right: null, $bottom: null) {
-  @include position(null, $left, $top, $right, $bottom);
-
+.deck,
+.dealer,
+.player {
+  border: 3px solid white;
+  border-radius: 6px;
   height: var(--card-height);
-  position: fixed;
+  position: absolute;
   width: var(--card-width);
 
-  &::before {
-    border: 3px solid white;
-    border-radius: 6px;
-    box-sizing: border-box;
+  .text {
     color: white;
-    content: $text;
-    font-size: 14px;
-    height: inherit;
+    font-size: 16px;
     line-height: var(--card-height);
     position: absolute;
     text-align: center;
     width: inherit;
-
-    @if $deg {
-      transform: rotate($deg);
-    }
-  }
-}
-
-@mixin active-player($deg: null, $left: null, $top: null, $right: null) {
-  &.active::after {
-    @include position($deg, $left, $top, $right);
-
-    border-color: transparent white transparent transparent;
-    border-style: solid;
-    border-width: $triangle-width;
-    content: '';
-    height: 0;
-    position: absolute;
-    width: 0;
   }
 }
 
 .deck {
-  @include card-holder(
-    'Deck',
-    null,
-    calc(#{$center-horizontally} - 198px),
-    calc(#{$center-vertically} - 300px)
-  );
+  left: $deck-offset-x;
+  top: $deck-offset-y;
 }
 
 .dealer {
-  @include card-holder(
-    'Dealer',
-    null,
-    $center-horizontally,
-    calc(#{$center-vertically} - 300px)
-  );
+  left: $center-horizontally;
+  top: $deck-offset-y;
 }
 
 .player {
+  $player-2-offset-x: calc(#{$center-horizontally} - 120px);
+  $player-2-offset-y: calc(#{$center-vertically} - 140px);
+
   &-1 {
-    @include active-player(null, null, calc(50% - #{$triangle-width}), -50%);
-    @include card-holder(
-      'Player 1',
-      90deg,
-      calc(#{$center-horizontally} - 178px),
-      null,
-      null,
-      $center-vertically
-    );
+    bottom: $center-vertically;
+    left: $deck-offset-x;
   }
 
   &-2 {
-    @include active-player(-45deg, null, null, -28%);
-    @include card-holder(
-      'Player 2',
-      45deg,
-      calc(#{$center-horizontally} - 131px),
-      null,
-      null,
-      calc(#{$center-vertically} - 134px)
-    );
+    bottom: $player-2-offset-y;
+    left: $player-2-offset-x;
   }
 
   &-3 {
-    @include active-player(-90deg, null, -17%, calc(50% - #{$triangle-width}));
-    @include card-holder(
-      'Player 3',
-      null,
-      $center-horizontally,
-      null,
-      null,
-      calc(50% - var(--card-height) / 2 - 186px)
-    );
+    bottom: calc(50% - var(--card-height) / 2 - 280px);
+    left: $center-horizontally;
   }
 
   &-4 {
-    @include active-player(-135deg, -28%);
-    @include card-holder(
-      'Player 4',
-      -45deg,
-      null,
-      null,
-      calc(#{$center-horizontally} - 131px),
-      calc(#{$center-vertically} - 134px)
-    );
+    bottom: $player-2-offset-y;
+    right: $player-2-offset-x;
   }
 
   &-5 {
-    @include active-player(180deg, -50%, calc(50% - #{$triangle-width}));
-    @include card-holder(
-      'Player 5',
-      -90deg,
-      null,
-      null,
-      calc(#{$center-horizontally} - 178px),
-      $center-vertically
-    );
+    bottom: $center-vertically;
+    right: $deck-offset-x;
+  }
+
+  &.active::after {
+    $triangle-width: 10px;
+
+    border-color: transparent transparent white;
+    border-style: solid;
+    border-width: $triangle-width;
+    bottom: -25px;
+    content: '';
+    left: calc(50% - #{$triangle-width});
+    position: absolute;
   }
 }
