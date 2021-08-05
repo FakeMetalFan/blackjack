@@ -50,7 +50,7 @@ class Hand extends CardStack {
 
   getScore() {
     return this.cards.reduce(
-      (score, { rank }, index) => score + rankValue.get(rank)(score, index),
+      (acc, card, index) => acc + rankValue.get(card.rank)(acc, index),
       0
     );
   }

@@ -57,18 +57,19 @@ class Deck extends CardStack {
       ];
     }
 
+    const duration = 200;
+    const { width: cardWidth } = this.topCard.getRect();
+
     await animate(
-      this.cards.reduce((animations, card, index) => {
+      this.cards.reduce((acc, card, index) => {
         const delay = index * 2;
-        const duration = 200;
         const { x, y } = card.getTransform();
         const offset = -index / 4;
-        const { width } = card.getRect();
         const randomOffset =
           (Math.round(Math.random()) * 2 - 1) *
-          ((Math.random() * width) / 2 + width / 2);
+          ((Math.random() * cardWidth) / 2 + cardWidth / 2);
 
-        animations.push(
+        acc.push(
           createAnimation({
             delay,
             duration,
@@ -94,7 +95,7 @@ class Deck extends CardStack {
           })
         );
 
-        return animations;
+        return acc;
       }, [])
     );
   }
