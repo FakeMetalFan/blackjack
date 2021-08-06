@@ -8,8 +8,7 @@ const TOP_SCORE = 21;
 class Hand extends CardStack {
   async dragCard(shouldShowFace?: boolean) {
     const { x, y } = this.topCard.getTransform();
-    const dx = (1 - this.count) * 15;
-    const dy = (1 - this.count) * 2.5;
+    const offset = (1 - this.count) * 10;
 
     await animate({
       duration: 400,
@@ -19,7 +18,7 @@ class Hand extends CardStack {
         }
       },
       onProgress: (calc) => {
-        this.topCard.setTransform(calc(x, dx), calc(y, dy));
+        this.topCard.setTransform(calc(x, offset), calc(y, offset));
       },
       onEnd: () => {
         this.topCard.toggleClass('dealt').foreground = this.count;
