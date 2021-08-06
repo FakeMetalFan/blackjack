@@ -14,7 +14,7 @@
       "buttons/*": ["scripts/buttons/*"],
       "cardHolders/*": ["scripts/cardHolders/*"],
       "constants/*": ["scripts/constants/*"],
-      "utils/*": ["scripts/utils/*"],
+      "animate": ["scripts/animate"],
       "blackjack": ["scripts/blackjack"],
       "card": ["scripts/card"],
       "popup": ["scripts/popup"]

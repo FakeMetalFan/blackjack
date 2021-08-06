@@ -78,7 +78,7 @@ class Blackjack {
 
     await this.supplyHandWithCard(this.players.current);
 
-    if (this.players.current.hasCardsLimit) {
+    if (this.players.current.hasBust()) {
       this.players.setNext();
     }
 
@@ -149,19 +149,21 @@ class Blackjack {
   }
 
   private async supplyDealerWithCards() {
-    if (this.dealer.canDrawCard() && !this.dealer.hasCardsLimit) {
+    if (this.dealer.canDrawCard()) {
       await this.supplyHandWithCard(this.dealer);
       await this.supplyDealerWithCards();
     }
   }
 
   private conclude() {
-    const dealerScore = this.dealer.hasBust() ? 0 : this.dealer.getScore();
-    const topScore = this.players.getTopScore();
+    const dealerScore = this.dealer.getScore();
+    const playersTopScore = this.players.getTopScore();
 
-    if (topScore > dealerScore) {
+    if (this.players.haveBust()) {
+      this.popup.show(PopupText.Defeat);
+    } else if (this.dealer.hasBust() || dealerScore < playersTopScore) {
       this.popup.show(PopupText.Victory);
-    } else if (topScore === dealerScore) {
+    } else if (dealerScore === playersTopScore) {
       this.popup.show(PopupText.Push);
     } else {
       this.popup.show(PopupText.Defeat);

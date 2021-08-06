@@ -1,9 +1,7 @@
+import animate, { AnimationConfig } from 'animate';
 import Card from 'card';
 import Rank from 'constants/ranks';
 import Suit from 'constants/suits';
-import animate from 'utils/animate';
-import createAnimation from 'utils/createAnimation';
-import getAnimationStep from 'utils/getAnimationStep';
 
 import CardStack from './cardStack';
 
@@ -28,21 +26,21 @@ class Deck extends CardStack {
 
   async intro() {
     await animate(
-      this.cards.map((card, index) => {
+      ...this.cards.map((card, index) => {
         const { x, y } = card.getTransform();
         const offset = -index / 4;
 
-        return createAnimation({
+        return {
           delay: index * 8,
           duration: 600,
-          onProgress(pr) {
+          onProgress(calc) {
             /* eslint-disable no-param-reassign */
-            card.setTransform(
-              getAnimationStep(x, offset, pr),
-              getAnimationStep(y, offset, pr)
-            ).opacity = getAnimationStep(0, 1, pr);
+            card.setTransform(calc(x, offset), calc(y, offset)).opacity = calc(
+              0,
+              1
+            );
           },
-        });
+        } as AnimationConfig;
       })
     );
   }
@@ -61,7 +59,7 @@ class Deck extends CardStack {
     const { width: cardWidth } = this.topCard.getRect();
 
     await animate(
-      this.cards.reduce((acc, card, index) => {
+      ...this.cards.reduce((acc, card, index) => {
         const delay = index * 2;
         const { x, y } = card.getTransform();
         const offset = -index / 4;
@@ -70,33 +68,27 @@ class Deck extends CardStack {
           ((Math.random() * cardWidth) / 2 + cardWidth / 2);
 
         acc.push(
-          createAnimation({
+          {
             delay,
             duration,
-            onProgress(pr) {
-              card.setTransform(
-                getAnimationStep(x, randomOffset, pr),
-                getAnimationStep(y, offset, pr)
-              );
+            onProgress(calc) {
+              card.setTransform(calc(x, randomOffset), calc(y, offset));
             },
-          }),
-          createAnimation({
+          },
+          {
             duration,
             delay: delay + duration,
             onStart() {
               card.foreground = index;
             },
-            onProgress(pr) {
-              card.setTransform(
-                getAnimationStep(randomOffset, offset, pr),
-                offset
-              );
+            onProgress(calc) {
+              card.setTransform(calc(randomOffset, offset), offset);
             },
-          })
+          }
         );
 
         return acc;
-      }, [])
+      }, [] as AnimationConfig[])
     );
   }
 

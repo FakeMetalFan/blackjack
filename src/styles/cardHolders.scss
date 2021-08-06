@@ -1,6 +1,5 @@
 $center-horizontally: calc(50% - var(--card-width) / 2);
 $center-vertically: calc(50% - var(--card-height) / 2);
-
 $deck-offset-x: calc(#{$center-horizontally} - 240px);
 $deck-offset-y: calc(#{$center-vertically} - 300px);
 

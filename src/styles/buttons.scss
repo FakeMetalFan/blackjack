@@ -1,8 +1,7 @@
-$box-shadow-color: #333;
-$height: 30px;
-$width: 255px;
-
 .buttons {
+  $height: 30px;
+  $width: 255px;
+
   bottom: calc(50% - #{$height} / 2 - 420px);
   display: flex;
   justify-content: space-between;
@@ -12,6 +11,8 @@ $width: 255px;
 }
 
 button {
+  $box-shadow-color: #333;
+
   border: 0;
   border-radius: 4px;
   box-shadow: 0 1.5px 0.5px 0 $box-shadow-color;

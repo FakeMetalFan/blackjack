@@ -25,9 +25,5 @@ new Blackjack(
   new Popup(getElem('popup')),
   new Deck(getElem('deck'), suits, ranks),
   new Dealer(getElem('dealer')),
-  new Players([
-    new Hand(getElem('player-1')),
-    new Hand(getElem('player-2')),
-    new Hand(getElem('player-3')),
-  ])
+  new Players([new Hand(getElem('player-2')), new Hand(getElem('player-3'))])
 );

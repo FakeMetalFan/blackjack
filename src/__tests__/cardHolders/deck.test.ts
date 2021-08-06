@@ -1,18 +1,18 @@
 import { screen } from '@testing-library/dom';
+import * as animate from 'animate';
 import Deck from 'cardHolders/deck';
 import { ranks } from 'constants/ranks';
 import { suits } from 'constants/suits';
-import * as animate from 'utils/animate';
 
 describe('Deck', () => {
   let deck: Deck;
 
   beforeAll(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (animate as any).default = (animations: animate.Animation[]) => {
+    (animate as any).default = (animations: animate.AnimationConfig[]) => {
       animations.forEach(({ onStart, onProgress, onEnd }) => {
         onStart?.();
-        onProgress?.(0.996);
+        onProgress?.(() => 0.996);
         onEnd?.();
       });
     };

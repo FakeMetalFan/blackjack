@@ -1,8 +1,7 @@
 import Rank from 'constants/ranks';
 import Suit from 'constants/suits';
-import animate from 'utils/animate';
-import createAnimation from 'utils/createAnimation';
-import getTransformValue from 'utils/getTransformValue';
+
+import animate from './animate';
 
 const createDiv = (...classNames: string[]) => {
   const div = document.createElement('div');
@@ -33,25 +32,21 @@ class Card {
   }
 
   async show() {
-    await animate([
-      createAnimation({
-        duration: 400,
-        onProgress: (pr) => {
-          this.rotationY = pr * 180;
-        },
-      }),
-    ]);
+    await animate({
+      duration: 400,
+      onProgress: (calc) => {
+        this.rotationY = calc(0, 180);
+      },
+    });
   }
 
   hide() {
-    animate([
-      createAnimation({
-        duration: 200,
-        onProgress: (pr) => {
-          this.rotationY = 180 - pr * 180;
-        },
-      }),
-    ]);
+    animate({
+      duration: 200,
+      onProgress: (calc) => {
+        this.rotationY = calc(180, 0);
+      },
+    });
 
     return this;
   }
@@ -63,7 +58,9 @@ class Card {
   }
 
   getTransform() {
-    return getTransformValue(this.elem);
+    const { m41, m42 } = new WebKitCSSMatrix(this.styles.transform);
+
+    return { x: m41, y: m42 };
   }
 
   getRect() {

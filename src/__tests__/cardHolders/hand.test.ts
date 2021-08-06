@@ -1,18 +1,18 @@
+import * as animate from 'animate';
 import Card from 'card';
 import Hand from 'cardHolders/hand';
 import Rank from 'constants/ranks';
 import Suit from 'constants/suits';
-import * as animate from 'utils/animate';
 
 describe('Hand', () => {
   let hand: Hand;
 
   beforeAll(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (animate as any).default = (animations: animate.Animation[]) => {
+    (animate as any).default = (animations: animate.AnimationConfig[]) => {
       animations.forEach(({ onStart, onProgress, onEnd }) => {
         onStart?.();
-        onProgress?.(0.996);
+        onProgress?.(() => 0.996);
         onEnd?.();
       });
     };
@@ -25,7 +25,7 @@ describe('Hand', () => {
   it('should drag card', () => {
     const card = new Card(Rank.Ace, Suit.Spades).setTransform(0.25, 0.25);
 
-    hand.push(card).push(card).push(card).drag(false);
+    hand.push(card).push(card).push(card).dragCard(false);
 
     expect(card.getTransform()).not.toStrictEqual({ x: 0.25, y: 0.25 });
     expect(card.elem).not.toHaveClass('card ace-of-spades');
@@ -55,14 +55,5 @@ describe('Hand', () => {
       false
     );
     expect(hand.push(ace).hasBust()).toBe(true);
-  });
-
-  it('should indicate cards limit', () => {
-    const card = new Card(Rank.Ace, Suit.Spades, 0);
-
-    expect(hand.push(card).push(card).push(card).push(card).hasCardsLimit).toBe(
-      false
-    );
-    expect(hand.push(card).hasCardsLimit).toBe(true);
   });
 });

@@ -30,6 +30,10 @@ class Players {
     return this.hands.some((hand) => hand.hasBlackjack());
   }
 
+  haveBust() {
+    return !this.hands.some((hand) => !hand.hasBust());
+  }
+
   getTopScore() {
     return this.hands.reduce((acc, hand) => {
       if (hand.hasBust()) {

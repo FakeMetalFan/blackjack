@@ -1,16 +1,16 @@
 import { screen } from '@testing-library/dom';
+import * as animate from 'animate';
 import Popup from 'popup';
-import * as animate from 'utils/animate';
 
 describe('Popup', () => {
   let popup: Popup;
 
   beforeAll(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (animate as any).default = (animations: animate.Animation[]) => {
+    (animate as any).default = (animations: animate.AnimationConfig[]) => {
       animations.forEach(({ onStart, onProgress, onEnd }) => {
         onStart?.();
-        onProgress?.(0.996);
+        onProgress?.(() => 0.996);
         onEnd?.();
       });
     };

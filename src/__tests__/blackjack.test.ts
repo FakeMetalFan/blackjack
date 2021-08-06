@@ -1,4 +1,5 @@
 import { fireEvent, screen } from '@testing-library/dom';
+import * as animate from 'animate';
 import Blackjack from 'blackjack';
 import Button from 'buttons/button';
 import Buttons from 'buttons/buttons';
@@ -9,7 +10,6 @@ import PopupText from 'constants/popupText';
 import { ranks } from 'constants/ranks';
 import { suits } from 'constants/suits';
 import Popup from 'popup';
-import * as animate from 'utils/animate';
 
 describe('Blackjack', () => {
   let blackjack: Blackjack;
@@ -18,10 +18,10 @@ describe('Blackjack', () => {
 
   beforeAll(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (animate as any).default = (animations: animate.Animation[]) => {
+    (animate as any).default = (animations: animate.AnimationConfig[]) => {
       animations.forEach(({ onStart, onProgress, onEnd }) => {
         onStart?.();
-        onProgress?.(0.996);
+        onProgress?.(() => 0.996);
         onEnd?.();
       });
     };
