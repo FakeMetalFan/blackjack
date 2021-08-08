@@ -1,5 +1,4 @@
 import Buttons from 'buttons/buttons';
-import Dealer from 'cardHolders/dealer';
 import Deck from 'cardHolders/deck';
 import Hand from 'cardHolders/hand';
 import Players from 'cardHolders/players';
@@ -11,7 +10,7 @@ class Blackjack {
     private buttons: Buttons,
     private popup: Popup,
     private deck: Deck,
-    private dealer: Dealer,
+    private dealer: Hand,
     private players: Players
   ) {
     this.buttons.deal.attachHandler(() => {
@@ -124,7 +123,7 @@ class Blackjack {
     } else {
       await this.dealer.topCard.show();
 
-      while (this.dealer.canDrawCard()) {
+      while (this.dealer.getScore() < 17) {
         await this.dealCard(this.dealer);
       }
 

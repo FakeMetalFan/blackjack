@@ -3,7 +3,6 @@ import 'styles/index.scss';
 import Blackjack from 'blackjack';
 import Button from 'buttons/button';
 import Buttons from 'buttons/buttons';
-import Dealer from 'cardHolders/dealer';
 import Deck from 'cardHolders/deck';
 import Hand from 'cardHolders/hand';
 import Players from 'cardHolders/players';
@@ -24,6 +23,6 @@ new Blackjack(
   ),
   new Popup(getElem('popup')),
   new Deck(getElem('deck'), suits, ranks),
-  new Dealer(getElem('dealer')),
+  new Hand(getElem('dealer')),
   new Players(new Hand(getElem('player-2')), new Hand(getElem('player-3')))
 );

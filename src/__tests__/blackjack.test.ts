@@ -4,7 +4,6 @@ import Blackjack from 'blackjack';
 import Button from 'buttons/button';
 import Buttons from 'buttons/buttons';
 import Card from 'card';
-import Dealer from 'cardHolders/dealer';
 import Deck from 'cardHolders/deck';
 import Hand from 'cardHolders/hand';
 import Players from 'cardHolders/players';
@@ -59,7 +58,7 @@ describe('Blackjack', () => {
       ),
       new Popup(createDiv('popup')),
       new Deck(createDiv('deck'), suits, ranks),
-      new Dealer(createDiv('dealer')),
+      new Hand(createDiv('dealer')),
       new Players(
         new Hand(createDiv('player-1')),
         new Hand(createDiv('player-2'))
@@ -70,7 +69,7 @@ describe('Blackjack', () => {
   beforeEach(() => {
     // to avoid using "?." operator which worsens branching report (bug);
     jest
-      .spyOn(Dealer.prototype, 'topCard', 'get')
+      .spyOn(Hand.prototype, 'topCard', 'get')
       .mockReturnValue(new Card(Rank.Ace, Suit.Spades));
   });
 
