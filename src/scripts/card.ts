@@ -1,35 +1,54 @@
 import Rank from 'constants/ranks';
 import Suit from 'constants/suits';
-import getTransformValue from 'utils/getTransformValue';
+
+import animate from './animate';
+
+const createDiv = (...classNames: string[]) => {
+  const div = document.createElement('div');
+
+  div.classList.add(...classNames);
+
+  return div;
+};
 
 class Card {
-  elem = document.createElement('div');
+  elem = createDiv('card');
 
   rank: Rank;
-
-  private backClassName = 'card back';
-
-  private faceClassName: string;
 
   constructor(rank: Rank, suit: Suit, index = 0) {
     this.rank = rank;
 
+    const inner = createDiv('inner');
+
+    inner.append(createDiv('back'));
+    inner.append(createDiv('face', `${rank}-of-${suit}`));
+
+    this.elem.append(inner);
+
     const offset = -index / 4;
 
     this.setTransform(offset, offset).foreground = index;
-
-    this.faceClassName = `card ${rank}-of-${suit}`;
-    this.className = this.backClassName;
   }
 
-  show() {
-    this.className = this.faceClassName;
+  async show() {
+    await animate({
+      duration: 400,
+      onProgress: (calc) => {
+        this.rotationY = calc(0, 180);
+      },
+    });
 
     return this;
   }
 
   hide() {
-    this.className = this.backClassName;
+    animate({
+      duration: 200,
+      onProgress: (calc) => {
+        this.rotationY = calc(180, 0);
+      },
+    });
 
     return this;
   }
@@ -41,15 +60,21 @@ class Card {
   }
 
   getTransform() {
-    return getTransformValue(this.elem);
+    const [, , , , x, y] = getComputedStyle(this.elem)
+      .transform.replace(/[^\d\-.,]/g, '')
+      .split(',');
+
+    return { x: Number(x) || 0, y: Number(y) || 0 };
   }
 
   getRect() {
     return this.elem.getBoundingClientRect();
   }
 
-  private set className(className: string) {
-    this.elem.className = className;
+  toggleClass(className: string) {
+    this.elem.classList.toggle(className);
+
+    return this;
   }
 
   set foreground(zIndex: number) {
@@ -58,6 +83,12 @@ class Card {
 
   set opacity(opacity: number) {
     this.styles.opacity = opacity.toString();
+  }
+
+  private set rotationY(deg: number) {
+    (
+      this.elem.firstChild as HTMLElement
+    ).style.transform = `rotateY(${deg}deg)`;
   }
 
   private get styles() {

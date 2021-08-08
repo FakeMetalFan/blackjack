@@ -2,8 +2,8 @@
 const enum PopupText {
   Blackjack = 'Blackjack!',
   Push = 'Push!',
-  PlayerVictory = 'You won!',
-  PlayerDefeat = 'You lost!',
+  Victory = 'Victory!',
+  Defeat = 'Defeat!',
 }
 
 export default PopupText;

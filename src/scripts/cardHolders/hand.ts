@@ -1,34 +1,37 @@
+import animate from 'animate';
 import { rankValue } from 'constants/ranks';
-import animate from 'utils/animate';
-import createAnimation from 'utils/createAnimation';
-import getAnimationStep from 'utils/getAnimationStep';
 
 import CardStack from './cardStack';
 
 const TOP_SCORE = 21;
 
 class Hand extends CardStack {
-  async drag(shouldShowFace?: boolean) {
+  async dragCard(shouldShowFace?: boolean) {
     const { x, y } = this.topCard.getTransform();
-    const dx =
-      (this.count === 3 ? 0 : this.count - 3) * this.topCard.getRect().width;
+    const offset = (1 - this.count) * 10;
 
-    await animate([
-      createAnimation({
-        duration: 400,
-        onProgress: (pr) => {
-          this.topCard.setTransform(
-            getAnimationStep(x, dx, pr),
-            getAnimationStep(y, 0, pr)
-          );
-        },
-        onEnd: () => {
-          if (shouldShowFace) {
-            this.topCard.show();
-          }
-        },
-      }),
-    ]);
+    await animate({
+      duration: 400,
+      onStart: () => {
+        if (shouldShowFace) {
+          this.topCard.show();
+        }
+      },
+      onProgress: (calc) => {
+        this.topCard.setTransform(calc(x, offset), calc(y, offset));
+      },
+      onEnd: () => {
+        this.topCard.toggleClass('dealt').foreground = this.count;
+      },
+    });
+  }
+
+  setActive() {
+    this.classList.add('active');
+  }
+
+  setInactive() {
+    this.classList.remove('active');
   }
 
   empty() {
@@ -39,7 +42,7 @@ class Hand extends CardStack {
 
   getScore() {
     return this.cards.reduce(
-      (score, { rank }, index) => score + rankValue.get(rank)(score, index),
+      (acc, card, index) => acc + rankValue.get(card.rank)(acc, index),
       0
     );
   }
@@ -52,8 +55,8 @@ class Hand extends CardStack {
     return this.getScore() > TOP_SCORE;
   }
 
-  get hasCardsLimit() {
-    return this.count === 5;
+  private get classList() {
+    return this.elem.classList;
   }
 }
 

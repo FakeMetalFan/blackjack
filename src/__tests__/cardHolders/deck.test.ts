@@ -1,19 +1,18 @@
 import { screen } from '@testing-library/dom';
+import * as animate from 'animate';
 import Deck from 'cardHolders/deck';
 import { ranks } from 'constants/ranks';
 import { suits } from 'constants/suits';
-import * as animate from 'utils/animate';
 
 describe('Deck', () => {
   let deck: Deck;
 
   beforeAll(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (animate as any).default = (animations: animate.Animation[]) => {
-      animations.forEach(({ onStart, onProgress, onEnd }) => {
+    (animate as any).default = (...animations: animate.AnimationConfig[]) => {
+      animations.forEach(({ onStart, onProgress }) => {
         onStart?.();
-        onProgress?.(0.996);
-        onEnd?.();
+        onProgress?.((from, to) => from + (to - from));
       });
     };
   });
@@ -22,7 +21,9 @@ describe('Deck', () => {
     const elem = document.createElement('div');
 
     elem.setAttribute('data-testid', 'deck');
+
     document.body.append(elem);
+
     deck = new Deck(elem, suits, ranks);
   });
 

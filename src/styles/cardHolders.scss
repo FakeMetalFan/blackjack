@@ -1,19 +1,75 @@
-.dealer {
-  left: 50%;
-  position: fixed;
-  top: var(--hand-vertical-offset);
-  z-index: 1;
+$center-horizontally: calc(50% - var(--card-width) / 2);
+$center-vertically: calc(50% - var(--card-height) / 2);
+$deck-offset-x: calc(#{$center-horizontally} - 240px);
+$deck-offset-y: calc(#{$center-vertically} - 300px);
+
+.deck,
+.dealer,
+.player {
+  border: 3px solid white;
+  border-radius: 6px;
+  height: var(--card-height);
+  position: absolute;
+  width: var(--card-width);
+
+  .text {
+    color: white;
+    font-size: 16px;
+    line-height: var(--card-height);
+    position: absolute;
+    text-align: center;
+    width: inherit;
+  }
 }
 
 .deck {
-  position: fixed;
-  right: 35%;
-  top: 50%;
+  left: $deck-offset-x;
+  top: $deck-offset-y;
+}
+
+.dealer {
+  left: $center-horizontally;
+  top: $deck-offset-y;
 }
 
 .player {
-  bottom: var(--hand-vertical-offset);
-  left: 50%;
-  position: fixed;
-  z-index: 2;
+  $player-2-offset-x: calc(#{$center-horizontally} - 120px);
+  $player-2-offset-y: calc(#{$center-vertically} - 140px);
+
+  &-1 {
+    bottom: $center-vertically;
+    left: $deck-offset-x;
+  }
+
+  &-2 {
+    bottom: $player-2-offset-y;
+    left: $player-2-offset-x;
+  }
+
+  &-3 {
+    bottom: calc(50% - var(--card-height) / 2 - 280px);
+    left: $center-horizontally;
+  }
+
+  &-4 {
+    bottom: $player-2-offset-y;
+    right: $player-2-offset-x;
+  }
+
+  &-5 {
+    bottom: $center-vertically;
+    right: $deck-offset-x;
+  }
+
+  &.active::after {
+    $triangle-width: 10px;
+
+    border-color: transparent transparent white;
+    border-style: solid;
+    border-width: $triangle-width;
+    bottom: -25px;
+    content: '';
+    left: calc(50% - #{$triangle-width});
+    position: absolute;
+  }
 }
