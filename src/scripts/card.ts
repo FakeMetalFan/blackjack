@@ -38,6 +38,8 @@ class Card {
         this.rotationY = calc(0, 180);
       },
     });
+
+    return this;
   }
 
   hide() {
@@ -58,9 +60,11 @@ class Card {
   }
 
   getTransform() {
-    const { m41, m42 } = new WebKitCSSMatrix(this.styles.transform);
+    const [, , , , x, y] = getComputedStyle(this.elem)
+      .transform.replace(/[^\d\-.,]/g, '')
+      .split(',');
 
-    return { x: m41, y: m42 };
+    return { x: Number(x) || 0, y: Number(y) || 0 };
   }
 
   getRect() {

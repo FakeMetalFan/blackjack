@@ -93,7 +93,7 @@ class Blackjack {
     await this.deck.shuffle();
     await this.deck.shuffle();
 
-    this.players.resetCurrent();
+    this.players.reset();
     this.buttons.deal.enable();
   }
 

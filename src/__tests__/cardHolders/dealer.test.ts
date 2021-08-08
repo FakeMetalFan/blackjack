@@ -4,24 +4,8 @@ import Rank from 'constants/ranks';
 import Suit from 'constants/suits';
 
 describe('Dealer', () => {
-  let dealer: Dealer;
-
-  beforeEach(() => {
-    dealer = new Dealer(document.createElement('div'));
-  });
-
-  it('should reveal top card', () => {
-    const topCard = new Card(Rank.Ace, Suit.Spades).hide();
-
-    dealer
-      .push(new Card(Rank.Jack, Suit.Diamonds))
-      .push(topCard)
-      .revealTopCard();
-
-    expect(topCard.elem).toHaveClass('card ace-of-spades');
-  });
-
   it('should indicate ability to draw', () => {
+    const dealer = new Dealer(document.createElement('div'));
     const card = new Card(Rank.Four, Suit.Spades);
 
     expect(

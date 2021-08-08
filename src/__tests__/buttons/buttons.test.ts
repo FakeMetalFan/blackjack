@@ -10,6 +10,7 @@ describe('Buttons', () => {
       const elem = document.createElement('button');
 
       elem.textContent = name;
+
       document.body.append(elem);
 
       return new Button(elem);
@@ -36,10 +37,12 @@ describe('Buttons', () => {
     expect(screen.getByText('stand')).toBeDisabled();
   });
 
-  it('should enable hit and stand', () => {
+  it('should enable all except deal', () => {
     btns.disableAll();
-    btns.enableHitAndStand();
+    btns.enableAllExceptDeal();
 
+    expect(screen.getByText('deal')).toBeDisabled();
+    expect(screen.getByText('reset')).toBeEnabled();
     expect(screen.getByText('hit')).toBeEnabled();
     expect(screen.getByText('stand')).toBeEnabled();
   });

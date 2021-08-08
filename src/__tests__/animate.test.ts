@@ -18,7 +18,7 @@ describe('animate', () => {
   });
 
   it('should resolve a Promise upon completion', () => {
-    expect(animate()).resolves.toBe(undefined);
+    expect(animate({ delay: 100 })).resolves.toBe(undefined);
   });
 
   it('should execute "onStart" callback', async () => {
@@ -28,17 +28,19 @@ describe('animate', () => {
   });
 
   it('should execute "onProgress" callback', async () => {
-    await animate({ onProgress: callbackMock });
+    await animate({
+      duration: 500,
+      onProgress: (calc) => {
+        callbackMock(calc(0, 1));
+      },
+    });
 
     expect(callbackMock).toHaveBeenCalledWith(expect.any(Number));
   });
 
   it('should execute "onEnd" callback', async () => {
-    await animate(
-      { duration: 15, onEnd: callbackMock },
-      { duration: 20, delay: 30, onEnd: callbackMock }
-    );
+    await animate({ onEnd: callbackMock });
 
-    expect(callbackMock).toHaveBeenCalledTimes(2);
+    expect(callbackMock).toHaveBeenCalledTimes(1);
   });
 });

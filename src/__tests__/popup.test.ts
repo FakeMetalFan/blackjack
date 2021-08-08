@@ -7,10 +7,10 @@ describe('Popup', () => {
 
   beforeAll(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (animate as any).default = (animations: animate.AnimationConfig[]) => {
+    (animate as any).default = (...animations: animate.AnimationConfig[]) => {
       animations.forEach(({ onStart, onProgress, onEnd }) => {
         onStart?.();
-        onProgress?.(() => 0.996);
+        onProgress?.((from, to) => from + (to - from));
         onEnd?.();
       });
     };
@@ -20,6 +20,7 @@ describe('Popup', () => {
     const elem = document.createElement('div');
 
     document.body.append(elem);
+
     popup = new Popup(elem);
   });
 

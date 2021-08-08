@@ -1,3 +1,4 @@
+import { screen } from '@testing-library/dom';
 import * as animate from 'animate';
 import Card from 'card';
 import Hand from 'cardHolders/hand';
@@ -9,17 +10,27 @@ describe('Hand', () => {
 
   beforeAll(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (animate as any).default = (animations: animate.AnimationConfig[]) => {
+    (animate as any).default = (...animations: animate.AnimationConfig[]) => {
       animations.forEach(({ onStart, onProgress, onEnd }) => {
         onStart?.();
-        onProgress?.(() => 0.996);
+        onProgress?.((from, to) => from + (to - from));
         onEnd?.();
       });
     };
   });
 
   beforeEach(() => {
-    hand = new Hand(document.createElement('div'));
+    const elem = document.createElement('div');
+
+    elem.setAttribute('data-testid', 'hand');
+
+    document.body.append(elem);
+
+    hand = new Hand(elem);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
   });
 
   it('should drag card', () => {
@@ -29,6 +40,19 @@ describe('Hand', () => {
 
     expect(card.getTransform()).not.toStrictEqual({ x: 0.25, y: 0.25 });
     expect(card.elem).not.toHaveClass('card ace-of-spades');
+  });
+
+  it('should be set active', () => {
+    hand.setActive();
+
+    expect(screen.getByTestId('hand')).toHaveClass('active');
+  });
+
+  it('should be set inactive', () => {
+    hand.setActive();
+    hand.setInactive();
+
+    expect(screen.getByTestId('hand')).not.toHaveClass('active');
   });
 
   it('should empty stack', () => {

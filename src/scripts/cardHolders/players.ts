@@ -1,16 +1,20 @@
 import Hand from './hand';
 
 class Players {
+  public hands: Hand[];
+
   private currentIndex = 0;
 
-  constructor(public hands: Hand[]) {}
+  constructor(...hands: Hand[]) {
+    this.hands = hands;
+  }
 
   setNext() {
     this.setInactive();
     this.currentIndex += 1;
   }
 
-  resetCurrent() {
+  reset() {
     this.currentIndex = 0;
   }
 
