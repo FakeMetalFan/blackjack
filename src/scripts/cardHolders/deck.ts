@@ -3,9 +3,9 @@ import Card from 'card';
 import Rank from 'constants/ranks';
 import Suit from 'constants/suits';
 
-import CardStack from './cardStack';
+import Cards from './cards';
 
-class Deck extends CardStack {
+class Deck extends Cards {
   constructor(elem: HTMLDivElement, suits: Suit[], ranks: Rank[]) {
     super(elem);
 
@@ -43,6 +43,8 @@ class Deck extends CardStack {
         } as AnimationConfig;
       })
     );
+
+    return this;
   }
 
   async shuffle() {
@@ -90,6 +92,8 @@ class Deck extends CardStack {
         return acc;
       }, [] as AnimationConfig[])
     );
+
+    return this;
   }
 
   getOffsetTop() {

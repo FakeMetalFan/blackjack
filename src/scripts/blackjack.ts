@@ -27,9 +27,7 @@ class Blackjack {
     });
 
     (async () => {
-      await this.deck.intro();
-      await this.deck.shuffle();
-      await this.deck.shuffle();
+      await (await (await this.deck.intro()).shuffle()).shuffle();
 
       this.buttons.deal.enable();
     })();
@@ -43,12 +41,10 @@ class Blackjack {
     // eslint-disable-next-line no-restricted-syntax
     for (const hand of this.players.hands) {
       /* eslint-disable no-await-in-loop */
-      await this.dealCard(hand);
-      await this.dealCard(hand);
+      await (await this.dealCard(hand)).dealCard(hand);
     }
 
-    await this.dealCard(this.dealer);
-    await this.dealCard(this.dealer, false);
+    await (await this.dealCard(this.dealer)).dealCard(this.dealer, false);
 
     if (this.players.haveBlackjack() || this.dealer.hasBlackjack()) {
       await this.dealer.topCard.show();
@@ -89,8 +85,7 @@ class Blackjack {
     this.dealer.empty();
     this.players.empty();
 
-    await this.deck.shuffle();
-    await this.deck.shuffle();
+    await (await this.deck.shuffle()).shuffle();
 
     this.players.reset();
     this.buttons.deal.enable();
@@ -130,10 +125,12 @@ class Blackjack {
       const dealerScore = this.dealer.getScore();
       const playersTopScore = this.players.getTopScore();
 
-      if (this.players.haveBust() || playersTopScore < dealerScore) {
+      if (this.players.haveBust()) {
         this.popup.show(PopupText.Defeat);
       } else if (this.dealer.hasBust() || dealerScore < playersTopScore) {
         this.popup.show(PopupText.Victory);
+      } else if (playersTopScore < dealerScore) {
+        this.popup.show(PopupText.Defeat);
       } else {
         this.popup.show(PopupText.Push);
       }
@@ -149,6 +146,8 @@ class Blackjack {
     await hand
       .push(this.deck.pop().setTransform(x - dx, y - dy))
       .dragCard(shouldShowFace);
+
+    return this;
   }
 }
 

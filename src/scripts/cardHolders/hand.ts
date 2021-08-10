@@ -1,11 +1,11 @@
 import animate from 'animate';
 import { rankValue } from 'constants/ranks';
 
-import CardStack from './cardStack';
+import Cards from './cards';
 
 const TOP_SCORE = 21;
 
-class Hand extends CardStack {
+class Hand extends Cards {
   async dragCard(shouldShowFace?: boolean) {
     const { x, y } = this.topCard.getTransform();
     const offset = (1 - this.count) * 10;

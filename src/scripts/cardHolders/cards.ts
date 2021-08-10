@@ -1,6 +1,6 @@
 import Card from 'card';
 
-abstract class CardStack {
+abstract class Cards {
   cards: Card[] = [];
 
   constructor(protected elem: HTMLDivElement) {}
@@ -29,4 +29,4 @@ abstract class CardStack {
   }
 }
 
-export default CardStack;
+export default Cards;

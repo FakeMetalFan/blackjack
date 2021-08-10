@@ -1,12 +1,12 @@
 import Card from 'card';
-import CardStack from 'cardHolders/cardStack';
+import Cards from 'cardHolders/cards';
 import Rank from 'constants/ranks';
 import Suit from 'constants/suits';
 
-describe('CardStack', () => {
+describe('Cards', () => {
   let cardStack: CardStackMock;
 
-  class CardStackMock extends CardStack {}
+  class CardStackMock extends Cards {}
 
   beforeEach(() => {
     cardStack = new CardStackMock(document.createElement('div'));
