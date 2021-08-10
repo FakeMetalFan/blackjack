@@ -107,9 +107,9 @@ describe('Blackjack', () => {
   });
 
   it('should hit', async () => {
-    const hit = screen.getByText('hit');
+    const hitBtn = screen.getByText('hit');
 
-    fireEvent.click(hit);
+    fireEvent.click(hitBtn);
 
     await flushPromises();
 
@@ -117,13 +117,13 @@ describe('Blackjack', () => {
 
     jest.spyOn(Hand.prototype, 'hasBust').mockReturnValue(true);
 
-    fireEvent.click(hit);
+    fireEvent.click(hitBtn);
 
     await flushPromises();
 
     expect(screen.getByTestId('player-2')).toHaveClass('active');
 
-    fireEvent.click(hit);
+    fireEvent.click(hitBtn);
 
     await flushPromises();
 
@@ -133,61 +133,57 @@ describe('Blackjack', () => {
   });
 
   it('should stand', async () => {
-    const stand = screen.getByText('stand');
+    const standBtn = screen.getByText('stand');
     const playersBustMock = jest
       /* eslint-disable dot-notation */
       .spyOn(blackjack['players'], 'haveBust')
       .mockReturnValue(true);
 
-    fireEvent.click(stand);
+    fireEvent.click(standBtn);
 
     expect(screen.getByTestId('player-2')).toHaveClass('active');
 
-    fireEvent.click(stand);
+    fireEvent.click(standBtn);
 
     await flushPromises();
 
     expect(screen.getByTestId('dealer').childElementCount).toBeGreaterThan(0);
     expect(screen.getByText(PopupText.Defeat)).toBeInTheDocument();
 
-    const reset = screen.getByText('reset');
+    const resetBtn = screen.getByText('reset');
+    jest.spyOn(blackjack['players'], 'getTopScore').mockReturnValue(21);
+
+    fireEvent.click(resetBtn);
+    fireEvent.click(standBtn);
+    fireEvent.click(standBtn);
+
+    await flushPromises();
+
+    expect(screen.getByText(PopupText.Defeat)).toBeInTheDocument();
+
     const dealerBustMock = jest
       .spyOn(blackjack['dealer'], 'hasBust')
       .mockReturnValue(true);
 
     playersBustMock.mockReturnValue(false);
 
-    fireEvent.click(reset);
-    fireEvent.click(stand);
-    fireEvent.click(stand);
+    fireEvent.click(resetBtn);
+    fireEvent.click(standBtn);
+    fireEvent.click(standBtn);
 
     await flushPromises();
 
     expect(screen.getByText(PopupText.Victory)).toBeInTheDocument();
 
-    const playersTopScoreMock = jest
-      .spyOn(blackjack['players'], 'getTopScore')
-      .mockReturnValue(17);
-
-    jest.spyOn(blackjack['dealer'], 'getScore').mockReturnValue(17);
+    jest.spyOn(blackjack['dealer'], 'getScore').mockReturnValue(21);
     dealerBustMock.mockReturnValue(false);
 
-    fireEvent.click(reset);
-    fireEvent.click(stand);
-    fireEvent.click(stand);
+    fireEvent.click(resetBtn);
+    fireEvent.click(standBtn);
+    fireEvent.click(standBtn);
 
     await flushPromises();
 
     expect(screen.getByText(PopupText.Push)).toBeInTheDocument();
-
-    playersTopScoreMock.mockReturnValue(16);
-
-    fireEvent.click(reset);
-    fireEvent.click(stand);
-    fireEvent.click(stand);
-
-    await flushPromises();
-
-    expect(screen.getByText(PopupText.Defeat)).toBeInTheDocument();
   });
 });

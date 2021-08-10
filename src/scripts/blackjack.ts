@@ -130,14 +130,12 @@ class Blackjack {
       const dealerScore = this.dealer.getScore();
       const playersTopScore = this.players.getTopScore();
 
-      if (this.players.haveBust()) {
+      if (this.players.haveBust() || playersTopScore < dealerScore) {
         this.popup.show(PopupText.Defeat);
       } else if (this.dealer.hasBust() || dealerScore < playersTopScore) {
         this.popup.show(PopupText.Victory);
-      } else if (dealerScore === playersTopScore) {
-        this.popup.show(PopupText.Push);
       } else {
-        this.popup.show(PopupText.Defeat);
+        this.popup.show(PopupText.Push);
       }
 
       this.buttons.reset.enable();
