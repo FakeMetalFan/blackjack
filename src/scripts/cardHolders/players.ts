@@ -11,6 +11,7 @@ class Players {
 
   setNext() {
     this.setInactive();
+
     this.currentIndex += 1;
   }
 
@@ -21,12 +22,6 @@ class Players {
   setInactive() {
     this.hands.forEach((hand) => {
       hand.setInactive();
-    });
-  }
-
-  empty() {
-    this.hands.forEach((hand) => {
-      hand.empty();
     });
   }
 

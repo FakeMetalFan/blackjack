@@ -48,12 +48,6 @@ describe('Players', () => {
     expect((players.hands[0] as any).elem).not.toHaveClass('active');
   });
 
-  it('should empty hands', () => {
-    players.empty();
-
-    expect(players.hands.every((hand) => hand.count === 0));
-  });
-
   it('should indicate a blackjack', () => {
     jest.spyOn(players.hands[0], 'hasBlackjack').mockReturnValue(true);
 

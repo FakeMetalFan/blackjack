@@ -64,15 +64,13 @@ class Blackjack {
     this.buttons.disableAll();
 
     this.deck.foreground = '1';
-    this.players.hands
-      .flatMap((hand) => hand.cards)
-      .concat(this.dealer.cards)
-      .forEach((card, index) => {
+    this.players.hands.concat(this.dealer).forEach((hand) => {
+      hand.cards.forEach((card, index) => {
         const { x, y } = card.getRect();
         const { x: dx, y: dy } = this.deck.getRect();
 
         // eslint-disable-next-line no-param-reassign
-        card.foreground = this.deck.count + index;
+        card.foreground = this.deck.count + hand.count + index;
 
         this.deck.push(
           card
@@ -82,8 +80,8 @@ class Blackjack {
         );
       });
 
-    this.dealer.empty();
-    this.players.empty();
+      hand.empty();
+    });
 
     await (await this.deck.shuffle()).shuffle();
 
