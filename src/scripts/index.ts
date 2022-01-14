@@ -40,7 +40,7 @@ new (class {
   }
 
   private deal = async () => {
-    this.deck.setForeground('');
+    this.deck.setForeground(1);
     this.buttons.disableAll();
 
     await this.dealCard(this.player);
@@ -62,7 +62,7 @@ new (class {
   private reset = async () => {
     this.popup.hide();
     this.buttons.disableAll();
-    this.deck.setForeground(1);
+    this.deck.setForeground('');
 
     [
       this.player,
@@ -100,7 +100,7 @@ new (class {
     if (this.player.busted()) {
       this.popup.show(POPUP_TEXT.DEFEAT);
       this.buttons.reset.enable();
-    } else if (this.player.size > 4) {
+    } else if (this.player.enoughCards) {
       this.stand();
     } else {
       this.buttons.enableAllExceptDeal();
@@ -111,7 +111,7 @@ new (class {
     this.buttons.disableAll();
     await this.dealer.peek.show();
 
-    while (this.dealer.getScore() < 17) {
+    while (this.dealer.getScore() < 17 && !this.dealer.enoughCards) {
       await this.dealCard(this.dealer);
     }
 

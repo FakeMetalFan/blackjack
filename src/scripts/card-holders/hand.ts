@@ -19,15 +19,14 @@ export default class extends CardStack {
     await animate({
       duration: 400,
       onStart: () => {
+        this.peek.setForeground(this.size);
+
         if (showFace) {
           this.peek.show();
         }
       },
       onProgress: (calc) => {
         this.peek.setPoint(calc(x, dx), calc(y, 0));
-      },
-      onEnd: () => {
-        this.peek.setForeground(this.size);
       },
     });
   };
@@ -46,4 +45,8 @@ export default class extends CardStack {
   blackjacked = () => this.size === 2 && this.getScore() === TOP_SCORE;
 
   busted = () => this.getScore() > TOP_SCORE;
+
+  get enoughCards() {
+    return this.size >= 5;
+  };
 }
