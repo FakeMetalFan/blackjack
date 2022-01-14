@@ -1,26 +1,17 @@
 import RANK from 'constants/rank';
 import SUIT from 'constants/suit';
 
+import addClasses from 'utils/add-classes';
 import animate from 'utils/animate';
 import createElem from 'utils/create-elem';
 import getTransformPoint from 'utils/get-transform-point';
 
 const createCardElem = (rank: RANK, suit: SUIT) => {
-  const card = createElem<HTMLDivElement>('div', {
-    classes: ['card'],
-  });
-  const inner = createElem<HTMLDivElement>('div', {
-    classes: ['inner'],
-  });
+  const card = addClasses(createElem('div'), 'card');
+  const inner = addClasses(createElem('div'), 'inner');
 
-  inner.append(createElem('div', {
-    classes: ['back'],
-  }));
-
-  inner.append(createElem('div', {
-    classes: ['face', `${rank}_of_${suit}`],
-  }));
-
+  inner.append(addClasses(createElem('div'), 'back'));
+  inner.append(addClasses(createElem('div'), 'face', `${rank}_of_${suit}`));
   card.append(inner);
 
   return card;

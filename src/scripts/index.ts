@@ -14,10 +14,9 @@ import {
   SUITS,
 } from 'constants/suit';
 
-import Popup from './popup';
+import getElemById from 'utils/get-elem-by-id';
 
-const getElem= <T extends HTMLElement>(id: string) =>
-  document.getElementById(id) as T;
+import Popup from './popup';
 
 new (class {
   constructor(
@@ -149,13 +148,13 @@ new (class {
   };
 })(
   new Buttons(
-    new Button(getElem('deal-btn')),
-    new Button(getElem('reset-btn')),
-    new Button(getElem('hit-btn')),
-    new Button(getElem('stand-btn')),
+    new Button(getElemById('deal-btn')),
+    new Button(getElemById('reset-btn')),
+    new Button(getElemById('hit-btn')),
+    new Button(getElemById('stand-btn')),
   ),
-  new Popup(getElem('popup')),
-  new Deck(getElem('deck'), SUITS, RANKS),
-  new Hand(getElem('dealer')),
-  new Hand(getElem('player')),
+  new Popup(getElemById('popup')),
+  new Deck(getElemById('deck'), SUITS, RANKS),
+  new Hand(getElemById('dealer')),
+  new Hand(getElemById('player')),
 );

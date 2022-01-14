@@ -5,7 +5,7 @@ export default <T extends HTMLElement>(elem: T) => {
   } = new WebKitCSSMatrix(getComputedStyle(elem).transform);
 
   return {
-    x: Number(m41) || 0,
-    y: Number(m42) || 0,
+    x: m41,
+    y: m42,
   };
 };

@@ -16,7 +16,7 @@ button {
 
   border: 0;
   border-radius: 4px;
-  box-shadow: 0 1.5px 0.5px 0 $box-shadow-color;
+  box-shadow: 0 1.5px .5px 0 $box-shadow-color;
   font-family: inherit;
   font-weight: bold;
   height: $height;
@@ -27,7 +27,7 @@ button {
     cursor: pointer;
 
     &:active {
-      box-shadow: 0 0.5px 1px 0 $box-shadow-color;
+      box-shadow: 0 .5px 1px 0 $box-shadow-color;
       transform: translateY(2px);
     }
   }
