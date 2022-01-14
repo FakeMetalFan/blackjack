@@ -1,0 +1,34 @@
+$height: 25px;
+
+.buttons {
+  $width: 230px;
+
+  bottom: calc(50vh - var(--card-height) * 3);
+  display: flex;
+  justify-content: space-between;
+  left: calc(50vw - #{$width} / 2);
+  position: fixed;
+  width: $width;
+}
+
+button {
+  $box-shadow-color: #333;
+
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 1.5px 0.5px 0 $box-shadow-color;
+  font-family: inherit;
+  font-weight: bold;
+  height: $height;
+  outline: none;
+  width: 55px;
+
+  &:not(:disabled) {
+    cursor: pointer;
+
+    &:active {
+      box-shadow: 0 0.5px 1px 0 $box-shadow-color;
+      transform: translateY(2px);
+    }
+  }
+}

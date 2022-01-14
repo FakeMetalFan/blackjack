@@ -1,0 +1,17 @@
+footer {
+  background-color: var(--toolbar-background-color);
+  bottom: 0;
+  color: white;
+  display: flex;
+  font-size: 80%;
+  justify-content: center;
+  left: 0;
+  padding: 3px 0;
+  position: fixed;
+  width: 100%;
+
+  a {
+    display: inline-block;
+    margin: 0 4px;
+  }
+}

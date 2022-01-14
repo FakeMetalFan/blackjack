@@ -1,0 +1,23 @@
+$center-horizontally: calc(50vw - var(--card-width) / 2);
+$center-vertically: calc(50vh - var(--card-height) / 2);
+
+.deck,
+.dealer,
+.player {
+  position: absolute;
+}
+
+.deck {
+  left: $center-horizontally;
+  top: $center-vertically;
+}
+
+.dealer {
+  left: $center-horizontally;
+  top: calc(#{$center-vertically} - var(--card-height) * 1.5);
+}
+
+.player {
+  left: $center-horizontally;
+  top: calc(#{$center-vertically} + var(--card-height) * 1.5);
+}
