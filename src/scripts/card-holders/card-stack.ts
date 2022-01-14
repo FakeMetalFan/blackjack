@@ -3,7 +3,7 @@ import Stack from 'data-structures/stack';
 import Card from './deck/card';
 
 export default abstract class extends Stack<Card> {
-  constructor(protected elem: HTMLDivElement) {
+  constructor(protected elem: HTMLElement) {
     super();
   }
 

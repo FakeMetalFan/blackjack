@@ -3,11 +3,11 @@ import POPUP_TEXT from 'constants/popup-text';
 import animate from 'utils/animate';
 
 export default class {
-  constructor(private elem: HTMLDivElement) {}
+  constructor(private elem: HTMLElement) {}
 
   show = (text: POPUP_TEXT) => {
     animate({
-      duration: 100,
+      duration: 200,
       onStart: () => {
         this.elem.textContent = text;
       },
@@ -21,24 +21,18 @@ export default class {
   }
 
   hide = () => {
-    if (this.styles.opacity !== '0') {
-      animate({
-        duration: 200,
-        onProgress: (calc) => {
-          this.setOpacity(calc(1, 0));
-        },
-        onEnd: () => {
-          this.setOpacity(0);
-        },
-      });
-    }
+    animate({
+      duration: 300,
+      onProgress: (calc) => {
+        this.setOpacity(calc(1, 0));
+      },
+      onEnd: () => {
+        this.setOpacity(0);
+      },
+    });
   };
 
   private setOpacity = (opacity: number | string) => {
-    this.styles.opacity = opacity.toString();
+    this.elem.style.opacity = opacity.toString();
   };
-
-  private get styles() {
-    return this.elem.style;
-  }
 }

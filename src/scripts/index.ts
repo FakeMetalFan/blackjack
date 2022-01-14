@@ -40,7 +40,6 @@ new (class {
   }
 
   private deal = async () => {
-    this.popup.hide();
     this.deck.setForeground('');
     this.buttons.disableAll();
 
@@ -101,11 +100,11 @@ new (class {
     if (this.player.busted()) {
       this.popup.show(POPUP_TEXT.DEFEAT);
       this.buttons.reset.enable();
-
-      return;
+    } else if (this.player.size > 4) {
+      this.stand();
+    } else {
+      this.buttons.enableAllExceptDeal();
     }
-
-    this.buttons.enableAllExceptDeal();
   };
 
   private stand = async () => {

@@ -7,7 +7,7 @@ import CardStack from '../card-stack';
 import Card from './card';
 
 export default class extends CardStack {
-  constructor(elem: HTMLDivElement, suits: SUIT[], ranks: RANK[]) {
+  constructor(elem: HTMLElement, suits: SUIT[], ranks: RANK[]) {
     super(elem);
 
     suits.forEach((suit) => {
