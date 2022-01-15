@@ -3,7 +3,7 @@ $height: 25px;
 .buttons {
   $width: 230px;
 
-  bottom: calc(50vh - var(--card-height) * 3);
+  bottom: calc(50vh - var(--card-height) * 2.5);
   display: flex;
   justify-content: space-between;
   left: calc(50vw - #{$width} / 2);

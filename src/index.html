@@ -26,18 +26,20 @@
   </header>
 
   <div
-    id="deck"
-    class="deck"
+    id="popup"
+    style="opacity: 0"
   ></div>
 
   <div
     id="dealer"
-    class="dealer"
+  ></div>
+
+  <div
+    id="deck"
   ></div>
 
   <div
     id="player"
-    class="player player-1"
   ></div>
 
   <div class="buttons">
@@ -70,12 +72,6 @@
     </button>
   </div>
 
-  <div
-    id="popup"
-    style="opacity: 0"
-    class="popup"
-  ></div>
-
   <footer>
     Powered by
     <a
@@ -88,13 +84,12 @@
     </a>
     &copy;
     <span
-      id="current-year"
+      id="year"
     ></span>
   </footer>
 
   <script>
-    document.getElementById('current-year').innerText =
-      new Date().getFullYear();
+    document.getElementById('year').innerText = new Date().getFullYear();
   </script>
 </body>
 </html>

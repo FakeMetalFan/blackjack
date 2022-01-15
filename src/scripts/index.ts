@@ -40,7 +40,6 @@ new (class {
   }
 
   private deal = async () => {
-    this.deck.setForeground(1);
     this.buttons.disableAll();
 
     await this.dealCard(this.player);
@@ -62,7 +61,6 @@ new (class {
   private reset = async () => {
     this.popup.hide();
     this.buttons.disableAll();
-    this.deck.setForeground('');
 
     [
       this.player,

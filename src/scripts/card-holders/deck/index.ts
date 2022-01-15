@@ -92,10 +92,6 @@ export default class extends CardStack {
     }, []));
   };
 
-  setForeground(zIndex: number | string) {
-    this.elem.style.zIndex = zIndex.toString();
-  }
-
   getOffsetTop() {
     const {
       x,

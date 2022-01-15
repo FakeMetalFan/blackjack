@@ -1,4 +1,4 @@
-.popup {
+#popup {
   $height: 25px;
   $width: 120px;
 
@@ -11,6 +11,6 @@
   line-height: $height;
   position: fixed;
   text-align: center;
-  top: calc(50vh - var(--card-height) * 3);
+  top: calc(50vh - var(--card-height) * 2.5);
   width: $width;
 }
