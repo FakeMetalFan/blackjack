@@ -145,10 +145,10 @@ new (class {
   };
 })(
   new Buttons(
-    new Button(getElemById('deal-btn')),
-    new Button(getElemById('reset-btn')),
-    new Button(getElemById('hit-btn')),
-    new Button(getElemById('stand-btn')),
+    new Button(getElemById('deal')),
+    new Button(getElemById('reset')),
+    new Button(getElemById('hit')),
+    new Button(getElemById('stand')),
   ),
   new Popup(getElemById('popup')),
   new Deck(getElemById('deck'), SUITS, RANKS),
