@@ -38,11 +38,11 @@ export default class extends CardStack {
   getScore = () => {
     return this.items.reduce(
       (acc, card, index) => acc + RANK_VALUE.get(card.rank)(acc, index),
-      0
+      0,
     );
   };
 
-  blackjacked = () => this.size === 2 && this.getScore() === TOP_SCORE;
+  blackjacked = () => this.getScore() === TOP_SCORE;
 
   busted = () => this.getScore() > TOP_SCORE;
 

@@ -76,10 +76,11 @@ new (class {
           y: dy,
         } = this.deck.getRect();
 
-        this.deck.push(card
-          .setForeground(this.deck.size + hand.size + index)
-          .setPoint(x - dx, y - dy)
-          .hide(),
+        this.deck.push(
+          card
+            .setForeground(this.deck.size + hand.size + index)
+            .setPoint(x - dx, y - dy)
+            .hide(),
         );
       });
 
@@ -138,9 +139,10 @@ new (class {
     } = hand.getRect();
 
     await hand
-      .push(this.deck
-        .pop()
-        .setPoint(x - dx, y - dy),
+      .push(
+        this.deck
+          .pop()
+          .setPoint(x - dx, y - dy),
       ).dragCard(showFace);
   };
 })(

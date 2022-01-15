@@ -14,9 +14,10 @@ export default class extends CardStack {
       ranks.forEach((rank) => {
         const offset = -this.size / 4;
 
-        this.push(new Card(rank, suit, this.size)
-          .setPoint(offset, -150 + offset)
-          .setOpacity(0),
+        this.push(
+          new Card(rank, suit, this.size)
+            .setPoint(offset, -150 + offset)
+            .setOpacity(0),
         );
       });
     });

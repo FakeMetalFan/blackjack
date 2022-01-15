@@ -69,8 +69,9 @@ export default class {
   };
 
   private setRotateY = (deg: number) => {
-    (this.elem.firstChild as HTMLElement).style.transform
-      = `rotateY(${deg}deg)`;
+    (
+      this.elem.firstChild as HTMLElement
+    ).style.transform = `rotateY(${deg}deg)`;
   };
 
   private get styles() {
