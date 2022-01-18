@@ -21,18 +21,24 @@ export default class {
   }
 
   hide = () => {
-    animate({
-      duration: 300,
-      onProgress: (calc) => {
-        this.setOpacity(calc(1, 0));
-      },
-      onEnd: () => {
-        this.setOpacity(0);
-      },
-    });
+    if (this.styles.opacity !== '0') {
+      animate({
+        duration: 300,
+        onProgress: (calc) => {
+          this.setOpacity(calc(1, 0));
+        },
+        onEnd: () => {
+          this.setOpacity(0);
+        },
+      });
+    }
   };
 
   private setOpacity = (opacity: number | string) => {
-    this.elem.style.opacity = opacity.toString();
+    this.styles.opacity = opacity.toString();
   };
+
+  private get styles() {
+    return this.elem.style;
+  }
 }
