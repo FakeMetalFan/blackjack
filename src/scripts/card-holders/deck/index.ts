@@ -80,7 +80,7 @@ export default class extends CardStack {
         {
           duration,
           delay: delay + duration,
-          onStart() {
+          onStart: () => {
             card.setForeground(index);
           },
           onProgress: (calc) => {
@@ -93,7 +93,7 @@ export default class extends CardStack {
     }, []));
   };
 
-  getOffsetTop() {
+  getOffsetTop = () => {
     const {
       x,
       y,
@@ -107,5 +107,5 @@ export default class extends CardStack {
       x: x + dx,
       y: y + dy,
     };
-  }
+  };
 }
